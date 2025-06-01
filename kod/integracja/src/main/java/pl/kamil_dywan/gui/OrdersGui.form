@@ -57,20 +57,20 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="82b37" class="javax.swing.JButton" binding="saveInvoicesButton">
+          <component id="82b37" class="javax.swing.JButton" binding="saveOrdersButton">
             <constraints/>
             <properties>
-              <text value="Zapisz faktury do pliku"/>
+              <text value="Zapisz zamówienia w Subiekcie"/>
             </properties>
           </component>
           <component id="b6eb3" class="javax.swing.JToolBar$Separator">
             <constraints/>
             <properties/>
           </component>
-          <component id="2e4e3" class="javax.swing.JButton" binding="saveReceiptsButton">
+          <component id="2e4e3" class="javax.swing.JButton" binding="saveDocumentsButton">
             <constraints/>
             <properties>
-              <text value="Zapisz paragony do pliku"/>
+              <text value="Zapisz dokumenty sprzedaży w Allegro"/>
             </properties>
           </component>
         </children>

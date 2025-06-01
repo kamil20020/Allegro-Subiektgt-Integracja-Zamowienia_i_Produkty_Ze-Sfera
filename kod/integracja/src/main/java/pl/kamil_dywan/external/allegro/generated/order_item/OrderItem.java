@@ -10,7 +10,6 @@ import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
 import pl.kamil_dywan.external.allegro.generated.Cost;
-import pl.kamil_dywan.external.allegro.own.order.OrderItemMoneyStats;
 
 @Data
 @Builder
@@ -62,20 +61,6 @@ public class OrderItem {
 
     @JsonProperty("boughtAt")
     private OffsetDateTime boughtAt;
-
-    private static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_UP;
-
-    @JsonIgnore
-    public BigDecimal getUnitPriceWithoutTax(){
-
-        BigDecimal unitPriceWithTax = price.getAmount();
-
-        BigDecimal taxRatePercentage = getTaxRatePercentage();
-        BigDecimal taxRateValue = taxRatePercentage.divide(BigDecimal.valueOf(100));
-        BigDecimal taxRateValuePlusOne = taxRateValue.add(BigDecimal.ONE);
-
-        return unitPriceWithTax.divide(taxRateValuePlusOne, 10, ROUNDING_MODE);
-    }
 
     @JsonIgnore
     public BigDecimal getTaxRatePercentage(){

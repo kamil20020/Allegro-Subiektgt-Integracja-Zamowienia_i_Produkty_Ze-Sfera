@@ -77,4 +77,5 @@ class ProductServiceTestIT {
         //then
         assertEquals(expectedProducts, gotProductsStr);
     }
+
 }

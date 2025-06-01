@@ -7,6 +7,8 @@ import pl.kamil_dywan.external.allegro.generated.Cost;
 import javax.annotation.processing.Generated;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
     "totalToPay"

@@ -187,13 +187,12 @@ public class ProductsGui implements ChangeableGui {
             productService.setExternalIdForAllOffers(products);
 
             JOptionPane.showMessageDialog(
-                mainPanel,
-                "Zaktualizowano produkty w Allegro",
-                "Powiadomienie",
-                JOptionPane.INFORMATION_MESSAGE
+                    mainPanel,
+                    "Zaktualizowano produkty w Allegro",
+                    "Powiadomienie",
+                    JOptionPane.INFORMATION_MESSAGE
             );
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
 
             e.printStackTrace();
 

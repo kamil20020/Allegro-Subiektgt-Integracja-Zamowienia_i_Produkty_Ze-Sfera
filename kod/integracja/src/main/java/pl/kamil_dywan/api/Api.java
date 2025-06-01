@@ -14,24 +14,33 @@ import java.net.http.HttpResponse;
 public abstract class Api {
 
     protected String API_PREFIX;
+    private final String hostKey;
 
     private static final HttpClient httpClient = HttpClient.newHttpClient();
 
     private static final Logger log = LoggerFactory.getLogger(Api.class);
     protected static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public Api(String subDomain, String laterPrefix){
+    public Api(String subDomain, String laterPrefix, String hostKey, String protocol){
+
+        this.hostKey = hostKey;
 
         if(subDomain != null && !subDomain.isBlank()){
             subDomain += '.';
         }
 
-        API_PREFIX =  "https://" + subDomain + getEnvApiHost() + laterPrefix;
+        API_PREFIX =  protocol + "://" + (subDomain != null ? subDomain : "") + getEnvApiHost() + laterPrefix;
     }
 
-    public Api(String laterPrefix){
+    public Api(String subDomain, String laterPrefix, String hostKey){
 
-        API_PREFIX = "https://" + getEnvApiHost() + laterPrefix;
+        this(subDomain, laterPrefix, hostKey, "https");
+    }
+
+    public Api(String laterPrefix, String hostKey){
+
+        this(null, laterPrefix, hostKey);
+
     }
 
     protected static String getQueryParamsPostFix(String... titlesAndParams){
@@ -57,7 +66,7 @@ public abstract class Api {
 
     private String getEnvApiHost(){
 
-        return AppProperties.getProperty("allegro.api.host", String.class);
+        return AppProperties.getProperty(hostKey, String.class);
     }
 
     public HttpResponse<String> send(HttpRequest.Builder httpRequestBuilder) throws IllegalStateException{

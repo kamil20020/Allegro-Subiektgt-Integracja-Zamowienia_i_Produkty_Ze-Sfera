@@ -8,6 +8,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import pl.kamil_dywan.TestHttpResponse;
 import pl.kamil_dywan.TestUtils;
+import pl.kamil_dywan.api.allegro.BearerAuthApi;
 import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.external.allegro.generated.auth.AccessTokenResponse;
 import pl.kamil_dywan.service.SecureStorage;

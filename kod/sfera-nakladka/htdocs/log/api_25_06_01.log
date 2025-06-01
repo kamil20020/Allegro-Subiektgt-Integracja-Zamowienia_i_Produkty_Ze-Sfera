@@ -604,3 +604,95 @@
 2025-06-01 18:16:45 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
 2025-06-01 18:16:46 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: PA 33/2025
 2025-06-01 18:16:46 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: ::1
+2025-06-01 20:42:49 Line: 11, : Request start: ::1
+2025-06-01 20:42:50 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 20:42:50 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 20:42:50 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 20:42:50 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 20:42:51 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: PA 34/2025
+2025-06-01 20:42:51 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: ::1
+2025-06-01 20:43:13 Line: 11, : Request start: ::1
+2025-06-01 20:43:13 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 20:43:14 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 20:43:14 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 20:43:14 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 20:43:14 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: PA 35/2025
+2025-06-01 20:43:14 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: ::1
+2025-06-01 20:46:17 Line: 11, : Request start: ::1
+2025-06-01 20:46:17 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 20:46:17 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 20:46:17 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 20:46:17 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 20:46:18 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: PA 36/2025
+2025-06-01 20:46:18 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: ::1
+2025-06-01 20:52:24 Line: 11, : Request start: ::1
+2025-06-01 20:52:24 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 20:52:24 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 20:52:24 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 20:52:24 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 20:52:25 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: PA 37/2025
+2025-06-01 20:52:25 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: ::1
+2025-06-01 20:52:29 Line: 11, : Request start: ::1
+2025-06-01 20:52:29 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 20:52:29 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 20:52:29 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 20:52:29 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 20:52:29 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: PA 38/2025
+2025-06-01 20:52:29 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: ::1
+2025-06-01 20:54:17 Line: 11, : Request start: ::1
+2025-06-01 20:54:45 Line: 11, : Request start: ::1
+2025-06-01 21:01:09 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:03:59 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:06:20 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:07:12 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:07:20 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:11:12 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:11:45 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:12:42 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:21:05 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:27:41 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:27:41 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 21:27:42 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 21:27:42 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 21:27:42 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 21:27:43 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: FS 40/2025
+2025-06-01 21:27:43 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: 127.0.0.1
+2025-06-01 21:29:14 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:29:15 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 21:29:15 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 21:29:15 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 21:29:16 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 21:29:17 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: FS 41/2025
+2025-06-01 21:29:17 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: 127.0.0.1
+2025-06-01 21:30:17 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:30:18 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 21:30:18 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 21:30:18 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 21:30:18 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 21:30:19 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: PA 39/2025
+2025-06-01 21:30:19 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: 127.0.0.1
+2025-06-01 21:40:43 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:41:49 Line: 11, : Request start: 127.0.0.1
+2025-06-01 21:41:49 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 21:41:49 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 21:41:49 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 21:41:50 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 21:41:50 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: PA 40/2025
+2025-06-01 21:41:50 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: 127.0.0.1
+2025-06-01 22:10:01 Line: 11, : Request start: 127.0.0.1
+2025-06-01 22:10:01 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 22:10:02 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 22:10:02 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 22:10:02 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 22:10:27 Line: 11, : Request start: 127.0.0.1
+2025-06-01 22:10:27 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 22:10:27 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 22:10:27 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 22:10:27 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 22:12:19 Line: 11, : Request start: 127.0.0.1
+2025-06-01 22:12:19 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 4
+2025-06-01 22:12:19 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: BANAW200
+2025-06-01 22:12:19 Line: 90, APISubiektGT\SubiektGT\SubiektObj->get: Pobrano dane obiektu id: 60
+2025-06-01 22:12:20 Line: 73, APISubiektGT\SubiektGT\Order->addPosition: Dodaje pozycje o kodzie: DOSTAWA123
+2025-06-01 22:12:20 Line: 318, APISubiektGT\SubiektGT\Order->add: Utworzono zamówienie od klienta: PA 41/2025
+2025-06-01 22:12:20 Line: 95, APISubiektGT\SubiektGT\order->add: Request finish: 127.0.0.1

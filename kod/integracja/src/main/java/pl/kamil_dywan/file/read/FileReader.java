@@ -60,7 +60,7 @@ public interface FileReader<T> {
 
     static File loadFile(String filePath) throws URISyntaxException{
 
-        URL fileURL = XMLFileReader.class.getClassLoader().getResource(filePath);
+        URL fileURL = FileReader.class.getClassLoader().getResource(filePath);
         URI fileURI = fileURL.toURI();
         Path foundFilePath = Path.of(fileURI);
 

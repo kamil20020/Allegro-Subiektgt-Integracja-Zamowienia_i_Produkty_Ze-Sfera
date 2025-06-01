@@ -8,11 +8,10 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import pl.kamil_dywan.TestHttpResponse;
 import pl.kamil_dywan.TestUtils;
+import pl.kamil_dywan.api.allegro.BasicAuthApi;
 import pl.kamil_dywan.service.AppProperties;
 import pl.kamil_dywan.service.SecureStorage;
-import sun.misc.Unsafe;
 
-import java.lang.reflect.Field;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -57,7 +56,7 @@ class BasicAuthApiTest {
 
             BasicAuthApi.init();
 
-            String gotClientId = BasicAuthApi.clientId;
+            String gotClientId = BasicAuthApi.getClientId();
             String gotAuthHeader = TestUtils.getPrivateStaticField(BasicAuthApi.class, "authHeaderContent", String.class);
 
             assertEquals(expectedClientId, gotClientId);

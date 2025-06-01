@@ -1,9 +1,7 @@
 package pl.kamil_dywan.api.allegro;
 
-import pl.kamil_dywan.api.BasicAuthApi;
 import pl.kamil_dywan.service.AppProperties;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -13,8 +11,6 @@ public class LoginApi extends BasicAuthApi {
     public LoginApi() {
 
         super("/auth/oauth");
-
-        clientId = AppProperties.getProperty("allegro.api.client.id");
     }
 
     public HttpResponse<String> generateDeviceCodeAndVerification()  {

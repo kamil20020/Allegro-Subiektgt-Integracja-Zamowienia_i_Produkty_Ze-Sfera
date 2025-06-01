@@ -1,8 +1,8 @@
 package pl.kamil_dywan.service;
 
 import pl.kamil_dywan.api.Api;
-import pl.kamil_dywan.api.BasicAuthApi;
-import pl.kamil_dywan.api.BearerAuthApi;
+import pl.kamil_dywan.api.allegro.BasicAuthApi;
+import pl.kamil_dywan.api.allegro.BearerAuthApi;
 import pl.kamil_dywan.api.allegro.LoginApi;
 import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.external.allegro.generated.auth.AccessTokenResponse;

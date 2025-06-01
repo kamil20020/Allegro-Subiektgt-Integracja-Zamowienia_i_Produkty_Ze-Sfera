@@ -1,7 +1,6 @@
 package pl.kamil_dywan.api.allegro;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import pl.kamil_dywan.api.BearerAuthApi;
 import pl.kamil_dywan.api.allegro.request.CreateOrderInvoiceRequest;
 import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.external.allegro.own.order.OrderStatus;
