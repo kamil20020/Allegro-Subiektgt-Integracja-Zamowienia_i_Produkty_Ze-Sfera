@@ -1,0 +1,901 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "messageToSeller": {
+      "type": "string"
+    },
+    "buyer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "login": {
+          "type": "string"
+        },
+        "firstName": {
+          "type": "string"
+        },
+        "lastName": {
+          "type": "string"
+        },
+        "companyName": {
+          "type": "string"
+        },
+        "guest": {
+          "type": "boolean"
+        },
+        "personalIdentity": {
+          "type": "string"
+        },
+        "phoneNumber": {
+          "type": "string"
+        },
+        "preferences": {
+          "type": "object",
+          "properties": {
+            "language": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "language"
+          ]
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "postCode": {
+              "type": "string"
+            },
+            "countryCode": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "street",
+            "city",
+            "postCode",
+            "countryCode"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "login",
+        "firstName",
+        "lastName",
+        "companyName",
+        "guest",
+        "personalIdentity",
+        "phoneNumber",
+        "preferences",
+        "address"
+      ]
+    },
+    "payment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "provider": {
+          "type": "string"
+        },
+        "finishedAt": {
+          "type": "string"
+        },
+        "paidAmount": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ]
+        },
+        "reconciliation": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ]
+        },
+        "features": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "type",
+        "provider",
+        "finishedAt",
+        "paidAmount",
+        "reconciliation",
+        "features"
+      ]
+    },
+    "status": {
+      "type": "string"
+    },
+    "fulfillment": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string"
+        },
+        "shipmentSummary": {
+          "type": "object",
+          "properties": {
+            "lineItemsSent": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "lineItemsSent"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "shipmentSummary"
+      ]
+    },
+    "delivery": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "object",
+          "properties": {
+            "firstName": {
+              "type": "string"
+            },
+            "lastName": {
+              "type": "string"
+            },
+            "street": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "zipCode": {
+              "type": "string"
+            },
+            "countryCode": {
+              "type": "string"
+            },
+            "companyName": {
+              "type": "string"
+            },
+            "phoneNumber": {
+              "type": "string"
+            },
+            "modifiedAt": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "firstName",
+            "lastName",
+            "street",
+            "city",
+            "zipCode",
+            "countryCode",
+            "companyName",
+            "phoneNumber",
+            "modifiedAt"
+          ]
+        },
+        "method": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "name"
+          ]
+        },
+        "pickupPoint": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "address": {
+              "type": "object",
+              "properties": {
+                "street": {
+                  "type": "string"
+                },
+                "zipCode": {
+                  "type": "string"
+                },
+                "city": {
+                  "type": "string"
+                },
+                "countryCode": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "street",
+                "zipCode",
+                "city",
+                "countryCode"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "description",
+            "address"
+          ]
+        },
+        "cost": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ]
+        },
+        "time": {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            },
+            "guaranteed": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "from",
+                "to"
+              ]
+            },
+            "dispatch": {
+              "type": "object",
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "from",
+                "to"
+              ]
+            }
+          },
+          "required": [
+            "from",
+            "to",
+            "guaranteed",
+            "dispatch"
+          ]
+        },
+        "smart": {
+          "type": "boolean"
+        },
+        "cancellation": {
+          "type": "object",
+          "properties": {
+            "date": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "date"
+          ]
+        },
+        "calculatedNumberOfPackages": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "address",
+        "method",
+        "pickupPoint",
+        "cost",
+        "time",
+        "smart",
+        "cancellation",
+        "calculatedNumberOfPackages"
+      ]
+    },
+    "invoice": {
+      "type": "object",
+      "properties": {
+        "required": {
+          "type": "boolean"
+        },
+        "address": {
+          "type": "object",
+          "properties": {
+            "street": {
+              "type": "string"
+            },
+            "city": {
+              "type": "string"
+            },
+            "zipCode": {
+              "type": "string"
+            },
+            "countryCode": {
+              "type": "string"
+            },
+            "company": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "ids": {
+                  "type": "array",
+                  "items": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "value"
+                      ]
+                    }
+                  ]
+                },
+                "vatPayerStatus": {
+                  "type": "string"
+                },
+                "taxId": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "ids",
+                "vatPayerStatus",
+                "taxId"
+              ]
+            },
+            "naturalPerson": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "firstName",
+                "lastName"
+              ]
+            }
+          },
+          "required": [
+            "street",
+            "city",
+            "zipCode",
+            "countryCode",
+            "company",
+            "naturalPerson"
+          ]
+        },
+        "dueDate": {
+          "type": "string"
+        },
+        "features": {
+          "type": "array",
+          "items": [
+            {
+              "type": "string"
+            }
+          ]
+        }
+      },
+      "required": [
+        "required",
+        "address",
+        "dueDate",
+        "features"
+      ]
+    },
+    "lineItems": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "offer": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "external": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id"
+                  ]
+                },
+                "productSet": {
+                  "type": "object",
+                  "properties": {
+                    "products": {
+                      "type": "array",
+                      "items": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "quantity": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "quantity"
+                          ]
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "quantity": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "quantity"
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "products"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "external",
+                "productSet"
+              ]
+            },
+            "quantity": {
+              "type": "integer"
+            },
+            "originalPrice": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "amount",
+                "currency"
+              ]
+            },
+            "price": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "amount",
+                "currency"
+              ]
+            },
+            "reconciliation": {
+              "type": "object",
+              "properties": {
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "amount",
+                    "currency"
+                  ]
+                },
+                "type": {
+                  "type": "string"
+                },
+                "quantity": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "value",
+                "type",
+                "quantity"
+              ]
+            },
+            "selectedAdditionalServices": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "definitionId": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "price": {
+                      "type": "object",
+                      "properties": {
+                        "amount": {
+                          "type": "string"
+                        },
+                        "currency": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "amount",
+                        "currency"
+                      ]
+                    },
+                    "quantity": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "definitionId",
+                    "name",
+                    "price",
+                    "quantity"
+                  ]
+                }
+              ]
+            },
+            "vouchers": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "code": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "externalTransactionId": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": "object",
+                      "properties": {
+                        "amount": {
+                          "type": "string"
+                        },
+                        "currency": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "amount",
+                        "currency"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "code",
+                    "type",
+                    "status",
+                    "externalTransactionId",
+                    "value"
+                  ]
+                }
+              ]
+            },
+            "tax": {
+              "type": "object",
+              "properties": {
+                "rate": {
+                  "type": "string"
+                },
+                "subject": {
+                  "type": "string"
+                },
+                "exemption": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "rate",
+                "subject",
+                "exemption"
+              ]
+            },
+            "boughtAt": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "offer",
+            "quantity",
+            "originalPrice",
+            "price",
+            "reconciliation",
+            "selectedAdditionalServices",
+            "vouchers",
+            "tax",
+            "boughtAt"
+          ]
+        }
+      ]
+    },
+    "surcharges": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "provider": {
+              "type": "string"
+            },
+            "finishedAt": {
+              "type": "string"
+            },
+            "paidAmount": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "amount",
+                "currency"
+              ]
+            },
+            "reconciliation": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "amount",
+                "currency"
+              ]
+            },
+            "features": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "type",
+            "provider",
+            "finishedAt",
+            "paidAmount",
+            "reconciliation",
+            "features"
+          ]
+        }
+      ]
+    },
+    "discounts": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ]
+        }
+      ]
+    },
+    "note": {
+      "type": "object",
+      "properties": {
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ]
+    },
+    "marketplace": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "totalToPay": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ]
+        }
+      },
+      "required": [
+        "totalToPay"
+      ]
+    },
+    "updatedAt": {
+      "type": "string"
+    },
+    "revision": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "messageToSeller",
+    "buyer",
+    "payment",
+    "status",
+    "fulfillment",
+    "delivery",
+    "invoice",
+    "lineItems",
+    "surcharges",
+    "discounts",
+    "note",
+    "marketplace",
+    "summary",
+    "updatedAt",
+    "revision"
+  ]
+}

@@ -1,0 +1,261 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "offer": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "external": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id"
+          ]
+        },
+        "productSet": {
+          "type": "object",
+          "properties": {
+            "products": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "quantity"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "quantity": {
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "quantity"
+                  ]
+                }
+              ]
+            }
+          },
+          "required": [
+            "products"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "external",
+        "productSet"
+      ]
+    },
+    "quantity": {
+      "type": "integer"
+    },
+    "originalPrice": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ]
+    },
+    "price": {
+      "type": "object",
+      "properties": {
+        "amount": {
+          "type": "string"
+        },
+        "currency": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "amount",
+        "currency"
+      ]
+    },
+    "reconciliation": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "string"
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "amount",
+            "currency"
+          ]
+        },
+        "type": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "value",
+        "type",
+        "quantity"
+      ]
+    },
+    "selectedAdditionalServices": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "definitionId": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "price": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "amount",
+                "currency"
+              ]
+            },
+            "quantity": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "definitionId",
+            "name",
+            "price",
+            "quantity"
+          ]
+        }
+      ]
+    },
+    "vouchers": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            },
+            "status": {
+              "type": "string"
+            },
+            "externalTransactionId": {
+              "type": "string"
+            },
+            "value": {
+              "type": "object",
+              "properties": {
+                "amount": {
+                  "type": "string"
+                },
+                "currency": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "amount",
+                "currency"
+              ]
+            }
+          },
+          "required": [
+            "code",
+            "type",
+            "status",
+            "externalTransactionId",
+            "value"
+          ]
+        }
+      ]
+    },
+    "tax": {
+      "type": "object",
+      "properties": {
+        "rate": {
+          "type": "string"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "exemption": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "rate",
+        "subject",
+        "exemption"
+      ]
+    },
+    "boughtAt": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "offer",
+    "quantity",
+    "originalPrice",
+    "price",
+    "reconciliation",
+    "selectedAdditionalServices",
+    "vouchers",
+    "tax",
+    "boughtAt"
+  ]
+}

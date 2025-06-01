@@ -1,0 +1,156 @@
+{
+	"checkoutForms": [
+		{
+            "id": "d17e00d0-1dd9-11f0-8719-0df00e00f383",
+            "messageToSeller": null,
+            "buyer": {
+                "id": "107754562",
+                "email": "35o6b9tm5s+52291ac00@user.allegrogroup.pl",
+                "login": "adam_cebula",
+                "firstName": "Adam",
+                "lastName": "Cebula",
+                "companyName": "Firma jakas",
+                "guest": false,
+                "personalIdentity": null,
+                "phoneNumber": "+48 95 280 82 49",
+                "preferences": {
+                    "language": "pl-PL"
+                },
+                "address": {
+                    "street": "Jakiś adres",
+                    "city": "Miasto",
+                    "postCode": "12-345",
+                    "countryCode": "PL"
+                }
+            },
+            "payment": {
+                "id": "92f60d3f-1dda-11f0-9f73-3539dc0b358f",
+                "type": "ONLINE",
+                "provider": "PAYU",
+                "finishedAt": "2025-04-20T11:28:43.813Z",
+                "paidAmount": {
+                    "amount": "30.99",
+                    "currency": "PLN"
+                },
+                "reconciliation": null,
+                "features": []
+            },
+            "status": "READY_FOR_PROCESSING",
+            "fulfillment": {
+                "status": "PICKED_UP",
+                "shipmentSummary": {
+                    "lineItemsSent": "ALL"
+                }
+            },
+            "delivery": {
+                "address": {
+                    "firstName": "Adam",
+                    "lastName": "Cebula",
+                    "street": "Ulica 123 / 123",
+                    "city": "Miasto",
+                    "zipCode": "12-345",
+                    "countryCode": "PL",
+                    "companyName": "Firma",
+                    "phoneNumber": "+48591823816",
+                    "modifiedAt": null
+                },
+                "method": {
+                    "id": "08c15d0b-9b24-4b3f-89a8-7a2b502abe55",
+                    "name": "Allegro One Punkt, UPS"
+                },
+                "pickupPoint": {
+                    "id": "A004457",
+                    "name": "Allegro One Punkt",
+                    "description": "jak bardzo nie wiem co tu mozna wpisac aby bylo ponad sto znakow bo to bardzo trudne jest ale postaram sie",
+                    "address": {
+                        "street": "Wagonowa 2",
+                        "zipCode": "53-609",
+                        "city": "<Wrocław",
+                        "countryCode": "PL"
+                    }
+                },
+                "cost": {
+                    "amount": "10.99",
+                    "currency": "PLN"
+                },
+                "smart": false,
+                "time": {
+                    "from": "2025-04-23T22:00:00Z",
+                    "to": "2025-04-24T21:59:59.999Z",
+                    "guaranteed": null,
+                    "dispatch": {
+                        "from": "2025-04-22T21:59:59.999Z",
+                        "to": "2025-04-22T21:59:59.999Z"
+                    }
+                },
+                "calculatedNumberOfPackages": 1,
+                "cancellation": null
+            },
+            "invoice": {
+                "required": true,
+                "address": {
+                    "street": "Jakiś adres",
+                    "city": "Miasto",
+                    "zipCode": "12-345",
+                    "countryCode": "PL",
+                    "company": {
+                        "name": "Firma jakas",
+                        "ids": [
+                            {
+                                "type": "PL_NIP",
+                                "value": "1273168911"
+                            }
+                        ],
+                        "vatPayerStatus": "NOT_APPLICABLE",
+                        "taxId": "1273168911"
+                    },
+                    "naturalPerson": null
+                },
+                "dueDate": null,
+                "features": null
+            },
+            "lineItems": [
+                {
+                    "id": "d16fa8f0-1dd9-11f0-8719-0df00e00f383",
+                    "offer": {
+                        "id": "7777917953",
+                        "name": "Nillkin backs for Samsung Galaxy S23 Ultra Nature TPU Pro colorless",
+                        "external": null,
+                        "productSet": null
+                    },
+                    "quantity": 1,
+                    "originalPrice": {
+                        "amount": "20.00",
+                        "currency": "PLN"
+                    },
+                    "price": {
+                        "amount": "20.00",
+                        "currency": "PLN"
+                    },
+                    "reconciliation": null,
+                    "selectedAdditionalServices": [],
+                    "vouchers": [],
+                    "tax": null,
+                    "boughtAt": "2025-04-20T11:25:29.993Z",
+                    "discounts": null
+                }
+            ],
+            "surcharges": [],
+            "discounts": [],
+            "note": null,
+            "marketplace": {
+                "id": "allegro-pl"
+            },
+            "summary": {
+                "totalToPay": {
+                    "amount": "30.99",
+                    "currency": "PLN"
+                }
+            },
+            "updatedAt": "2025-04-20T11:28:43.813Z",
+            "revision": "310307fb"
+        }
+	],
+	"count": 1,
+    "totalCount": 1
+}

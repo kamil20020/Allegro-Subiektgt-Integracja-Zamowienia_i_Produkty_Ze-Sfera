@@ -1,0 +1,463 @@
+{
+  "name": "Nillkin backs for Samsung Galaxy S23 Ultra Nature TPU Pro colorless",
+  "productSet": [
+    {
+      "product": {
+        "id": "017b8c28-4cde-4779-aafc-eb241c6e7d8d",
+        "publication": {
+          "status": "LISTED"
+        },
+        "parameters": [
+          {
+            "id": "219781",
+            "name": "Dedykowany model",
+            "values": [
+              "Samsung Galaxy S23 Ultra"
+            ],
+            "valuesIds": null,
+            "rangeValue": null
+          },
+          {
+            "id": "248135",
+            "name": "Marka",
+            "values": [
+              "Nillkin"
+            ],
+            "valuesIds": [
+              "248135_1134745"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "224017",
+            "name": "Kod producenta",
+            "values": [
+              "6902048258341"
+            ],
+            "valuesIds": null,
+            "rangeValue": null
+          },
+          {
+            "id": "207786",
+            "name": "Dedykowana marka",
+            "values": [
+              "Samsung"
+            ],
+            "valuesIds": [
+              "207786_233858"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "249828",
+            "name": "Pasuje do modelu",
+            "values": [
+              "E250",
+              "Galaxy A01",
+              "Galaxy A01 Core",
+              "Galaxy A02",
+              "Galaxy A02s",
+              "Galaxy A03",
+              "Galaxy A03 Core",
+              "Galaxy A03s",
+              "Galaxy A04",
+              "Galaxy A04e",
+              "Galaxy A04s",
+              "Galaxy A26",
+              "Galaxy A2 Core",
+              "Galaxy A3",
+              "Galaxy A30"
+            ],
+            "valuesIds": [
+              "249828_1746571",
+              "249828_1746950",
+              "249828_1746953",
+              "249828_1746956",
+              "249828_1746958",
+              "249828_1746961",
+              "249828_1746964",
+              "249828_1746967",
+              "249828_1746969",
+              "249828_1746972",
+              "249828_1746975",
+              "249828_2005818",
+              "249828_1747026",
+              "249828_1747029",
+              "249828_1747032"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "249372",
+            "name": "Kolekcja",
+            "values": [
+              "Nature TPU Pro"
+            ],
+            "valuesIds": null,
+            "rangeValue": null
+          },
+          {
+            "id": "249512",
+            "name": "Kolor",
+            "values": [
+              "biały"
+            ],
+            "valuesIds": [
+              "249512_1647414"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "207790",
+            "name": "Typ",
+            "values": [
+              "plecki"
+            ],
+            "valuesIds": [
+              "207790_233882"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "207798",
+            "name": "Materiał",
+            "values": [
+              "tworzywo sztuczne"
+            ],
+            "valuesIds": [
+              "207798_233910"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "207794",
+            "name": "Rozszerzenie",
+            "values": [
+              "podstawka"
+            ],
+            "valuesIds": [
+              "207794_4"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "207802",
+            "name": "Funkcje",
+            "values": [
+              "pochłanianie wstrząsów"
+            ],
+            "valuesIds": [
+              "207802_4"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "207806",
+            "name": "Załączone wyposażenie",
+            "values": [
+              "szkło hartowane"
+            ],
+            "valuesIds": [
+              "207806_2"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "17448",
+            "name": "Waga produktu z opakowaniem jednostkowym",
+            "values": [
+              "3"
+            ],
+            "valuesIds": null,
+            "rangeValue": null
+          },
+          {
+            "id": "249517",
+            "name": "Motyw przewodni",
+            "values": [
+              "artyści i celebryci"
+            ],
+            "valuesIds": [
+              "249517_1647691"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "225693",
+            "name": "EAN (GTIN)",
+            "values": [
+              "6902048258341"
+            ],
+            "valuesIds": null,
+            "rangeValue": null
+          }
+        ]
+      },
+      "quantity": {
+        "value": 1
+      },
+      "responsiblePerson": null,
+      "responsibleProducer": null,
+      "safetyInformation": {
+        "type": "NO_SAFETY_INFORMATION"
+      },
+      "marketedBeforeGPSRObligation": true
+    }
+  ],
+  "parameters": [
+    {
+      "id": "11323",
+      "name": "Stan",
+      "values": [
+        "Nowy"
+      ],
+      "valuesIds": [
+        "11323_1"
+      ],
+      "rangeValue": null
+    },
+    {
+      "id": "229205",
+      "name": "Stan opakowania",
+      "values": [
+        "oryginalne"
+      ],
+      "valuesIds": [
+        "229205_340245"
+      ],
+      "rangeValue": null
+    }
+  ],
+  "images": [
+    "https://a.allegroimg.allegrosandbox.pl/original/116b0c/be427080418097c1f3196d2cc9a0",
+    "https://a.allegroimg.allegrosandbox.pl/original/1119e3/d41c89a64412a8442436b87ba556",
+    "https://a.allegroimg.allegrosandbox.pl/original/1151fa/d6e610d443e4a72007ca5f1b54d0",
+    "https://a.allegroimg.allegrosandbox.pl/original/117bbc/0dc6bb8543c299620c730861da3b",
+    "https://a.allegroimg.allegrosandbox.pl/original/11c627/10412b034aec98a30d86e2c79637",
+    "https://a.allegroimg.allegrosandbox.pl/original/11d3eb/756e8854424ba11b9de7b02ef66d",
+    "https://a.allegroimg.allegrosandbox.pl/original/1129e5/11e2b6a74877a88f97817a77d933",
+    "https://a.allegroimg.allegrosandbox.pl/original/1146b4/f2b05e0342d994f172fa2edc38bb",
+    "https://a.allegroimg.allegrosandbox.pl/original/1198c9/b10457934ba9b717a915f1235945"
+  ],
+  "afterSalesServices": {
+    "impliedWarranty": {
+      "id": "c0c6e6c6-2101-4996-bd8b-7b7d7f3a677e"
+    },
+    "returnPolicy": {
+      "id": "db008aac-8fba-44fc-be12-f65741e44db4"
+    },
+    "warranty": null
+  },
+  "payments": {
+    "invoice": "VAT"
+  },
+  "sellingMode": {
+    "format": "BUY_NOW",
+    "price": {
+      "amount": "20.00",
+      "currency": "PLN"
+    },
+    "startingPrice": null,
+    "minimalPrice": null
+  },
+  "stock": {
+    "available": 99,
+    "unit": "UNIT"
+  },
+  "location": {
+    "countryCode": "PL",
+    "province": "DOLNOSLASKIE",
+    "city": "Miasto firmy",
+    "postCode": "12-345"
+  },
+  "delivery": {
+    "shippingRates": {
+      "id": "ddf13ff4-2a5f-4603-9cc4-7f64ce6d12d0"
+    },
+    "handlingTime": "PT24H",
+    "additionalInfo": null,
+    "shipmentDate": null
+  },
+  "description": {
+    "sections": [
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<h1>Samsung Galaxy M11 (SM-M115F/DSN) | Czarny | A-</h1>"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<p>Bluza z kapturem <b>FIVE 5 NIGHTS AT FREDDYS FNAF</b></p> <p>Skład: 65% poliester - 35% bawełna.</p> <p><b>Gramatura: 290 g</b></p> <p>Bluzy bardzo dobrej jakości. Po praniu nie tracą swoich właściwości, nie kurczą się, nie kulkują !</p> <p>Nadruk wykonywany w technologii&nbsp;<b>DTF</b>. Dzięki temu bluza jest niesamowicie trwała, nie spiera się, a nadruk nie pęka!</p> <ul> <li>Wysokiej jakości nadruki o żywych barwach, wykonane w nowoczesnej technologii DTF.</li> <li>Nadruk doskonale łączy się z tkaniną, jest trwały i niespieralny.</li> <li>Wyróżnia się świetną jakością materiału i szycia</li> <li>Kieszeń kangurkowa</li> </ul>"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<p>Wymiary bluzy: x</p> <p><b>Rozm 104</b>&nbsp;- długość&nbsp;<b>43 cm</b>, szerokość&nbsp;<b>36</b>&nbsp;cm</p> <p><b>Rozm 116</b>&nbsp;- długość&nbsp;<b>46 cm</b>, szerokość&nbsp;<b>39</b>&nbsp;cm</p> <p><b>Rozm 128</b>&nbsp;- długość&nbsp;&nbsp;<b>53 cm</b>, szerokość&nbsp;<b>42</b>&nbsp;cm</p> <p><b>Rozm 140</b>&nbsp;- długość&nbsp;<b>58 cm</b>, szerokość&nbsp;<b>46</b>&nbsp;cm</p> <p><b>Rozm 152</b>&nbsp;- długość&nbsp;<b>61 cm</b>, szerokość&nbsp;<b>50</b>&nbsp;cm</p> <p><b>Rozm 104 = wiek 3-4 lata</b></p> <p><b>Rozm 116 = wiek 5-6 lat</b></p> <p><b>Rozm 128 = wiek 7-8 lat</b></p> <p><b>Rozm 140 = wiek 9-11 lat</b></p> <p><b>Rozm 152 = wiek 12-14 lat</b></p>"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<p><b>BIAŁY</b></p>"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<p><b>Uwaga! Każda bluza jest składana i pakowana w przeźroczystą, zaklejaną folię.</b></p> <p><b>Dzięki temu masz już zapakowany prezent i 100% zadowolenia obdarowanej osoby.</b></p>"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<p>prod 1</p>"
+          },
+          {
+            "type": "IMAGE",
+            "url": "https://a.allegroimg.allegrosandbox.pl/original/1119e3/d41c89a64412a8442436b87ba556"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "IMAGE",
+            "url": "https://a.allegroimg.allegrosandbox.pl/original/1151fa/d6e610d443e4a72007ca5f1b54d0"
+          },
+          {
+            "type": "TEXT",
+            "content": "<p>prod 2</p>"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<p>szablo 1</p>"
+          },
+          {
+            "type": "IMAGE",
+            "url": "https://a.allegroimg.allegrosandbox.pl/original/117bbc/0dc6bb8543c299620c730861da3b"
+          }
+        ]
+      }
+    ]
+  },
+  "external": null,
+  "category": {
+    "id": "353"
+  },
+  "taxSettings": null,
+  "sizeTable": null,
+  "discounts": {
+    "wholesalePriceList": null
+  },
+  "contact": null,
+  "fundraisingCampaign": null,
+  "messageToSellerSettings": {
+    "mode": "OPTIONAL"
+  },
+  "attachments": [],
+  "b2b": null,
+  "additionalServices": null,
+  "compatibilityList": null,
+  "additionalMarketplaces": {
+    "allegro-sk": {
+      "sellingMode": {
+        "price": {
+          "amount": "4.72",
+          "currency": "EUR"
+        }
+      },
+      "publication": {
+        "state": "PENDING",
+        "refusalReasons": []
+      }
+    },
+    "allegro-cz": {
+      "sellingMode": {
+        "price": {
+          "amount": "118.00",
+          "currency": "CZK"
+        }
+      },
+      "publication": {
+        "state": "PENDING",
+        "refusalReasons": []
+      }
+    },
+    "allegro-hu": {
+      "sellingMode": {
+        "price": {
+          "amount": "1910.00",
+          "currency": "HUF"
+        }
+      },
+      "publication": {
+        "state": "PENDING",
+        "refusalReasons": []
+      }
+    },
+    "allegro-business-cz": {
+      "sellingMode": {
+        "price": {
+          "amount": "118.00",
+          "currency": "CZK"
+        }
+      },
+      "publication": {
+        "state": "NOT_REQUESTED",
+        "refusalReasons": []
+      }
+    }
+  },
+  "warnings": [],
+  "id": "7778274837",
+  "language": "pl-PL",
+  "publication": {
+    "status": "INACTIVE",
+    "duration": null,
+    "endedBy": null,
+    "endingAt": null,
+    "startingAt": null,
+    "republish": false,
+    "marketplaces": {
+      "base": {
+        "id": "allegro-pl"
+      },
+      "additional": [
+        {
+          "id": "allegro-sk"
+        },
+        {
+          "id": "allegro-cz"
+        },
+        {
+          "id": "allegro-hu"
+        }
+      ]
+    }
+  },
+  "validation": {
+    "errors": [],
+    "warnings": [],
+    "validatedAt": "2025-05-12T22:33:18.357Z"
+  },
+  "createdAt": "2025-05-12T22:33:18.000Z",
+  "updatedAt": "2025-05-12T22:33:23.633Z"
+}

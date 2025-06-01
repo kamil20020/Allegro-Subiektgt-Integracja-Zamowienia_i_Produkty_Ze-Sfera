@@ -1,0 +1,139 @@
+{
+    "checkoutForms": [
+        {
+            "id": "d4096850-303d-11f0-9468-6d34c41cf924",
+            "messageToSeller": null,
+            "buyer": {
+                "id": "107754562",
+                "email": "35o6b9tm5s+519bc0ff5@user.allegrogroup.pl",
+                "login": "adam_cebula",
+                "firstName": "Adam",
+                "lastName": "Cebula",
+                "companyName": null,
+                "guest": false,
+                "personalIdentity": null,
+                "phoneNumber": "+48 95 280 82 49",
+                "preferences": {
+                    "language": "pl-PL"
+                },
+                "address": {
+                    "street": "Jakiś adres",
+                    "city": "Miasto",
+                    "postCode": "12-345",
+                    "countryCode": "PL"
+                }
+            },
+            "payment": {
+                "id": "0aa360a7-303e-11f0-bdc3-5bf94ff76baf",
+                "type": "ONLINE",
+                "provider": "PAYU",
+                "finishedAt": "2025-05-13T21:28:15.404Z",
+                "paidAmount": {
+                    "amount": "30.99",
+                    "currency": "PLN"
+                },
+                "reconciliation": null,
+                "features": []
+            },
+            "status": "READY_FOR_PROCESSING",
+            "fulfillment": {
+                "status": "NEW",
+                "shipmentSummary": {
+                    "lineItemsSent": "NONE"
+                }
+            },
+            "delivery": {
+                "address": {
+                    "firstName": "Kamil",
+                    "lastName": "Nowak",
+                    "street": "Ulica jakaś 1 / 12",
+                    "city": "Miasto jakieś",
+                    "zipCode": "12-345",
+                    "countryCode": "PL",
+                    "companyName": null,
+                    "phoneNumber": "+48123456789",
+                    "modifiedAt": null
+                },
+                "method": {
+                    "id": "0b257488-c85d-4507-b967-9b45ffbfa2e8",
+                    "name": "Allegro One Box, DPD"
+                },
+                "pickupPoint": {
+                    "id": "AL002LUB",
+                    "name": "Allegro One Box, zielony automat",
+                    "description": null,
+                    "address": {
+                        "street": "Jakubowice Murowane 30A",
+                        "zipCode": "20-258",
+                        "city": "Jakubowice Murowane",
+                        "countryCode": "PL"
+                    }
+                },
+                "cost": {
+                    "amount": "10.99",
+                    "currency": "PLN"
+                },
+                "smart": false,
+                "time": {
+                    "from": "2025-05-15T22:00:00Z",
+                    "to": "2025-05-16T21:59:59.999Z",
+                    "guaranteed": null,
+                    "dispatch": {
+                        "from": "2025-05-14T21:59:59.999Z",
+                        "to": "2025-05-14T21:59:59.999Z"
+                    }
+                },
+                "calculatedNumberOfPackages": 1,
+                "cancellation": null
+            },
+            "invoice": {
+                "required": false,
+                "address": null,
+                "dueDate": null,
+                "features": null
+            },
+            "lineItems": [
+                {
+                    "id": "d3fc9710-303d-11f0-9468-6d34c41cf924",
+                    "offer": {
+                        "id": "7777917953",
+                        "name": "Nillkin backs for Samsung Galaxy S23 Ultra Nature TPU Pro colorless",
+                        "external": null,
+                        "productSet": null
+                    },
+                    "quantity": 1,
+                    "originalPrice": {
+                        "amount": "20.00",
+                        "currency": "PLN"
+                    },
+                    "price": {
+                        "amount": "20.00",
+                        "currency": "PLN"
+                    },
+                    "reconciliation": null,
+                    "selectedAdditionalServices": [],
+                    "vouchers": [],
+                    "tax": null,
+                    "boughtAt": "2025-05-13T21:05:52.809Z",
+                    "discounts": null
+                }
+            ],
+            "surcharges": [],
+            "discounts": [],
+            "note": null,
+            "marketplace": {
+                "id": "allegro-pl"
+            },
+            "summary": {
+                "totalToPay": {
+                    "amount": "30.99",
+                    "currency": "PLN"
+                }
+            },
+            "updatedAt": "2025-05-13T21:28:15.404Z",
+            "revision": "bd4d65cd"
+        }
+	],
+	"count": 1,
+    "totalCount": 1
+}
