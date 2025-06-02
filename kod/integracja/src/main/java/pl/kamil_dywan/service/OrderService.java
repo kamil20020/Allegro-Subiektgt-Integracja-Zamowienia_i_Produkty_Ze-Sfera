@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class OrderService {
 
@@ -107,7 +108,12 @@ public class OrderService {
         for (int i = 0; i < orders.size(); i++) {
 
             Order selectedOrder = orders.get(i);
+
             byte[] content = contents.get(i);
+
+            if(content.length == 0){
+                continue;
+            }
 
             int finalI = i;
 

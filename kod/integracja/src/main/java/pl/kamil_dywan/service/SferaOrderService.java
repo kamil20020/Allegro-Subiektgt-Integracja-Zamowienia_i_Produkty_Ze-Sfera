@@ -112,11 +112,19 @@ public class SferaOrderService {
 
         List<byte[]> contents = new ArrayList<>();
 
-        for (int i = 0; i < orders.size(); i++) {
+        for (Order selectedOrder : orders) {
 
-            Order selectedOrder = orders.get(i);
+            String selectedOrderExternalId = selectedOrder.getExternalId();
 
-            byte[] documentContent = getDocumentContent(selectedOrder.getExternalId());
+            byte[] documentContent;
+
+            if (selectedOrderExternalId != null && !selectedOrderExternalId.isEmpty()) {
+
+                documentContent = getDocumentContent(selectedOrderExternalId);
+            }
+            else {
+                documentContent = new byte[0];
+            }
 
             contents.add(documentContent);
         }
