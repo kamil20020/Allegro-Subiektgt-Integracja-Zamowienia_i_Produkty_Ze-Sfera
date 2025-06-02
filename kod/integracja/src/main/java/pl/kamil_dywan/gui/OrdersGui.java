@@ -169,6 +169,8 @@ public class OrdersGui implements ChangeableGui {
             return;
         }
 
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
         new Thread(() -> {
 
             int numberOfSavedOrders = sferaOrderService.create(selectedOrders);
@@ -187,6 +189,8 @@ public class OrdersGui implements ChangeableGui {
 
                     updateTableRowCol(rowIndex, SUBIEKT_ID_SENT_COL_INDEX, selectedOrder.getExternalId());
                 }
+
+                mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
                 JOptionPane.showMessageDialog(
                         mainPanel,
@@ -217,6 +221,8 @@ public class OrdersGui implements ChangeableGui {
             return;
         }
 
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
         new Thread(() -> {
 
             List<Integer> savedOrdersDocumentsIndices;
@@ -241,6 +247,8 @@ public class OrdersGui implements ChangeableGui {
 
                     updateTableRowCol(rowIndex, ALLEGRO_DOCUMENT_SENT_COL_INDEX, "Wysłano");
                 }
+
+                mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
                 JOptionPane.showMessageDialog(
                     mainPanel,
