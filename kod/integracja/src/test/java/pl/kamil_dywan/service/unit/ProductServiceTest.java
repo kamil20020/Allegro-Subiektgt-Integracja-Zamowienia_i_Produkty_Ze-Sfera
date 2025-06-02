@@ -63,10 +63,10 @@ class ProductServiceTest {
                 ProductOfferResponse productOfferResponse = productsOffers.get(i);
 
                 Mockito.when(productApi.getProductOfferById(productId)).thenReturn(httpResponse);
-                apiMock.when(() -> Api.extractBody(
-                    argThat(response -> response.statusCode() == httpResponse.statusCode()),
-                    any()
-                )).thenReturn(productOfferResponse);
+//                apiMock.when(() -> Api.extractBody(
+//                    argThat(response -> (response instanceof HttpResponse httpResponse1) && httpResponse1.statusCode() == httpResponse.statusCode()),
+//                    any()
+//                )).thenReturn(productOfferResponse);
             }
 
             List<ProductOfferResponse> gotProductsOffers = productService.getDetailedProductsByIds(productsIds);

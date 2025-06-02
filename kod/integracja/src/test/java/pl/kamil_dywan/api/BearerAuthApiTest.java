@@ -206,7 +206,7 @@ class BearerAuthApiTest {
             MockedStatic<SecureStorage> secureStorageMock = Mockito.mockStatic(SecureStorage.class);
         ){
 
-            apiMock.when(() -> Api.extractBody(any(), any())).thenReturn(expectedAccessTokenResponse);
+            apiMock.when(() -> Api.extractBody(any(HttpResponse.class), any())).thenReturn(expectedAccessTokenResponse);
 
             bearerAuthApi.send(httpRequestBuilder);
 
@@ -265,7 +265,7 @@ class BearerAuthApiTest {
             MockedStatic<SecureStorage> secureStorageMock = Mockito.mockStatic(SecureStorage.class);
         ){
 
-            apiMock.when(() -> Api.extractBody(any(), any())).thenReturn(expectedAccessTokenResponse);
+            apiMock.when(() -> Api.extractBody(any(HttpResponse.class), any())).thenReturn(expectedAccessTokenResponse);
 
             //then
             assertThrows(

@@ -3,6 +3,7 @@ package pl.kamil_dywan.api.sfera;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import pl.kamil_dywan.api.sfera.request.CreateOrderRequest;
 import pl.kamil_dywan.api.sfera.request.GeneralRequest;
+import pl.kamil_dywan.api.sfera.request.GetOrderRequest;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -37,4 +38,51 @@ public class SferaOrderApi extends SferaApi{
 
         return send(httpRequestBuilder);
     }
+
+    public HttpResponse<String> getDocument(GetOrderRequest getOrderRequest)  {
+
+        GeneralRequest generalRequest = createGeneralRequest(getOrderRequest);
+
+        String requestStr = "";
+
+        try {
+            requestStr = objectMapper.writeValueAsString(generalRequest);
+        }
+        catch (JsonProcessingException e) {
+
+            e.printStackTrace();
+        }
+
+        HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(requestStr))
+            .uri(URI.create(API_PREFIX + "/get"))
+            .header("Content-Type", "application/json")
+            .header("Accept", "application/pdf");
+
+        return send(httpRequestBuilder);
+    }
+
+    public HttpResponse<String> getDocumentContent(GetOrderRequest getOrderRequest)  {
+
+        GeneralRequest generalRequest = createGeneralRequest(getOrderRequest);
+
+        String requestStr = "";
+
+        try {
+            requestStr = objectMapper.writeValueAsString(generalRequest);
+        }
+        catch (JsonProcessingException e) {
+
+            e.printStackTrace();
+        }
+
+        HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(requestStr))
+            .uri(URI.create(API_PREFIX + "/getpdf"))
+            .header("Content-Type", "application/json")
+            .header("Accept", "application/pdf");
+
+        return send(httpRequestBuilder);
+    }
+
 }

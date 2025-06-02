@@ -93,7 +93,10 @@ public class Order {
     @JsonIgnore
     private boolean hasDocument = false;
 
-    public Order(UUID id, String messageToSeller, Buyer buyer, Payment payment, OrderStatus status, Fulfillment fulfillment, Delivery delivery, Invoice invoice, List<OrderItem> orderItems, List<Surcharge> surcharges, List<Discount> discounts, Note note, Marketplace marketplace, Summary summary, OffsetDateTime updatedAt, String revision, boolean hasDocument) {
+    @JsonIgnore
+    private String externalId;
+
+    public Order(UUID id, String messageToSeller, Buyer buyer, Payment payment, OrderStatus status, Fulfillment fulfillment, Delivery delivery, Invoice invoice, List<OrderItem> orderItems, List<Surcharge> surcharges, List<Discount> discounts, Note note, Marketplace marketplace, Summary summary, OffsetDateTime updatedAt, String revision, boolean hasDocument, String externalId) {
 
         this.id = id;
         this.messageToSeller = messageToSeller;
@@ -112,6 +115,7 @@ public class Order {
         this.updatedAt = updatedAt;
         this.revision = revision;
         this.hasDocument = hasDocument;
+        this.externalId = externalId;
 
         addDeliveryToOrderItems();
     }

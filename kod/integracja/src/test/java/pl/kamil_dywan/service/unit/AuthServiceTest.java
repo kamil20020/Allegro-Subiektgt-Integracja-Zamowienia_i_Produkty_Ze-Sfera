@@ -289,7 +289,7 @@ class AuthServiceTest {
             MockedStatic<Api> mockedApi = Mockito.mockStatic(Api.class);
         ){
 
-            mockedApi.when(() -> Api.extractBody(any(), any())).thenReturn(expectedGenerateDeviceCodeResponse);
+            mockedApi.when(() -> Api.extractBody(any(HttpResponse.class), any())).thenReturn(expectedGenerateDeviceCodeResponse);
 
             GenerateDeviceCodeResponse gotResponseContent = authService.generateDeviceCodeAndVerificationToAllegro();
 
@@ -342,7 +342,7 @@ class AuthServiceTest {
             MockedStatic<BearerAuthApi> bearerAuthApiMock = Mockito.mockStatic(BearerAuthApi.class);
         ){
 
-            apiMock.when(() -> Api.extractBody(any(), any())).thenReturn(expectedAccessTokenResponse);
+            apiMock.when(() -> Api.extractBody(any(HttpResponse.class), any())).thenReturn(expectedAccessTokenResponse);
 
             authService.loginToAllegro(deviceCode);
 

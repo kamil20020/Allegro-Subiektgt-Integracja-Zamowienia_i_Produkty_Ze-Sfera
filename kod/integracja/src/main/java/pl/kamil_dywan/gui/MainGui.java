@@ -23,14 +23,14 @@ public class MainGui {
 
     private final JFrame frame;
 
-    public MainGui(AuthService authService, ProductService productService, OrderService orderService, BasicInfoService basicInfoService) {
+    public MainGui(AuthService authService, ProductService productService, OrderService orderService, SferaOrderService sferaOrderService, BasicInfoService basicInfoService) {
 
         this.authService = authService;
         this.basicInfoService = basicInfoService;
 
         loginGui = new LoginGui(authService, this::handleSuccessAuth);
         productsGui = new ProductsGui(productService, this::handleLogout);
-        ordersGui = new OrdersGui(orderService, this::handleLogout);
+        ordersGui = new OrdersGui(orderService, sferaOrderService, this::handleLogout);
 
         tabbedPane.addTab("Zamówienia", ordersGui.getMainPanel());
         tabbedPane.addTab("Produkty", productsGui.getMainPanel());

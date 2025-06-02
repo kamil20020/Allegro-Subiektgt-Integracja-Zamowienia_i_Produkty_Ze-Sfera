@@ -33,7 +33,7 @@ public abstract class SferaApi extends Api {
         apiKey = SecureStorage.getCredentialsPassword(SFERA_SECRET_POSTFIX);
     }
 
-    public static GeneralRequest createGeneralRequest(Object data){
+    protected static GeneralRequest createGeneralRequest(Object data){
 
         return new GeneralRequest("l6cw8lrjmntwa9muu63ynkpoywt2wp", data);
     }

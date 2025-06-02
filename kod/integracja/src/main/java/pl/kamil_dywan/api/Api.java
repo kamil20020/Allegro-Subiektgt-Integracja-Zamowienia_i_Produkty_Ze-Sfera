@@ -40,7 +40,6 @@ public abstract class Api {
     public Api(String laterPrefix, String hostKey){
 
         this(null, laterPrefix, hostKey);
-
     }
 
     protected static String getQueryParamsPostFix(String... titlesAndParams){
@@ -91,6 +90,17 @@ public abstract class Api {
 
             throw new IllegalStateException(e.getMessage());
         }
+    }
+
+    public static <T> T extractBody(String httpResponse, Class<T> type){
+
+        JSONFileReader<T> jsonFileReader = new JSONFileReader<T>(type);
+
+        T gotConvertedBody = jsonFileReader.loadFromStr(httpResponse);
+
+        log.info(gotConvertedBody.toString());
+
+        return gotConvertedBody;
     }
 
     public static <T> T extractBody(HttpResponse<String> httpResponse, Class<T> type){

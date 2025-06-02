@@ -192,11 +192,6 @@ class Order extends SubiektObj {
 		$this->order_processing = $o['ss_PrzetworzonoZKwZD'];
 		$this->id_flag = $o['flg_Id'];
 		$this->flag_txt = $o['flg_Text'];
-
-		$this->orderGt->KontrahentId = '********************';
-		$this->orderGt->KontrahentNazwa = $this->customer['name'] ?? '';
-		$this->orderGt->KontrahentNIP = $this->customer['nip'] ?? '';
-		$this->orderGt->KontrahentAdres = $this->customer['address'] ?? '';
 		
 		//$customer = Customer::getCustomerById($this->orderGt->KontrahentId);		
 		//$this->customer = $customer;
@@ -277,13 +272,13 @@ class Order extends SubiektObj {
 			$oneTimeCustomer = $this->subiektGt->KontrahenciManager->DodajKontrahentaJednorazowego();
 
 			$oneTimeCustomer->Nazwa = Helper::toWin($this->customer['name']);
-			$oneTimeCustomer->NrDomu = Helper::toWin($this->customer['house_nr']);
-			$oneTimeCustomer->NrLokalu = Helper::toWin($this->customer['flat_nr']);
+			//$oneTimeCustomer->NrDomu = Helper::toWin($this->customer['house_nr']);
+			//$oneTimeCustomer->NrLokalu = Helper::toWin($this->customer['flat_nr']);
 			$oneTimeCustomer->NIP = Helper::toWin($this->customer['nip']);
 			$oneTimeCustomer->Ulica = Helper::toWin($this->customer['street']);
 			$oneTimeCustomer->KodPocztowy = Helper::toWin($this->customer['post_code']);
 			$oneTimeCustomer->Miejscowosc = Helper::toWin($this->customer['city']);
-			$oneTimeCustomer->Wojewodztwo = Helper::toWin($this->customer['disctrict']);
+			//$oneTimeCustomer->Wojewodztwo = Helper::toWin($this->customer['disctrict']);
 			//$oneTimeCustomer->Panstwo = Helper::toWin($this->customer['country']);
 
 			$oneTimeCustomer->Zapisz();

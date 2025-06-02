@@ -42,8 +42,9 @@ public class App {
 
         OrderService orderService = new OrderService(orderApi);
         ProductService productService = new ProductService(productApi);
+        SferaOrderService sferaOrderService = new SferaOrderService(sferaOrderApi);
 
-        new MainGui(authService, productService, orderService, basicInfoService);
+        new MainGui(authService, productService, orderService, sferaOrderService, basicInfoService);
 //
 //        Customer customer = Customer.builder()
 //            .name("Kamil Nowak")

@@ -6,6 +6,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
@@ -114,7 +116,7 @@ public class PaginationTableGui extends JPanel {
         table.setFillsViewportHeight(false);
         table.setFocusable(false);
         table.setRowHeight(33);
-        table.setRowSelectionAllowed(false);
+        table.setRowSelectionAllowed(true);
         tableScroll.setViewportView(table);
         pagination = new JToolBar();
         pagination.setBackground(new Color(-1114625));
@@ -354,6 +356,44 @@ public class PaginationTableGui extends JPanel {
     public JPanel getMainPanel() {
 
         return mainPanel;
+    }
+
+    public void selectAll() {
+
+        table.selectAll();
+    }
+
+    public void unselectAll() {
+
+        table.clearSelection();
+    }
+
+    public List<Object[]> getSelectedData() {
+
+        List<Object[]> selectedData = new ArrayList<>();
+
+        int[] selectedRowsIndices = table.getSelectedRows();
+
+        if (selectedRowsIndices.length == 0) {
+
+            return selectedData;
+        }
+
+        int numberOfCols = table.getColumnCount();
+
+        for (int selectedRowIndex : selectedRowsIndices) {
+
+            Object[] colsValues = new Object[numberOfCols];
+
+            for (int colIndex = 0; colIndex < numberOfCols; colIndex++) {
+
+                colsValues[colIndex] = tableModel.getValueAt(selectedRowIndex, colIndex);
+            }
+
+            selectedData.add(colsValues);
+        }
+
+        return selectedData;
     }
 
     private void createUIComponents() {

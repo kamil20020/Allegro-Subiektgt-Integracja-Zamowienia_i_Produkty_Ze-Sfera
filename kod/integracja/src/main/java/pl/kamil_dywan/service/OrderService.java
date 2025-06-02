@@ -83,9 +83,14 @@ public class OrderService {
         Path filePath = documentFile.toPath();
         byte[] fileData = Files.readAllBytes(filePath);
 
+        uploadDocument(orderId, fileData);
+    }
+
+    public void uploadDocument(String orderId, byte[] documentContent) throws UnloggedException, IllegalStateException {
+
         String createdDocumentId = createDocument(orderId);
 
-        saveDocument(orderId, createdDocumentId, fileData);
+        saveDocument(orderId, createdDocumentId, documentContent);
     }
 
     private void setOrdersDocumentsExist(List<Order> orders) throws UnloggedException, IllegalStateException{

@@ -57,13 +57,33 @@
         </properties>
         <border type="none"/>
         <children>
+          <component id="5402f" class="javax.swing.JButton" binding="selectAllButton">
+            <constraints/>
+            <properties>
+              <text value="Zaznacz wszystkie dane"/>
+            </properties>
+          </component>
+          <component id="1a70f" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="e8539" class="javax.swing.JButton" binding="unselectAllButton">
+            <constraints/>
+            <properties>
+              <text value="Odznacz wszystkie dane"/>
+            </properties>
+          </component>
+          <component id="a53f0" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
           <component id="82b37" class="javax.swing.JButton" binding="saveOrdersButton">
             <constraints/>
             <properties>
               <text value="Zapisz zamówienia w Subiekcie"/>
             </properties>
           </component>
-          <component id="b6eb3" class="javax.swing.JToolBar$Separator">
+          <component id="169b1" class="javax.swing.JToolBar$Separator">
             <constraints/>
             <properties/>
           </component>

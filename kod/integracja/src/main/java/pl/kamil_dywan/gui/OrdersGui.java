@@ -9,6 +9,7 @@ import pl.kamil_dywan.external.allegro.generated.order.Order;
 import pl.kamil_dywan.api.allegro.response.OrderResponse;
 import pl.kamil_dywan.external.allegro.generated.order.Summary;
 import pl.kamil_dywan.service.OrderService;
+import pl.kamil_dywan.service.SferaOrderService;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class OrdersGui implements ChangeableGui {
 
@@ -31,21 +34,27 @@ public class OrdersGui implements ChangeableGui {
 
     private JButton saveOrdersButton;
     private JButton saveDocumentsButton;
+    private JButton selectAllButton;
+    private JButton unselectAllButton;
 
-    private final List<Order> ordersWithInvoices = new ArrayList<>();
-    private final List<Order> ordersWithReceipts = new ArrayList<>();
+    private List<Order> ordersPage = new ArrayList<>();
 
     private final OrderService orderService;
+    private final SferaOrderService sferaOrderService;
 
     private final Runnable handleLogout;
 
-    public OrdersGui(OrderService orderService, Runnable handleLogout) {
+    public OrdersGui(OrderService orderService, SferaOrderService sferaOrderService, Runnable handleLogout) {
 
         this.orderService = orderService;
+        this.sferaOrderService = sferaOrderService;
+
         this.handleLogout = handleLogout;
 
         $$$setupUI$$$();
 
+        selectAllButton.addActionListener(e -> selectAll());
+        unselectAllButton.addActionListener(e -> unselectAll());
         saveOrdersButton.addActionListener(e -> saveOrders());
         saveDocumentsButton.addActionListener(e -> saveDocuments());
     }
@@ -63,27 +72,12 @@ public class OrdersGui implements ChangeableGui {
             return null;
         }
 
-        ordersWithInvoices.clear();
-        ordersWithReceipts.clear();
-
-        List<Order> allegroOrders = orderResponse.getOrders();
-
-        allegroOrders
-                .forEach(allegroOrder -> {
-
-                    Invoice allegroInvoice = allegroOrder.getInvoice();
-
-                    if (allegroInvoice.isRequired()) {
-                        ordersWithInvoices.add(allegroOrder);
-                    } else {
-                        ordersWithReceipts.add(allegroOrder);
-                    }
-                });
+        ordersPage = orderResponse.getOrders();
 
         int totalNumberOfRows = orderResponse.getTotalCount();
 
         PaginationTableGui.PaginationTableData data = new PaginationTableGui.PaginationTableData(
-                allegroOrders,
+                ordersPage,
                 totalNumberOfRows
         );
 
@@ -122,20 +116,70 @@ public class OrdersGui implements ChangeableGui {
         };
     }
 
+    private void selectAll() {
+
+        paginationTableGui.selectAll();
+    }
+
+    private void unselectAll() {
+
+        paginationTableGui.unselectAll();
+    }
+
+    private List<Order> getSelectedOrders() {
+
+        List<Object[]> selectedOrdersData = paginationTableGui.getSelectedData();
+
+        if (selectedOrdersData.isEmpty()) {
+
+            return new ArrayList<>();
+        }
+
+        List<String> selectedOrdersIds = selectedOrdersData.stream()
+                .map(selectedOrderData -> selectedOrderData[0].toString())
+                .collect(Collectors.toList());
+
+        return ordersPage.stream()
+                .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
+                .collect(Collectors.toList());
+
+    }
+
     private void saveOrders() {
 
-        //invoiceService.writeInvoicesToFile(ordersWithInvoices, savedFilePath);
+        List<Order> selectedOrders = getSelectedOrders();
+
+        if (selectedOrders.isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    mainPanel,
+                    "Nie wybrano zamówień do zapisania do Subiekta",
+                    "Powiadomienie",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            return;
+        }
+
+        AtomicInteger numberOfSavedOrders = new AtomicInteger();
+
+        selectedOrders
+                .forEach(selectedOrder -> {
+
+                    try {
+
+                        sferaOrderService.create(selectedOrder);
+
+                        numberOfSavedOrders.getAndIncrement();
+                    } catch (IllegalStateException e) {
+
+                        e.printStackTrace();
+                    }
+                });
 
         JOptionPane.showMessageDialog(
                 mainPanel,
-                "Nie udało się zapisać zamówień w Subiekcie",
-                "Powiadomienie o błędzie",
-                JOptionPane.ERROR_MESSAGE
-        );
-
-        JOptionPane.showMessageDialog(
-                mainPanel,
-                "Zapisano zamówienia w Subiekcie",
+                "Zapisano " + numberOfSavedOrders + " zamówień w Subiekcie",
                 "Powiadomienie",
                 JOptionPane.INFORMATION_MESSAGE
         );
@@ -143,21 +187,47 @@ public class OrdersGui implements ChangeableGui {
 
     private void saveDocuments() {
 
-        //receiptService.writeReceiptsToFile(ordersWithReceipts, savedFilePath);
+        List<Order> selectedOrders = getSelectedOrders();
 
-        JOptionPane.showMessageDialog(
+        if (selectedOrders.isEmpty()) {
+
+            JOptionPane.showMessageDialog(
                 mainPanel,
-                "Nie udało się zapisać dokumentów sprzedaży w Allegro",
-                "Powiadomienie o błędzie",
-                JOptionPane.ERROR_MESSAGE
-        );
-
-
-        JOptionPane.showMessageDialog(
-                mainPanel,
-                "Zapisano dokumenty sprzedaży w Allegro",
+                "Nie wybrano zamówień, dla których mają być wysłane dokumenty do Allegro",
                 "Powiadomienie",
                 JOptionPane.INFORMATION_MESSAGE
+            );
+
+            return;
+        }
+
+        AtomicInteger numberOfSavedOrders = new AtomicInteger();
+
+        for (Order selectedOrder : selectedOrders) {
+
+            try {
+
+                byte[] documentContent = sferaOrderService.getDocumentContent(selectedOrder.getExternalId());
+
+                orderService.uploadDocument(selectedOrder.getId().toString(), documentContent);
+
+                numberOfSavedOrders.getAndIncrement();
+            } catch (IllegalStateException e) {
+
+                e.printStackTrace();
+            } catch (UnloggedException e) {
+
+                handleLogout.run();
+
+                return;
+            }
+        }
+
+        JOptionPane.showMessageDialog(
+            mainPanel,
+            "Zapisano " + numberOfSavedOrders + " dokumenty sprzedaży w Allegro",
+            "Powiadomienie",
+            JOptionPane.INFORMATION_MESSAGE
         );
     }
 
@@ -289,11 +359,21 @@ public class OrdersGui implements ChangeableGui {
         gbc.weighty = 1.0;
         gbc.insets = new Insets(0, 0, 20, 0);
         mainPanel.add(toolBar1, gbc);
+        selectAllButton = new JButton();
+        selectAllButton.setText("Zaznacz wszystkie dane");
+        toolBar1.add(selectAllButton);
+        final JToolBar.Separator toolBar$Separator1 = new JToolBar.Separator();
+        toolBar1.add(toolBar$Separator1);
+        unselectAllButton = new JButton();
+        unselectAllButton.setText("Odznacz wszystkie dane");
+        toolBar1.add(unselectAllButton);
+        final JToolBar.Separator toolBar$Separator2 = new JToolBar.Separator();
+        toolBar1.add(toolBar$Separator2);
         saveOrdersButton = new JButton();
         saveOrdersButton.setText("Zapisz zamówienia w Subiekcie");
         toolBar1.add(saveOrdersButton);
-        final JToolBar.Separator toolBar$Separator1 = new JToolBar.Separator();
-        toolBar1.add(toolBar$Separator1);
+        final JToolBar.Separator toolBar$Separator3 = new JToolBar.Separator();
+        toolBar1.add(toolBar$Separator3);
         saveDocumentsButton = new JButton();
         saveDocumentsButton.setText("Zapisz dokumenty sprzedaży w Allegro");
         toolBar1.add(saveDocumentsButton);
