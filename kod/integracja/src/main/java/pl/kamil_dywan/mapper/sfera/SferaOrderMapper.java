@@ -28,6 +28,7 @@ public interface SferaOrderMapper {
             .collect(Collectors.toList());
 
         return new CreateOrderRequest(
+            order.getId().toString(),
             totalPrice,
             customer,
             products

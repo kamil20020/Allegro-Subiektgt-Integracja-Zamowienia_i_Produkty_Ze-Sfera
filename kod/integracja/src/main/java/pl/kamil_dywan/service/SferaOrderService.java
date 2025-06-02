@@ -2,6 +2,7 @@ package pl.kamil_dywan.service;
 
 import pl.kamil_dywan.App;
 import pl.kamil_dywan.api.Api;
+import pl.kamil_dywan.api.allegro.request.ExistsDocumentByExternalIdRequest;
 import pl.kamil_dywan.api.allegro.response.OrderResponse;
 import pl.kamil_dywan.api.sfera.SferaOrderApi;
 import pl.kamil_dywan.api.sfera.request.CreateOrderRequest;
@@ -19,8 +20,13 @@ import pl.kamil_dywan.mapper.sfera.SferaOrderMapper;
 
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SferaOrderService {
 
@@ -45,7 +51,31 @@ public class SferaOrderService {
         return generalResponse;
     }
 
-    public void create(Order order) throws IllegalStateException {
+    public int create(List<Order> orders) {
+
+        int numberOfSavedOrders = 0;
+
+        for (int i = 0; i < orders.size(); i++) {
+
+            Order selectedOrder = orders.get(i);
+
+            try {
+
+                create(selectedOrder);
+
+                numberOfSavedOrders++;
+
+            }
+            catch (IllegalStateException e) {
+
+                e.printStackTrace();
+            }
+        }
+
+        return numberOfSavedOrders;
+    }
+
+    private void create(Order order) throws IllegalStateException {
 
         CreateOrderRequest createOrderRequest = SferaOrderMapper.map(order);
 
@@ -60,23 +90,41 @@ public class SferaOrderService {
         order.setExternalId(gotOrderExternalId);
     }
 
-    public CreateOrderRequest getDocument(String orderExternalId){
+    public Optional<String> getSubiektIdByExternalId(String orderExternalId){
 
-        if(orderExternalId == null){
+        ExistsDocumentByExternalIdRequest request = new ExistsDocumentByExternalIdRequest(orderExternalId);
 
-            throw new IllegalStateException("Dokument nie ma ustawionego zewnętrznego id");
-        }
-
-        GetOrderRequest getOrderRequest = new GetOrderRequest(orderExternalId);
-
-        HttpResponse<String> gotResponse = sferaOrderApi.getDocument(getOrderRequest);
+        HttpResponse<String> gotResponse = sferaOrderApi.getSubiektIdByExternalId(request);
 
         GeneralResponse generalResponse = handleResponseErrors(gotResponse);
 
-        return Api.extractBody(generalResponse.getData(), CreateOrderRequest.class);
+        String gotSubiektId = generalResponse.getData();
+
+        if(gotSubiektId.equals("null")){
+
+            gotSubiektId = null;
+        }
+
+        return Optional.ofNullable(gotSubiektId);
     }
 
-    public byte[] getDocumentContent(String orderExternalId) throws IllegalStateException{
+    public List<byte[]> getContents(List<Order> orders) throws IllegalStateException{
+
+        List<byte[]> contents = new ArrayList<>();
+
+        for (int i = 0; i < orders.size(); i++) {
+
+            Order selectedOrder = orders.get(i);
+
+            byte[] documentContent = getDocumentContent(selectedOrder.getExternalId());
+
+            contents.add(documentContent);
+        }
+
+        return contents;
+    }
+
+    private byte[] getDocumentContent(String orderExternalId) throws IllegalStateException{
 
         if(orderExternalId == null){
 

@@ -15,20 +15,21 @@ import java.io.IOException;
 import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class OrderService {
 
     private final OrderApi orderApi;
 
+    private final SferaOrderService sferaOrderService;
+
     private static final ExecutorService ordersExecutorService = Executors.newFixedThreadPool(8);
 
-    public OrderService(OrderApi orderApi){
+    public OrderService(OrderApi orderApi, SferaOrderService sferaOrderService){
 
         this.orderApi = orderApi;
+        this.sferaOrderService = sferaOrderService;
     }
 
     public OrderResponse getPage(int offset, int limit) throws UnloggedException, IllegalStateException {
@@ -44,7 +45,120 @@ public class OrderService {
         gotOrders
             .forEach(order -> order.addDeliveryToOrderItems());
 
+        setOrdersExternalIds(gotOrders);
+
         return gotOrderResponse;
+    }
+
+    private void setOrdersExternalIds(List<Order> orders){
+
+        List<Callable<Void>> toExecuteList = new ArrayList<>();
+
+        for(Order order : orders){
+
+            String externalOrderId = order.getId().toString();
+
+            Callable<Void> toExecute = () -> {
+
+                Optional<String> gotSubiektNrOpt = sferaOrderService.getSubiektIdByExternalId(externalOrderId);
+
+                if (gotSubiektNrOpt.isEmpty()) {
+                    return null;
+                }
+
+                order.setExternalId(gotSubiektNrOpt.get());
+
+                return null;
+            };
+
+            toExecuteList.add(toExecute);
+        }
+
+        try{
+
+            List<Future<Void>> gotFutureList = ordersExecutorService.invokeAll(toExecuteList);
+
+            for(Future<Void> gotFuture : gotFutureList){
+
+                if(gotFuture.isCancelled()){
+
+                    throw new IllegalStateException("Could not get sfera external id");
+                }
+
+                gotFuture.get();
+            }
+        }
+        catch (InterruptedException | ExecutionException e) {
+
+            e.printStackTrace();
+
+            throw new IllegalStateException("Could not get sfera external ids");
+        }
+    }
+
+    public List<Integer> uploadDocuments(List<Order> orders) throws UnloggedException, IllegalArgumentException {
+
+        List<byte[]> contents = sferaOrderService.getContents(orders);
+
+        List<Callable<Void>> toExecuteList = new ArrayList<>();
+
+        List<Integer> uploadedOrdersIndices = Collections.synchronizedList(new ArrayList<>());
+
+        for (int i = 0; i < orders.size(); i++) {
+
+            Order selectedOrder = orders.get(i);
+            byte[] content = contents.get(i);
+
+            int finalI = i;
+
+            Callable<Void> toExecute = () -> {
+
+                try {
+
+                    uploadDocument(selectedOrder.getId().toString(), content);
+
+                    uploadedOrdersIndices.add(finalI);
+                }
+                catch (IllegalStateException e) {
+
+                    e.printStackTrace();
+                }
+
+                return null;
+            };
+
+            toExecuteList.add(toExecute);
+        }
+
+        try{
+
+            List<Future<Void>> gotFutureList = ordersExecutorService.invokeAll(toExecuteList);
+
+            for(Future<Void> gotFuture : gotFutureList){
+
+                if(gotFuture.isCancelled()){
+
+                    throw new IllegalStateException("Could not save Allegro document");
+                }
+
+                gotFuture.get();
+            }
+        }
+        catch (InterruptedException | ExecutionException e) {
+
+            e.printStackTrace();
+
+            throw new IllegalStateException("Could not save Allegro documents");
+        }
+
+        return uploadedOrdersIndices;
+    }
+
+    private void uploadDocument(String orderId, byte[] documentContent) throws UnloggedException, IllegalStateException {
+
+        String createdDocumentId = createDocument(orderId);
+
+        saveDocument(orderId, createdDocumentId, documentContent);
     }
 
     private String createDocument(String orderId) throws UnloggedException, IllegalStateException{
@@ -76,21 +190,6 @@ public class OrderService {
 
             throw new IllegalStateException(gotResponse.body());
         }
-    }
-
-    public void uploadDocument(String orderId, File documentFile) throws UnloggedException, IOException, IllegalStateException {
-
-        Path filePath = documentFile.toPath();
-        byte[] fileData = Files.readAllBytes(filePath);
-
-        uploadDocument(orderId, fileData);
-    }
-
-    public void uploadDocument(String orderId, byte[] documentContent) throws UnloggedException, IllegalStateException {
-
-        String createdDocumentId = createDocument(orderId);
-
-        saveDocument(orderId, createdDocumentId, documentContent);
     }
 
     private void setOrdersDocumentsExist(List<Order> orders) throws UnloggedException, IllegalStateException{

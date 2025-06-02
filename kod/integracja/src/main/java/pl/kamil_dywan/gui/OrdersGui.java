@@ -44,6 +44,9 @@ public class OrdersGui implements ChangeableGui {
 
     private final Runnable handleLogout;
 
+    private static final int SUBIEKT_ID_SENT_COL_INDEX = 1;
+    private static final int ALLEGRO_DOCUMENT_SENT_COL_INDEX = 7;
+
     public OrdersGui(OrderService orderService, SferaOrderService sferaOrderService, Runnable handleLogout) {
 
         this.orderService = orderService;
@@ -77,8 +80,8 @@ public class OrdersGui implements ChangeableGui {
         int totalNumberOfRows = orderResponse.getTotalCount();
 
         PaginationTableGui.PaginationTableData data = new PaginationTableGui.PaginationTableData(
-                ordersPage,
-                totalNumberOfRows
+            ordersPage,
+            totalNumberOfRows
         );
 
         return data;
@@ -103,16 +106,14 @@ public class OrdersGui implements ChangeableGui {
         }
 
         return new Object[]{
-                order.getId().toString(),
-                clientName,
-                String.valueOf(orderOrderItems.size()),
-                orderSummary.getTotalToPay().getAmount().toString() + " zł",
-                orderPayment.getFinishedAt().toLocalDate().toString(),
-                order.hasInvoice() ? "Tak" : "Nie",
-                new ComplexJButtonCellData(
-                        order.hasDocument() ? "Wysłano" : ("Wyślij " + (order.hasInvoice() ? "fakturę" : "paragon")),
-                        order.getId().toString()
-                )
+            order.getId().toString(),
+            order.getExternalId() != null ? order.getExternalId() : "Brak",
+            clientName,
+            String.valueOf(orderOrderItems.size()),
+            orderSummary.getTotalToPay().getAmount().toString() + " zł",
+            orderPayment.getFinishedAt().toLocalDate().toString(),
+            order.hasInvoice() ? "Tak" : "Nie",
+            (order.hasDocument() ? "" : "Nie ") + "Wysłano"
         };
     }
 
@@ -136,18 +137,25 @@ public class OrdersGui implements ChangeableGui {
         }
 
         List<String> selectedOrdersIds = selectedOrdersData.stream()
-                .map(selectedOrderData -> selectedOrderData[0].toString())
-                .collect(Collectors.toList());
+            .map(selectedOrderData -> selectedOrderData[0].toString())
+            .collect(Collectors.toList());
 
         return ordersPage.stream()
-                .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
-                .collect(Collectors.toList());
+            .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
+            .collect(Collectors.toList());
 
+    }
+
+    private void updateTableRowCol(int rowIndex, int colIndex, Object newValue) {
+
+        paginationTableGui.updateRowCol(rowIndex, colIndex, newValue);
     }
 
     private void saveOrders() {
 
         List<Order> selectedOrders = getSelectedOrders();
+
+        int[] selectedRowsIndices = paginationTableGui.getSelectedRowIndices();
 
         if (selectedOrders.isEmpty()) {
 
@@ -161,33 +169,41 @@ public class OrdersGui implements ChangeableGui {
             return;
         }
 
-        AtomicInteger numberOfSavedOrders = new AtomicInteger();
+        new Thread(() -> {
 
-        selectedOrders
-                .forEach(selectedOrder -> {
+            int numberOfSavedOrders = sferaOrderService.create(selectedOrders);
 
-                    try {
+            SwingUtilities.invokeLater(() -> {
 
-                        sferaOrderService.create(selectedOrder);
+                for (int i = 0; i < selectedOrders.size(); i++) {
 
-                        numberOfSavedOrders.getAndIncrement();
-                    } catch (IllegalStateException e) {
+                    Order selectedOrder = selectedOrders.get(i);
 
-                        e.printStackTrace();
+                    int rowIndex = selectedRowsIndices[i];
+
+                    if (selectedOrder.getExternalId() == null) {
+                        continue;
                     }
-                });
 
-        JOptionPane.showMessageDialog(
-                mainPanel,
-                "Zapisano " + numberOfSavedOrders + " zamówień w Subiekcie",
-                "Powiadomienie",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+                    updateTableRowCol(rowIndex, SUBIEKT_ID_SENT_COL_INDEX, selectedOrder.getExternalId());
+                }
+
+                JOptionPane.showMessageDialog(
+                        mainPanel,
+                        "Zapisano " + numberOfSavedOrders + " zamówień w Subiekcie",
+                        "Powiadomienie",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            });
+
+        }).start();
     }
 
     private void saveDocuments() {
 
         List<Order> selectedOrders = getSelectedOrders();
+
+        int[] selectedRowsIndices = paginationTableGui.getSelectedRowIndices();
 
         if (selectedOrders.isEmpty()) {
 
@@ -201,86 +217,40 @@ public class OrdersGui implements ChangeableGui {
             return;
         }
 
-        AtomicInteger numberOfSavedOrders = new AtomicInteger();
+        new Thread(() -> {
 
-        for (Order selectedOrder : selectedOrders) {
+            List<Integer> savedOrdersDocumentsIndices;
 
             try {
 
-                byte[] documentContent = sferaOrderService.getDocumentContent(selectedOrder.getExternalId());
-
-                orderService.uploadDocument(selectedOrder.getId().toString(), documentContent);
-
-                numberOfSavedOrders.getAndIncrement();
-            } catch (IllegalStateException e) {
-
-                e.printStackTrace();
-            } catch (UnloggedException e) {
+                savedOrdersDocumentsIndices = orderService.uploadDocuments(selectedOrders);
+            }
+            catch (UnloggedException e) {
 
                 handleLogout.run();
 
                 return;
             }
-        }
 
-        JOptionPane.showMessageDialog(
-            mainPanel,
-            "Zapisano " + numberOfSavedOrders + " dokumenty sprzedaży w Allegro",
-            "Powiadomienie",
-            JOptionPane.INFORMATION_MESSAGE
-        );
-    }
+            SwingUtilities.invokeLater(() -> {
 
-    private boolean handleSaveDocumentInAllegro(String orderId) {
+                for (int i = 0; i < savedOrdersDocumentsIndices.size(); i++) {
 
-        Optional<File> gotFileOpt = FileDialogHandler.getLoadFileDialogSelectedPath(
-                "Wczytywanie pliku z dokumentem dla Allegro",
-                "*.pdf"
-        );
+                    int savedOrderDocumentIndex = savedOrdersDocumentsIndices.get(i);
+                    int rowIndex = selectedRowsIndices[savedOrderDocumentIndex];
 
-        if (gotFileOpt.isEmpty()) {
+                    updateTableRowCol(rowIndex, ALLEGRO_DOCUMENT_SENT_COL_INDEX, "Wysłano");
+                }
 
-            return false;
-        }
-
-        try {
-
-            orderService.uploadDocument(orderId, gotFileOpt.get());
-        } catch (IOException e) {
-
-            JOptionPane.showMessageDialog(
+                JOptionPane.showMessageDialog(
                     mainPanel,
-                    "Nie udało się wczytać dokumentu",
-                    "Powiadomienie o błędzie",
-                    JOptionPane.ERROR_MESSAGE
-            );
+                    "Zapisano " + savedOrdersDocumentsIndices.size() + " dokumenty sprzedaży w Allegro",
+                    "Powiadomienie",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            });
 
-            return false;
-        } catch (IllegalStateException e) {
-
-            JOptionPane.showMessageDialog(
-                    mainPanel,
-                    "Nie udało się dodać dokumentu do zamówienia w Allegro",
-                    "Powiadomienie o błędzie",
-                    JOptionPane.ERROR_MESSAGE
-            );
-
-            return false;
-        } catch (UnloggedException e) {
-
-            handleLogout.run();
-
-            return false;
-        }
-
-        JOptionPane.showMessageDialog(
-                mainPanel,
-                "Dodano dokument do zamówienia w Allegro",
-                "Powiadomienie",
-                JOptionPane.INFORMATION_MESSAGE
-        );
-
-        return true;
+        }).start();
     }
 
     @Override
@@ -297,9 +267,9 @@ public class OrdersGui implements ChangeableGui {
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
-        String[] tableHeaders = {"Identyfikator", "Kupujący", "Liczba ofert", "Kwota brutto", "Data", "Czy wybrano fakturę", "Allegro"};
+        String[] tableHeaders = {"Allegro Id", "Subiekt Id", "Kupujący", "Liczba pozycji", "Kwota brutto", "Data", "Wybrano fakturę", "Allegro dokument"};
 
-        paginationTableGui = new PaginationTableGui(tableHeaders, this::loadData, this::convertToRow, this::handleSaveDocumentInAllegro);
+        paginationTableGui = new PaginationTableGui(tableHeaders, this::loadData, this::convertToRow);
 
         ordersPanelPlaceholder = paginationTableGui.getMainPanel();
     }

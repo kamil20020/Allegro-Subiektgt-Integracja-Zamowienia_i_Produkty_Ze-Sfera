@@ -1,6 +1,7 @@
 {
   "reference": "",
   "comments": "",
+  "external_id": "d4096850-303d-11f0-9468-6d34c41cf924",
   "amount": 30.99,
   "customer": {
     "is_invoice_required": false

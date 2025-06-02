@@ -40,9 +40,9 @@ public class App {
         AuthService authService = new AuthService(loginApi);
         authService.init();
 
-        OrderService orderService = new OrderService(orderApi);
-        ProductService productService = new ProductService(productApi);
         SferaOrderService sferaOrderService = new SferaOrderService(sferaOrderApi);
+        OrderService orderService = new OrderService(orderApi, sferaOrderService);
+        ProductService productService = new ProductService(productApi);
 
         new MainGui(authService, productService, orderService, sferaOrderService, basicInfoService);
 //

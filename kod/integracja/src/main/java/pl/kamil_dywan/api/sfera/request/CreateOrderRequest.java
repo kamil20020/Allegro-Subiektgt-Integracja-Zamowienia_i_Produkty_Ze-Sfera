@@ -22,6 +22,7 @@ import java.util.List;
 @JsonPropertyOrder({
     "reference",
     "comments",
+    "external_id",
     "amount",
     "customer",
     "products",
@@ -35,6 +36,9 @@ public class CreateOrderRequest{
     @JsonProperty("comments")
     private String comments = "";
 
+    @JsonProperty("external_id")
+    private String externalId;
+
     @JsonProperty("amount")
     private BigDecimal amount;
 
@@ -44,8 +48,9 @@ public class CreateOrderRequest{
     @JsonProperty("products")
     private List<Product> products;
 
-    public CreateOrderRequest(BigDecimal amount, Customer customer, List<Product> products) {
+    public CreateOrderRequest(String externalId, BigDecimal amount, Customer customer, List<Product> products) {
 
+        this.externalId = externalId;
         this.amount = amount;
         this.customer = customer;
         this.products = products;

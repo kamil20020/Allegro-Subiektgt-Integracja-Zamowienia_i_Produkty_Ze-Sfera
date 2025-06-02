@@ -30,6 +30,7 @@ class Order extends SubiektObj {
 	protected $id_flag = 0;
 	protected $flag_txt = '';
 	protected $pay_point_id = 0;
+	protected $external_id;
 
 
 
@@ -224,6 +225,22 @@ class Order extends SubiektObj {
 		return $data[0];
 	}
 
+	public function getNrByExternalId(){
+
+		$external_id = Helper::toWin($this->orderDetail['external_id']);
+
+		$sql = "SELECT dok_NrPelny FROM dok__Dokument
+				WHERE dok_Podtytul = '{$external_id}'
+		";		
+		$data = MSSql::getInstance()->query($sql);
+
+		if(empty($data)){
+	
+			return null;
+		}
+
+		return $data[0]['dok_NrPelny'];
+	}
 
 	protected function getOrderAmountById($id){
 		$sql = "SELECT dok_WartBrutto FROM vwDok4ZamGrid WHERE dok_Id = {$id}";		
@@ -274,7 +291,12 @@ class Order extends SubiektObj {
 			$oneTimeCustomer->Nazwa = Helper::toWin($this->customer['name']);
 			//$oneTimeCustomer->NrDomu = Helper::toWin($this->customer['house_nr']);
 			//$oneTimeCustomer->NrLokalu = Helper::toWin($this->customer['flat_nr']);
-			$oneTimeCustomer->NIP = Helper::toWin($this->customer['nip']);
+
+			if(isset($this->customer['nip'])){
+
+				$oneTimeCustomer->NIP = Helper::toWin($this->customer['nip']);
+			}
+
 			$oneTimeCustomer->Ulica = Helper::toWin($this->customer['street']);
 			$oneTimeCustomer->KodPocztowy = Helper::toWin($this->customer['post_code']);
 			$oneTimeCustomer->Miejscowosc = Helper::toWin($this->customer['city']);
@@ -288,6 +310,8 @@ class Order extends SubiektObj {
 		else{
 			$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajPA();
 		}
+
+		$this->orderGt->Podtytul = $this->orderDetail['external_id'];
 		
 		foreach($this->products as $p){
 

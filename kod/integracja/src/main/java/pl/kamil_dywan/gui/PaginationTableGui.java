@@ -36,9 +36,6 @@ public class PaginationTableGui extends JPanel {
     private final BiFunction<Integer, Integer, PaginationTableData> loadData;
     private final Function<Object, Object[]> convertToRow;
 
-    private boolean isActionColumnEnabled = false;
-    private Predicate<String> onClickActionButton;
-
     private int offset = 0;
     private int pageSize = 10;
     private int totalNumberOfRows = 0;
@@ -46,19 +43,12 @@ public class PaginationTableGui extends JPanel {
     public PaginationTableGui(
             String[] tableHeaders,
             BiFunction<Integer, Integer, PaginationTableData> loadData,
-            Function<Object, Object[]> convertToRow,
-            Predicate<String> onClickActionButton
+            Function<Object, Object[]> convertToRow
     ) {
 
         this.tableHeaders = tableHeaders;
         this.loadData = loadData;
         this.convertToRow = convertToRow;
-
-        if (onClickActionButton != null) {
-
-            this.onClickActionButton = onClickActionButton;
-            isActionColumnEnabled = true;
-        }
 
         $$$setupUI$$$();
 
@@ -67,15 +57,6 @@ public class PaginationTableGui extends JPanel {
         nextButton.addActionListener(e -> handleNextButton());
 
         paginationSizeSelector.addActionListener(e -> handlePageSizeSelectorChange());
-    }
-
-    public PaginationTableGui(
-            String[] tableHeaders,
-            BiFunction<Integer, Integer, PaginationTableData> loadData,
-            Function<Object, Object[]> convertToRow
-    ) {
-
-        this(tableHeaders, loadData, convertToRow, null);
     }
 
     /**
@@ -368,11 +349,16 @@ public class PaginationTableGui extends JPanel {
         table.clearSelection();
     }
 
+    public int[] getSelectedRowIndices() {
+
+        return table.getSelectedRows();
+    }
+
     public List<Object[]> getSelectedData() {
 
         List<Object[]> selectedData = new ArrayList<>();
 
-        int[] selectedRowsIndices = table.getSelectedRows();
+        int[] selectedRowsIndices = getSelectedRowIndices();
 
         if (selectedRowsIndices.length == 0) {
 
@@ -396,6 +382,11 @@ public class PaginationTableGui extends JPanel {
         return selectedData;
     }
 
+    public void updateRowCol(int rowIndex, int colIndex, Object newValue) {
+
+        tableModel.setValueAt(newValue, rowIndex, colIndex);
+    }
+
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
@@ -405,20 +396,7 @@ public class PaginationTableGui extends JPanel {
 
         cellsCenterRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        if (isActionColumnEnabled) {
-
-            tableModel = new DefaultTableModel(tableHeaders, 0) {
-
-                @Override
-                public boolean isCellEditable(int row, int column) {
-
-                    return column == lastColumnIndex;
-                }
-            };
-        } else {
-            tableModel = new DefaultTableModel(tableHeaders, 0);
-        }
-
+        tableModel = new DefaultTableModel(tableHeaders, 0);
         table = new JTable(tableModel);
 
         for (int i = 0; i < tableHeaders.length; i++) {
@@ -426,14 +404,6 @@ public class PaginationTableGui extends JPanel {
             TableColumn column = table.getColumnModel().getColumn(i);
 
             column.setCellRenderer(cellsCenterRenderer);
-        }
-
-        if (isActionColumnEnabled) {
-
-            TableColumn column = table.getColumnModel().getColumn(lastColumnIndex);
-
-            column.setCellRenderer(new JButtonTableCellRender());
-            column.setCellEditor(new JButtonTableCellEditor(new JCheckBox(), onClickActionButton, "Wysłano"));
         }
     }
 }

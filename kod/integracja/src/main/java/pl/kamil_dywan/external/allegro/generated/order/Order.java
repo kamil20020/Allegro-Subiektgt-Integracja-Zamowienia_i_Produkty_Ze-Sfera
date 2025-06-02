@@ -199,4 +199,16 @@ public class Order {
         return deliveryCost.getAmount().intValue() > 0;
     }
 
+    public void setExternalId(String externalId){
+
+        this.externalId = externalId;
+
+        if(externalId == null){
+
+            return;
+        }
+
+        this.externalId = externalId.replaceAll("\"", "");
+    }
+
 }

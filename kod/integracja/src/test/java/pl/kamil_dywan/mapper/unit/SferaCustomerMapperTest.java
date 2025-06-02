@@ -9,6 +9,8 @@ import pl.kamil_dywan.external.allegro.generated.invoice.InvoiceCompany;
 import pl.kamil_dywan.external.allegro.generated.invoice.InvoiceNaturalPerson;
 import pl.kamil_dywan.mapper.sfera.SferaCustomerMapper;
 
+import java.util.UUID;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SferaCustomerMapperTest {

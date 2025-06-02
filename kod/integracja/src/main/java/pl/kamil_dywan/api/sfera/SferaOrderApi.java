@@ -1,6 +1,7 @@
 package pl.kamil_dywan.api.sfera;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import pl.kamil_dywan.api.allegro.request.ExistsDocumentByExternalIdRequest;
 import pl.kamil_dywan.api.sfera.request.CreateOrderRequest;
 import pl.kamil_dywan.api.sfera.request.GeneralRequest;
 import pl.kamil_dywan.api.sfera.request.GetOrderRequest;
@@ -39,9 +40,9 @@ public class SferaOrderApi extends SferaApi{
         return send(httpRequestBuilder);
     }
 
-    public HttpResponse<String> getDocument(GetOrderRequest getOrderRequest)  {
+    public HttpResponse<String> getSubiektIdByExternalId(ExistsDocumentByExternalIdRequest request){
 
-        GeneralRequest generalRequest = createGeneralRequest(getOrderRequest);
+        GeneralRequest generalRequest = createGeneralRequest(request);
 
         String requestStr = "";
 
@@ -55,7 +56,7 @@ public class SferaOrderApi extends SferaApi{
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.ofString(requestStr))
-            .uri(URI.create(API_PREFIX + "/get"))
+            .uri(URI.create(API_PREFIX + "/getNrByExternalId"))
             .header("Content-Type", "application/json")
             .header("Accept", "application/pdf");
 

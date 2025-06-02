@@ -11,6 +11,7 @@ import pl.kamil_dywan.mapper.sfera.SferaOrderMapper;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,6 +31,7 @@ class SferaOrderMapperTest {
         Invoice allegroInvoice = new Invoice();
 
         Order allegroOrder = Order.builder()
+            .id(UUID.randomUUID())
             .invoice(allegroInvoice)
             .summary(allegroOrderSummary)
             .orderItems(List.of())
@@ -40,6 +42,7 @@ class SferaOrderMapperTest {
 
         //then
         assertNotNull(createOrderRequest);
+        assertEquals(allegroOrder.getId().toString(), createOrderRequest.getExternalId());
         assertEquals("", createOrderRequest.getReference());
         assertEquals("", createOrderRequest.getComments());
         assertEquals(orderTotalCost.getAmount(), createOrderRequest.getAmount());
