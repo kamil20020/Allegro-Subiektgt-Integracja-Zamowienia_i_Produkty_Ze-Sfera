@@ -73,7 +73,8 @@ public abstract class Api {
         HttpRequest httpRequest = httpRequestBuilder.build();
 
         log.info("Request: ");
-        log.info("Url: " + httpRequest.toString());
+        log.info("Url: " + httpRequest.uri());
+        log.info("Authorization: " + httpRequest.headers().firstValue("Authorization").orElse("") + "\n");
 
         try {
             HttpResponse<String> gotResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
@@ -98,7 +99,7 @@ public abstract class Api {
 
         T gotConvertedBody = jsonFileReader.loadFromStr(httpResponse);
 
-        log.info(gotConvertedBody.toString());
+        log.info(gotConvertedBody.toString() + "\n");
 
         return gotConvertedBody;
     }
@@ -109,7 +110,7 @@ public abstract class Api {
 
         T gotConvertedBody = jsonFileReader.loadFromStr(httpResponse.body());
 
-        log.info(gotConvertedBody.toString());
+        log.info(gotConvertedBody.toString() + "\n");
 
         return gotConvertedBody;
     }

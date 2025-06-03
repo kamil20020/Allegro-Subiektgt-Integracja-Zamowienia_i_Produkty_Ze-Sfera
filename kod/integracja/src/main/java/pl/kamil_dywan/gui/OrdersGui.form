@@ -14,7 +14,7 @@
       <requestFocusEnabled value="true"/>
     </properties>
     <border type="empty">
-      <size top="16" left="50" bottom="40" right="50"/>
+      <size top="18" left="50" bottom="40" right="50"/>
     </border>
     <children>
       <component id="5201a" class="javax.swing.JLabel">

@@ -80,8 +80,8 @@ public class OrdersGui implements ChangeableGui {
         int totalNumberOfRows = orderResponse.getTotalCount();
 
         PaginationTableGui.PaginationTableData data = new PaginationTableGui.PaginationTableData(
-            ordersPage,
-            totalNumberOfRows
+                ordersPage,
+                totalNumberOfRows
         );
 
         return data;
@@ -106,14 +106,14 @@ public class OrdersGui implements ChangeableGui {
         }
 
         return new Object[]{
-            order.getId().toString(),
-            order.getExternalId() != null ? order.getExternalId() : "Brak",
-            clientName,
-            String.valueOf(orderOrderItems.size()),
-            orderSummary.getTotalToPay().getAmount().toString() + " zł",
-            orderPayment.getFinishedAt().toLocalDate().toString(),
-            order.hasInvoice() ? "Tak" : "Nie",
-            (order.hasDocument() ? "" : "Nie ") + "Wysłano"
+                order.getId().toString(),
+                order.getExternalId() != null ? order.getExternalId() : "Brak",
+                clientName,
+                String.valueOf(orderOrderItems.size()),
+                orderSummary.getTotalToPay().getAmount().toString() + " zł",
+                orderPayment.getFinishedAt().toLocalDate().toString(),
+                order.hasInvoice() ? "Tak" : "Nie",
+                (order.hasDocument() ? "" : "Nie ") + "Wysłano"
         };
     }
 
@@ -137,12 +137,12 @@ public class OrdersGui implements ChangeableGui {
         }
 
         List<String> selectedOrdersIds = selectedOrdersData.stream()
-            .map(selectedOrderData -> selectedOrderData[0].toString())
-            .collect(Collectors.toList());
+                .map(selectedOrderData -> selectedOrderData[0].toString())
+                .collect(Collectors.toList());
 
         return ordersPage.stream()
-            .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
-            .collect(Collectors.toList());
+                .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
+                .collect(Collectors.toList());
 
     }
 
@@ -212,10 +212,10 @@ public class OrdersGui implements ChangeableGui {
         if (selectedOrders.isEmpty()) {
 
             JOptionPane.showMessageDialog(
-                mainPanel,
-                "Nie wybrano zamówień, dla których mają być wysłane dokumenty do Allegro",
-                "Powiadomienie",
-                JOptionPane.INFORMATION_MESSAGE
+                    mainPanel,
+                    "Nie wybrano zamówień, dla których mają być wysłane dokumenty do Allegro",
+                    "Powiadomienie",
+                    JOptionPane.INFORMATION_MESSAGE
             );
 
             return;
@@ -230,8 +230,7 @@ public class OrdersGui implements ChangeableGui {
             try {
 
                 savedOrdersDocumentsIndices = orderService.uploadDocuments(selectedOrders);
-            }
-            catch (UnloggedException e) {
+            } catch (UnloggedException e) {
 
                 handleLogout.run();
 
@@ -251,10 +250,10 @@ public class OrdersGui implements ChangeableGui {
                 mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
                 JOptionPane.showMessageDialog(
-                    mainPanel,
-                    "Zapisano " + savedOrdersDocumentsIndices.size() + " dokumenty sprzedaży w Allegro",
-                    "Powiadomienie",
-                    JOptionPane.INFORMATION_MESSAGE
+                        mainPanel,
+                        "Zapisano " + savedOrdersDocumentsIndices.size() + " dokumenty sprzedaży w Allegro",
+                        "Powiadomienie",
+                        JOptionPane.INFORMATION_MESSAGE
                 );
             });
 
@@ -300,7 +299,7 @@ public class OrdersGui implements ChangeableGui {
         mainPanel.setOpaque(true);
         mainPanel.setPreferredSize(new Dimension(1920, 980));
         mainPanel.setRequestFocusEnabled(true);
-        mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(16, 50, 40, 50), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(18, 50, 40, 50), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label1 = new JLabel();
         label1.setAlignmentX(0.0f);
         Font label1Font = this.$$$getFont$$$(null, -1, 26, label1.getFont());

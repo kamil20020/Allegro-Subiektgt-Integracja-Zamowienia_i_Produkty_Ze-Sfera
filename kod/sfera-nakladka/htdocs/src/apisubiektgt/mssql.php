@@ -9,8 +9,13 @@ class MSSql{
 	private $conn = false;
 	
 	
-	private function __construct($conf = array(),$data_base){ 
+	private function __construct($conf = array(),$data_base){
+
+		$conf["Encrypt"] = true;
+		$conf["TrustServerCertificate"] = true;
+
 		$this->conn = sqlsrv_connect( $data_base, $conf);
+
 		if( $this->conn === false )
 		{		     
 			$errors = sqlsrv_errors();
