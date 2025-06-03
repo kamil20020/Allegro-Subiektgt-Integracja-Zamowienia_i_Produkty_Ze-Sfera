@@ -418,7 +418,7 @@ class OrderTest {
         assertNotNull(order);
         assertEquals(2, order.getOrderItems().size());
         assertTrue(order.getOrderItems().contains(orderItem));
-        assertEquals("DOSTAWA", order.getOrderItems().get(1).getOffer().getId());
+        assertEquals("DOSTAWA123", order.getOrderItems().get(1).getOffer().getId());
     }
 
 }

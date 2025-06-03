@@ -77,7 +77,7 @@ class Order extends SubiektObj {
 
 	protected function setGtObject(){
 		$this->orderGt->Tytul = $this->reference;
-		$this->orderGt->Uwagi  = $this->comments;	
+		//$this->orderGt->Uwagi  = $this->comments;	
 		//$this->orderGt->Rezerwacja = $this->reservation;		
 		$this->orderGt->NumerOryginalny = $this->reference;
 		switch($this->pay_type){
@@ -153,6 +153,7 @@ class Order extends SubiektObj {
 		if($this->customer['is_company']== false){
 			$selling_doc->RejestrujNaUF = true;
 		}
+
 		$selling_doc->Podtytul = trim($this->orderGt->Tytul);//.'/'.$this->orderGt->order_ref;
 		$selling_doc->Wystawil = Helper::toWin($this->cfg->getIdPerson());
 		$selling_doc->LiczonyOdCenBrutto = true;
@@ -311,7 +312,7 @@ class Order extends SubiektObj {
 			$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajPA();
 		}
 
-		$this->orderGt->Podtytul = $this->orderDetail['external_id'];
+		$this->orderGt->Uwagi = $this->orderDetail['external_id'];
 		
 		foreach($this->products as $p){
 

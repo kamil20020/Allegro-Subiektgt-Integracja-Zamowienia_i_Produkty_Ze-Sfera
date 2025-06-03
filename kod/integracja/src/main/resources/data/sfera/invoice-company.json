@@ -1,5 +1,5 @@
 {
-  "reference": "",
+  "reference": "Faktura VAT",
   "comments": "",
   "external_id": "d17e00d0-1dd9-11f0-8719-0df00e00f383",
   "amount": 30.99,
@@ -19,7 +19,7 @@
       "name": "Nillkin backs for Samsung Galaxy S23 Ultra Nature TPU Pro colorless"
     },
     {
-      "code": "DOSTAWA",
+      "code": "DOSTAWA123",
       "qty": 1,
       "price": 10.99,
       "name": "Dostawa do klienta"

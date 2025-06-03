@@ -48,8 +48,9 @@ public class CreateOrderRequest{
     @JsonProperty("products")
     private List<Product> products;
 
-    public CreateOrderRequest(String externalId, BigDecimal amount, Customer customer, List<Product> products) {
+    public CreateOrderRequest(String reference, String externalId, BigDecimal amount, Customer customer, List<Product> products) {
 
+        this.reference = reference;
         this.externalId = externalId;
         this.amount = amount;
         this.customer = customer;

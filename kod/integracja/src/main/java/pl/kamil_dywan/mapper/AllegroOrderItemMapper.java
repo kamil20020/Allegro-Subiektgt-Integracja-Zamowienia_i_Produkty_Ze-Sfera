@@ -17,7 +17,7 @@ public interface AllegroOrderItemMapper {
         BigDecimal taxRatePercentage = new BigDecimal("23");
 
         Offer deliveryOffer = Offer.builder()
-            .id("DOSTAWA")
+            .id("DOSTAWA123")
             .name("Dostawa do klienta")
             .build();
 

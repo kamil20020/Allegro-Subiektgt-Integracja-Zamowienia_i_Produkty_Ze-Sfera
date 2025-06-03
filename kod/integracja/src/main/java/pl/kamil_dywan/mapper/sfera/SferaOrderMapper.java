@@ -27,11 +27,36 @@ public interface SferaOrderMapper {
             .map(orderItem -> SferaProductMapper.map(orderItem))
             .collect(Collectors.toList());
 
+        handleDelivery(order, products);
+
+        String reference;
+
+        if(order.hasInvoice()){
+
+            reference = "Faktura VAT";
+        }
+        else {
+
+            reference = "Paragon";
+        }
+
         return new CreateOrderRequest(
+            reference,
             order.getId().toString(),
             totalPrice,
             customer,
             products
         );
+    }
+
+    private static void handleDelivery(Order allegroOrder, List<Product> products){
+
+        if(!allegroOrder.hasDelivery()){
+            return;
+        }
+
+        int deliveryIndex = products.size() - 1;
+
+        products.get(deliveryIndex).setCode("DOSTAWA123");
     }
 }
