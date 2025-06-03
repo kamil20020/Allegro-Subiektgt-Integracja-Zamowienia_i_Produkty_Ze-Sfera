@@ -241,10 +241,11 @@ public class ProductsGui implements ChangeableGui {
         mainPanel.setLayout(new GridBagLayout());
         mainPanel.setAlignmentX(0.0f);
         mainPanel.setAlignmentY(0.0f);
+        mainPanel.setMinimumSize(new Dimension(478, 138));
         mainPanel.setOpaque(true);
         mainPanel.setPreferredSize(new Dimension(1920, 980));
         mainPanel.setRequestFocusEnabled(true);
-        mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(12, 50, 40, 50), "            ", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(18, 50, 40, 50), "            ", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JLabel label1 = new JLabel();
         Font label1Font = this.$$$getFont$$$(null, -1, 26, label1.getFont());
         if (label1Font != null) label1.setFont(label1Font);

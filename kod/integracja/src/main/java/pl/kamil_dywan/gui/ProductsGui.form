@@ -7,12 +7,13 @@
     <properties>
       <alignmentX value="0.0"/>
       <alignmentY value="0.0"/>
+      <minimumSize width="478" height="138"/>
       <opaque value="true"/>
       <preferredSize width="1920" height="980"/>
       <requestFocusEnabled value="true"/>
     </properties>
     <border type="empty" title="            ">
-      <size top="12" left="50" bottom="40" right="50"/>
+      <size top="18" left="50" bottom="40" right="50"/>
     </border>
     <children>
       <component id="eaa12" class="javax.swing.JLabel">
