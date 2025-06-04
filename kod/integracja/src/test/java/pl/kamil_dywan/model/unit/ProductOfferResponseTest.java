@@ -422,4 +422,40 @@ class ProductOfferResponseTest {
         assertTrue(gotProducerCode.isEmpty());
     }
 
+    @Test
+    public void shouldGetExistingEanCode(){
+
+        //given
+        String expectedEanCode = "ean";
+
+        OfferProductParameter producerCodeParameter = OfferProductParameter.builder()
+            .id(123L)
+            .name("EAN (GTIN)")
+            .values(List.of(expectedEanCode))
+            .build();
+
+        OfferProductParameter otherParameter = OfferProductParameter.builder()
+            .id(456L)
+            .name("Kod producenta")
+            .values(List.of("6789"))
+            .build();
+
+        ProductOfferProduct product = new ProductOfferProduct(UUID.randomUUID(), List.of(otherParameter, producerCodeParameter));
+
+        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
+
+        List<ProductOfferProductRelatedData> productsRelatedData = List.of(productRelatedData);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(productsRelatedData)
+            .build();
+
+        //when
+        Optional<String> gotProducerCodeOpt = productOfferResponse.getEANCode();
+
+        //then
+        assertTrue(gotProducerCodeOpt.isPresent());
+        assertEquals(expectedEanCode, gotProducerCodeOpt.get());
+    }
+
 }

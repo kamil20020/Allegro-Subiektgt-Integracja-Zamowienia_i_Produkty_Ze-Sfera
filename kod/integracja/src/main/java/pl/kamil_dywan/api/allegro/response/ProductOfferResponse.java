@@ -57,6 +57,7 @@ public class ProductOfferResponse {
 
     @JsonIgnore
     private static final String PRODUCER_CODE_KEY = "Kod producenta";
+    private static final String EAN_CODE_KEY = "EAN (GTIN)";
 
     @JsonIgnore
     public String getExternalIdValue(){
@@ -107,7 +108,19 @@ public class ProductOfferResponse {
     }
 
     @JsonIgnore
+    public Optional<String> getEANCode(){
+
+        return getParameterCode(EAN_CODE_KEY);
+    }
+
+    @JsonIgnore
     public Optional<String> getProducerCode(){
+
+        return getParameterCode(PRODUCER_CODE_KEY);
+    }
+
+    @JsonIgnore
+    private Optional<String> getParameterCode(String parameterName){
 
         Optional<String> emptyResult = Optional.empty();
 
@@ -124,7 +137,7 @@ public class ProductOfferResponse {
         }
 
         Optional<OfferProductParameter> producerCodeParameter = parameters.stream()
-            .filter(parameter -> Objects.equals(parameter.getName(), PRODUCER_CODE_KEY))
+            .filter(parameter -> Objects.equals(parameter.getName(), parameterName))
             .findFirst();
 
         if(producerCodeParameter.isEmpty()) {

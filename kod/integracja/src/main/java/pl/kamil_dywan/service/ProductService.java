@@ -6,6 +6,7 @@ import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.api.allegro.response.OfferProductResponse;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
 import pl.kamil_dywan.external.allegro.generated.offer_product.SellingMode;
+import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.subiektgt.own.product.*;
 import pl.kamil_dywan.factory.ProductDetailedPriceFactory;
 import pl.kamil_dywan.factory.AllegroProductOfferFactory;
@@ -117,14 +118,17 @@ public class ProductService {
             .forEach(productOffer -> {
 
                 Optional<String> gotProducerCode = productOffer.getProducerCode();
+                Optional<String> gotEanCodeOpt = productOffer.getEANCode();
 
-                if(gotProducerCode.isEmpty()){
+                String combinedKey = ExternalId.getCombinedCode(gotProducerCode.get(), gotEanCodeOpt.get());
+
+                if(combinedKey == null){
                     return;
                 }
 
                 Callable<HttpResponse<String>> productOfferCallable = () -> {
 
-                   return productApi.patchOfferExternalById(productOffer.getId(), gotProducerCode.get());
+                   return productApi.patchOfferExternalById(productOffer.getId(), combinedKey);
                 };
 
                 productsOffersTasks.add(productOfferCallable);
