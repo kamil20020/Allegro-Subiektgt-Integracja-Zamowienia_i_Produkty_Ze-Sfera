@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.Locale;
 
-public class LoginGui {
+public class LoginGui extends ChangeableGui {
 
     private JPanel mainPanel;
     private JButton loginButton;

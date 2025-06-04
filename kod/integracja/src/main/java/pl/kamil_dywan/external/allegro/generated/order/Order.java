@@ -120,7 +120,7 @@ public class Order {
         addDeliveryToOrderItems();
     }
 
-    public boolean hasDocument() {
+    public boolean isHasDocument() {
 
         return hasDocument;
     }

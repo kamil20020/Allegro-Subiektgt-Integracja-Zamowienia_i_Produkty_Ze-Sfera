@@ -16,16 +16,14 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class OrdersGui implements ChangeableGui {
+public class OrdersGui extends ChangeableGui {
 
     private JPanel mainPanel;
 
@@ -37,6 +35,11 @@ public class OrdersGui implements ChangeableGui {
     private JButton selectAllButton;
     private JButton unselectAllButton;
 
+    private JComboBox<BooleanSelectOptions> isInvoiceRequiredSelect;
+    private JComboBox<BooleanSelectOptions> doesExistInSubiektSelect;
+    private JComboBox<BooleanSelectOptions> wasSendDocumentToAllegroSelect;
+    private JButton clearFiltersButton;
+
     private List<Order> ordersPage = new ArrayList<>();
 
     private final OrderService orderService;
@@ -45,7 +48,10 @@ public class OrdersGui implements ChangeableGui {
     private final Runnable handleLogout;
 
     private static final int SUBIEKT_ID_SENT_COL_INDEX = 1;
+    private static final int ALLEGRO_IS_INVOICE_COL_INDEX = 6;
     private static final int ALLEGRO_DOCUMENT_SENT_COL_INDEX = 7;
+
+    private static final String NOT_GIVEN_VALUE = "Brak";
 
     public OrdersGui(OrderService orderService, SferaOrderService sferaOrderService, Runnable handleLogout) {
 
@@ -56,10 +62,15 @@ public class OrdersGui implements ChangeableGui {
 
         $$$setupUI$$$();
 
+        isInvoiceRequiredSelect.addItemListener(l -> handleIsInvoiceRequiredChange(l.getItem()));
+        doesExistInSubiektSelect.addItemListener(l -> handleDoesExistInSubiektChange(l.getItem()));
+        wasSendDocumentToAllegroSelect.addItemListener(l -> handleWasSendDocumentToAllegroChange(l.getItem()));
+
         selectAllButton.addActionListener(e -> selectAll());
         unselectAllButton.addActionListener(e -> unselectAll());
         saveOrdersButton.addActionListener(e -> saveOrders());
         saveDocumentsButton.addActionListener(e -> saveDocuments());
+        clearFiltersButton.addActionListener(e -> clearFilters());
     }
 
     private PaginationTableGui.PaginationTableData loadData(int offset, int limit) {
@@ -79,7 +90,7 @@ public class OrdersGui implements ChangeableGui {
 
         int totalNumberOfRows = orderResponse.getTotalCount();
 
-        PaginationTableGui.PaginationTableData data = new PaginationTableGui.PaginationTableData(
+        PaginationTableGui.PaginationTableData<Object> data = new PaginationTableGui.PaginationTableData(
                 ordersPage,
                 totalNumberOfRows
         );
@@ -107,14 +118,94 @@ public class OrdersGui implements ChangeableGui {
 
         return new Object[]{
                 order.getId().toString(),
-                order.getExternalId() != null ? order.getExternalId() : "Brak",
+                order.getExternalId() != null ? order.getExternalId() : NOT_GIVEN_VALUE,
                 clientName,
                 String.valueOf(orderOrderItems.size()),
                 orderSummary.getTotalToPay().getAmount().toString() + " zł",
                 orderPayment.getFinishedAt().toLocalDate().toString(),
-                order.hasInvoice() ? "Tak" : "Nie",
-                (order.hasDocument() ? "" : "Nie ") + "Wysłano"
+                order.hasInvoice() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO,
+                order.isHasDocument() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO
         };
+    }
+
+    private void handleIsInvoiceRequiredChange(Object option) throws IllegalArgumentException {
+
+        int filterIndex = 0;
+
+        BooleanSelectOptions value = BooleanSelectOptions.getValue(option.toString());
+
+        if (value == BooleanSelectOptions.NOT_GIVEN) {
+
+            paginationTableGui.removeFilter(filterIndex);
+
+            return;
+        }
+
+        paginationTableGui
+                .addFilter(filterIndex, values -> values[ALLEGRO_IS_INVOICE_COL_INDEX].equals(value));
+    }
+
+    private void handleDoesExistInSubiektChange(Object option) throws IllegalArgumentException {
+
+        int filterIndex = 1;
+
+        BooleanSelectOptions value = BooleanSelectOptions.getValue(option.toString());
+
+        if (value == BooleanSelectOptions.NOT_GIVEN) {
+
+            paginationTableGui.removeFilter(filterIndex);
+
+            return;
+        }
+
+        Predicate<Object[]> filter;
+
+        if (value == BooleanSelectOptions.YES) {
+
+            filter = values -> {
+
+                Object gotValue = values[SUBIEKT_ID_SENT_COL_INDEX];
+
+                return !Objects.equals(gotValue, NOT_GIVEN_VALUE);
+            };
+        }
+        else {
+
+            filter = values -> {
+
+                Object gotValue = values[SUBIEKT_ID_SENT_COL_INDEX];
+
+                return Objects.equals(gotValue, NOT_GIVEN_VALUE);
+            };
+        }
+
+        paginationTableGui.addFilter(filterIndex, filter);
+    }
+
+    private void handleWasSendDocumentToAllegroChange(Object option) throws IllegalArgumentException {
+
+        int filterIndex = 2;
+
+        BooleanSelectOptions value = BooleanSelectOptions.getValue(option.toString());
+
+        if (value == BooleanSelectOptions.NOT_GIVEN) {
+
+            paginationTableGui.removeFilter(filterIndex);
+
+            return;
+        }
+
+        paginationTableGui
+            .addFilter(filterIndex, values -> values[ALLEGRO_DOCUMENT_SENT_COL_INDEX].equals(value));
+    }
+
+    private void clearFilters() {
+
+        isInvoiceRequiredSelect.setSelectedIndex(0);
+        doesExistInSubiektSelect.setSelectedIndex(0);
+        wasSendDocumentToAllegroSelect.setSelectedIndex(0);
+
+        paginationTableGui.clearFilters();
     }
 
     private void selectAll() {
@@ -263,6 +354,12 @@ public class OrdersGui implements ChangeableGui {
     @Override
     public void load() {
 
+        if (isLoaded()) {
+            return;
+        }
+
+        super.load();
+
         paginationTableGui.handleLoadTableExceptions();
     }
 
@@ -274,7 +371,11 @@ public class OrdersGui implements ChangeableGui {
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
-        String[] tableHeaders = {"Allegro Id", "Subiekt Id", "Kupujący", "Liczba pozycji", "Kwota brutto", "Data", "Wybrano fakturę", "Allegro dokument"};
+        isInvoiceRequiredSelect = new JComboBox<>(BooleanSelectOptions.values());
+        doesExistInSubiektSelect = new JComboBox<>(BooleanSelectOptions.values());
+        wasSendDocumentToAllegroSelect = new JComboBox<>(BooleanSelectOptions.values());
+
+        String[] tableHeaders = {"Allegro Id", "Subiekt Id", "Kupujący", "Liczba pozycji", "Kwota brutto", "Data", "Wybrano fakturę", "Wysłano dokument"};
 
         paginationTableGui = new PaginationTableGui(tableHeaders, this::loadData, this::convertToRow);
 
@@ -311,6 +412,7 @@ public class OrdersGui implements ChangeableGui {
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
+        gbc.gridwidth = 7;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.fill = GridBagConstraints.BOTH;
@@ -318,7 +420,8 @@ public class OrdersGui implements ChangeableGui {
         ordersPanelPlaceholder.setOpaque(true);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
+        gbc.gridwidth = 7;
         gbc.weightx = 1.0;
         gbc.weighty = 10.0;
         gbc.fill = GridBagConstraints.BOTH;
@@ -326,12 +429,14 @@ public class OrdersGui implements ChangeableGui {
         mainPanel.add(ordersPanelPlaceholder, gbc);
         ordersPanelPlaceholder.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JToolBar toolBar1 = new JToolBar();
+        toolBar1.setBorderPainted(false);
         toolBar1.setFloatable(false);
         toolBar1.setOpaque(false);
         toolBar1.setVisible(true);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
+        gbc.gridwidth = 7;
         gbc.weightx = 1.0;
         gbc.weighty = 1.0;
         gbc.insets = new Insets(0, 0, 20, 0);
@@ -354,6 +459,66 @@ public class OrdersGui implements ChangeableGui {
         saveDocumentsButton = new JButton();
         saveDocumentsButton.setText("Zapisz dokumenty sprzedaży w Allegro");
         toolBar1.add(saveDocumentsButton);
+        final JToolBar toolBar2 = new JToolBar();
+        toolBar2.setBorderPainted(false);
+        toolBar2.setEnabled(false);
+        toolBar2.setFloatable(false);
+        toolBar2.setOpaque(false);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        mainPanel.add(toolBar2, gbc);
+        toolBar2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(40, 0, 20, 0), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        final JLabel label2 = new JLabel();
+        label2.setText("Wymagana faktura");
+        toolBar2.add(label2);
+        final JToolBar.Separator toolBar$Separator4 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator4);
+        isInvoiceRequiredSelect.setMinimumSize(new Dimension(100, 30));
+        isInvoiceRequiredSelect.setName("aa");
+        isInvoiceRequiredSelect.setToolTipText("");
+        toolBar2.add(isInvoiceRequiredSelect);
+        final JToolBar.Separator toolBar$Separator5 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator5);
+        final JToolBar.Separator toolBar$Separator6 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator6);
+        final JToolBar.Separator toolBar$Separator7 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator7);
+        final JLabel label3 = new JLabel();
+        label3.setText("Istnieje w Subiekcie");
+        toolBar2.add(label3);
+        final JToolBar.Separator toolBar$Separator8 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator8);
+        doesExistInSubiektSelect.setMinimumSize(new Dimension(100, 30));
+        doesExistInSubiektSelect.setName("aa");
+        doesExistInSubiektSelect.setToolTipText("");
+        toolBar2.add(doesExistInSubiektSelect);
+        final JToolBar.Separator toolBar$Separator9 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator9);
+        final JToolBar.Separator toolBar$Separator10 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator10);
+        final JToolBar.Separator toolBar$Separator11 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator11);
+        final JLabel label4 = new JLabel();
+        label4.setText("Wysłano dokument do Allegro");
+        toolBar2.add(label4);
+        final JToolBar.Separator toolBar$Separator12 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator12);
+        wasSendDocumentToAllegroSelect.setMinimumSize(new Dimension(100, 30));
+        wasSendDocumentToAllegroSelect.setName("aa");
+        wasSendDocumentToAllegroSelect.setToolTipText("");
+        toolBar2.add(wasSendDocumentToAllegroSelect);
+        final JToolBar.Separator toolBar$Separator13 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator13);
+        final JToolBar.Separator toolBar$Separator14 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator14);
+        final JToolBar.Separator toolBar$Separator15 = new JToolBar.Separator();
+        toolBar2.add(toolBar$Separator15);
+        clearFiltersButton = new JButton();
+        clearFiltersButton.setText("Wyczyść filtrowanie");
+        toolBar2.add(clearFiltersButton);
     }
 
     /**

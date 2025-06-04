@@ -59,6 +59,8 @@ public class BearerAuthApi extends AllegroApi {
     @Override
     public HttpResponse<String> send(HttpRequest.Builder httpRequestBuilder) throws IllegalStateException, UnloggedException {
 
+        HttpRequest.Builder oldBuilder = httpRequestBuilder.copy();
+
         httpRequestBuilder
             .header("Authorization", bearerAuthContent);
 
@@ -80,10 +82,10 @@ public class BearerAuthApi extends AllegroApi {
 
                 log.info("Refreshed access token");
 
-                httpRequestBuilder
+                oldBuilder
                     .header("Authorization", bearerAuthContent);
 
-                gotResponse = super.send(httpRequestBuilder);
+                gotResponse = super.send(oldBuilder);
             }
         }
 

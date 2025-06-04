@@ -55,9 +55,11 @@ public class SferaOrderService {
 
         int numberOfSavedOrders = 0;
 
-        for (int i = 0; i < orders.size(); i++) {
+        for (Order selectedOrder : orders) {
 
-            Order selectedOrder = orders.get(i);
+            if (selectedOrder.getExternalId() != null && !selectedOrder.getExternalId().isEmpty()) {
+                continue;
+            }
 
             try {
 

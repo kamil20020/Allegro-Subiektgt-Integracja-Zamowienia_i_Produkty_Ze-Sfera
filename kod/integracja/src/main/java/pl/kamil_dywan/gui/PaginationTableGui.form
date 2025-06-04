@@ -49,6 +49,7 @@
         </constraints>
         <properties>
           <background color="-1114625"/>
+          <borderPainted value="false"/>
           <floatable value="false"/>
           <foreground color="-1"/>
           <opaque value="false"/>
@@ -118,6 +119,7 @@
           <gridbag weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
+          <borderPainted value="false"/>
           <floatable value="false"/>
           <opaque value="false"/>
         </properties>

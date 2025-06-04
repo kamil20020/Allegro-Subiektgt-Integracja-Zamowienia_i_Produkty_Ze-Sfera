@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
-public class ProductsGui implements ChangeableGui {
+public class ProductsGui extends ChangeableGui {
 
     private JPanel mainPanel;
 
@@ -69,7 +69,7 @@ public class ProductsGui implements ChangeableGui {
 
         int totalNumberOfRows = generalProductsPage.getTotalCount();
 
-        PaginationTableGui.PaginationTableData tableData = new PaginationTableGui.PaginationTableData(
+        PaginationTableGui.PaginationTableData<Object> tableData = new PaginationTableGui.PaginationTableData(
                 products,
                 totalNumberOfRows
         );
@@ -210,6 +210,12 @@ public class ProductsGui implements ChangeableGui {
     @Override
     public void load() {
 
+        if (isLoaded()) {
+            return;
+        }
+
+        super.load();
+
         paginationTableGui.handleLoadTableExceptions();
     }
 
@@ -273,6 +279,7 @@ public class ProductsGui implements ChangeableGui {
         mainPanel.add(productsPanelPlaceholder, gbc);
         productsPanelPlaceholder.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         final JToolBar toolBar1 = new JToolBar();
+        toolBar1.setBorderPainted(false);
         toolBar1.setFloatable(false);
         toolBar1.setOpaque(false);
         toolBar1.setVisible(true);

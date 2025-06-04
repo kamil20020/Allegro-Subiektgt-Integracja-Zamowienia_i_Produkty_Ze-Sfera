@@ -231,7 +231,7 @@ class Order extends SubiektObj {
 		$external_id = Helper::toWin($this->orderDetail['external_id']);
 
 		$sql = "SELECT dok_NrPelny FROM dok__Dokument
-				WHERE dok_Podtytul = '{$external_id}'
+				WHERE dok_Uwagi = '{$external_id}'
 		";		
 		$data = MSSql::getInstance()->query($sql);
 

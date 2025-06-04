@@ -49,6 +49,7 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
+          <borderPainted value="false"/>
           <floatable value="false"/>
           <opaque value="false"/>
           <visible value="true"/>

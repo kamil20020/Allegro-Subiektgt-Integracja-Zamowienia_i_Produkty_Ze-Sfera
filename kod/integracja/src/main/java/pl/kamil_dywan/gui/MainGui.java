@@ -11,9 +11,7 @@ public class MainGui {
 
     private JPanel mainPanel;
 
-    private JTabbedPane tabbedPane;
-    private final ProductsGui productsGui;
-    private final OrdersGui ordersGui;
+    private LoggedUserContent loggedUserContent;
     private final LoginGui loginGui;
 
     private GridBagConstraints mainPanelLayoutConstrains;
@@ -28,20 +26,16 @@ public class MainGui {
         this.authService = authService;
         this.basicInfoService = basicInfoService;
 
-        loginGui = new LoginGui(authService, this::handleSuccessAuth);
-        productsGui = new ProductsGui(productService, this::handleLogout);
-        ordersGui = new OrdersGui(orderService, sferaOrderService, this::handleLogout);
-
-        tabbedPane.addTab("Zamówienia", ordersGui.getMainPanel());
-        tabbedPane.addTab("Produkty", productsGui.getMainPanel());
-
-        loadMainPanelLayoutConstraints();
-
         frame = new JFrame("Integracja Allegro i Subiekt GT");
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1200, 721);
+        frame.setSize(1200, 820);
         frame.setLocationRelativeTo(null);
+
+        loadMainPanelLayoutConstraints();
+
+        loginGui = new LoginGui(authService, this::handleSuccessAuth);
+        loggedUserContent = new LoggedUserContent(frame, productService, orderService, sferaOrderService, basicInfoService, this::handleLogout);
 
         handleAuth();
 
@@ -68,62 +62,24 @@ public class MainGui {
             handleSuccessAuth();
         } else {
 
-            changeMainPanelContent(loginGui.getMainPanel());
+            changeMainPanelContent(loginGui);
         }
     }
 
     private void handleSuccessAuth() {
 
-        loadMenu();
-
-        productsGui.load();
-        ordersGui.load();
-
-        changeMainPanelContent(tabbedPane);
+        changeMainPanelContent(loggedUserContent);
     }
 
-    private void loadMenu() {
+    private void changeMainPanelContent(ChangeableGui changeableGui) {
 
-        JMenuBar menuBar = new JMenuBar();
-
-        JMenu accountMenu = new JMenu("Konto");
-
-        JMenuItem basicInfoMenuItem = new JMenuItem("Podstawowe informacje");
-        basicInfoMenuItem.addActionListener(e -> handleBasicInfo());
-
-        JMenuItem accountMenuItem = new JMenuItem("Wyloguj");
-        accountMenuItem.addActionListener(e -> handleLogout());
-
-        accountMenu.add(basicInfoMenuItem);
-        accountMenu.add(accountMenuItem);
-
-        menuBar.add(accountMenu);
-
-        frame.setJMenuBar(menuBar);
-    }
-
-    private void changeMainPanelContent(Component component) {
+        changeableGui.load();
 
         mainPanel.removeAll();
-        mainPanel.add(component, mainPanelLayoutConstrains);
+        mainPanel.add(changeableGui.getMainPanel(), mainPanelLayoutConstrains);
 
         mainPanel.revalidate();
         mainPanel.repaint();
-    }
-
-    private void handleBasicInfo() {
-
-        Optional<String> existingLocation = basicInfoService.getLocation();
-
-        String gotLocation = JOptionPane.showInputDialog("Wprowadź nazwę miejcowości sprzedawcy", existingLocation.orElse(""));
-
-        if (gotLocation == null) {
-            return;
-        }
-
-        basicInfoService.setLocation(gotLocation);
-
-        JOptionPane.showMessageDialog(null, "Zapisano dane", "Powiadomienie", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void handleLogout() {
@@ -133,7 +89,7 @@ public class MainGui {
         authService.logout();
 
         loginGui.handleLogout();
-        changeMainPanelContent(loginGui.getMainPanel());
+        changeMainPanelContent(loginGui);
     }
 
     {
@@ -154,15 +110,6 @@ public class MainGui {
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
         mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        tabbedPane = new JTabbedPane();
-        GridBagConstraints gbc;
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        mainPanel.add(tabbedPane, gbc);
     }
 
     /**

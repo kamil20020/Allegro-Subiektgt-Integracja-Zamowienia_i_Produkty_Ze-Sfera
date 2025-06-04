@@ -2,8 +2,19 @@ package pl.kamil_dywan.gui;
 
 import javax.swing.*;
 
-public interface ChangeableGui {
+public abstract class ChangeableGui {
 
-    void load();
-    JPanel getMainPanel();
+    private boolean isLoaded = false;
+
+    protected void load(){
+
+        isLoaded = true;
+    }
+
+    public boolean isLoaded(){
+
+        return isLoaded;
+    }
+
+    public abstract JPanel getMainPanel();
 }

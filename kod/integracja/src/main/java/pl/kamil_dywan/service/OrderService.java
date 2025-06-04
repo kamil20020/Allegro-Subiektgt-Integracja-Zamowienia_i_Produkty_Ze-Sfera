@@ -111,7 +111,7 @@ public class OrderService {
 
             byte[] content = contents.get(i);
 
-            if(content.length == 0){
+            if(content.length == 0 || selectedOrder.isHasDocument()){
                 continue;
             }
 

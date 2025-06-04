@@ -25,6 +25,8 @@ public class App {
         AppProperties.loadProperties();
         SecureStorage.load();
 
+//        SecureStorage.saveCredentials("access_token", "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX25hbWUiOiIxMDgxNDAzODIiLCJzY29wZSI6WyJhbGxlZ3JvOmFwaTpvcmRlcnM6cmVhZCIsImFsbGVncm86YXBpOnNhbGU6b2ZmZXJzOndyaXRlIiwiYWxsZWdybzphcGk6cHJvZmlsZTpyZWFkIiwiYWxsZWdybzphcGk6c2FsZTpvZmZlcnM6cmVhZCIsImFsbGVncm86YXBpOm9yZGVyczp3cml0ZSJdLCJhbGxlZ3JvX2FwaSI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9hbGxlZ3JvLnBsLmFsbGVncm9zYW5kYm94LnBsIiwiZXhwIjoxNzQ5MDIzNzMwLCJqdGkiOiI4NDYyZjQ4NC0wNTFlLTQ3N2ItYTdlMi0wYzBjZmEyMjJkODIiLCJjbGllbnRfaWQiOiJjNjI1MzA5OTEyMTM0ZWNmOTA0NmY3YzFjMWU0MmM2NCJ9.DamLuVK7xcSSVa-bfNS8WLHpHiKJcyUSn4XWBfrBbiVl_fvRZWegBYAbVTsJF4luwWgR0aH7f_VwOpdPWvAnpMsNmm7eAfOgqKBcsv9aEHHjwtQloqZnvWLXEN84Wpy8aqlBUht5ay0aJUat0ehQy2RpfltzibvIDe0dSEJUrGdX0HKr3P5u31H9JMPuTZSz9gNWQLu0xaDZs7YjZIyfJNhYuBWlB2q5hltBvYsBHfarJgnMcWq3OVGME5eAeH-Hhmo8B7-Puid9MRSmCMEv4rBVFYhCpRS5cKSGvZzyuCcxteSWP9uxTGA-HUl6D9cWX59-mYpCvUny8VxhNUvZkWfhU01rl0JkIKrZ0F-L3c_wu-S3LCZdMQmymRSXlww7igbovIBufX84OnEKKqLtrW9BoE7QofJMS5KmAdiutu9aNrLGBhkCMJG7MNWySLEgiDe6lXUOwSPIKHcvk80b5Toqm3-8VuPL-x2Uz1rZz2sUdTQmxnES8FM1Zhc6yDAgX_YTvff1iRCR6IgrFtU5TWhmhK62zKubw4K5lBzHl9X1Vx7RqmRwGJlyFi-rQoCEy_SJMSW2yCAGCbegQx7WfcGpoLCyujgYDdTpmCoRVgV5dCVQrNAUWBXzycbPuNR41eZXo7fVgn12iSSvXv6DvjxFf-3OZWRdev1KNXCQwP0");
+
         LoginApi loginApi = new LoginApi();
         OrderApi orderApi = new OrderApi();
         ProductApi productApi = new ProductApi();
@@ -43,7 +45,6 @@ public class App {
         SferaOrderService sferaOrderService = new SferaOrderService(sferaOrderApi);
         OrderService orderService = new OrderService(orderApi, sferaOrderService);
         ProductService productService = new ProductService(productApi);
-
         new MainGui(authService, productService, orderService, sferaOrderService, basicInfoService);
 //
 //        Customer customer = Customer.builder()
