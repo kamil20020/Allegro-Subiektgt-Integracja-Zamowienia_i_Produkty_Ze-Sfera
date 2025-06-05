@@ -228,12 +228,12 @@ public class OrdersGui extends ChangeableGui {
         }
 
         List<String> selectedOrdersIds = selectedOrdersData.stream()
-                .map(selectedOrderData -> selectedOrderData[0].toString())
-                .collect(Collectors.toList());
+            .map(selectedOrderData -> selectedOrderData[0].toString())
+            .collect(Collectors.toList());
 
         return ordersPage.stream()
-                .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
-                .collect(Collectors.toList());
+            .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
+            .collect(Collectors.toList());
 
     }
 

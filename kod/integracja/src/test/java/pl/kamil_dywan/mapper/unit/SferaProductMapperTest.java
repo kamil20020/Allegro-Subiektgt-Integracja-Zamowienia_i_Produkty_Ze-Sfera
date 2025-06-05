@@ -1,6 +1,8 @@
 package pl.kamil_dywan.mapper.unit;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import pl.kamil_dywan.external.sfera.generated.Product;
 import pl.kamil_dywan.external.allegro.generated.Cost;
 import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
@@ -16,13 +18,20 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SferaProductMapperTest {
 
-    @Test
-    void shouldMapWithExternalId() {
+    @ParameterizedTest
+    @CsvSource(value = {
+        "offer_id, producer#ean, producer, ean",
+        "offer_id, #ean, offer_id, ean",
+        "offer_id, producer#, producer, ",
+        "offer_id, , offer_id, ",
+    })
+    void shouldMapWithExternalId(String expectedOfferId, String expectedCombinedCode, String expectedCode, String expectedEan) {
 
         //given
-        ExternalId externalId = new ExternalId("123");
+        ExternalId externalId = new ExternalId(expectedCombinedCode);
 
         Offer offer = Offer.builder()
+            .id(expectedOfferId)
             .external(externalId)
             .name("Oferta 123")
             .build();
@@ -43,7 +52,8 @@ class SferaProductMapperTest {
 
         //then
         assertNotNull(gotProduct);
-        assertEquals(externalId.getId(), gotProduct.getCode());
+        assertEquals(expectedCode, gotProduct.getCode());
+        assertEquals(expectedEan, gotProduct.getEan());
         assertEquals(offer.getName(), gotProduct.getName());
         assertEquals(orderItem.getPrice().getAmount(), gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
@@ -75,6 +85,7 @@ class SferaProductMapperTest {
         //then
         assertNotNull(gotProduct);
         assertEquals(offer.getId(), gotProduct.getCode());
+        assertNull(gotProduct.getEan());
         assertEquals(offer.getName(), gotProduct.getName());
         assertEquals(orderItem.getPrice().getAmount(), gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());

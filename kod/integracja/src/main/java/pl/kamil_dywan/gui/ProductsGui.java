@@ -4,6 +4,7 @@ import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.external.allegro.generated.offer_product.OfferProduct;
 import pl.kamil_dywan.api.allegro.response.OfferProductResponse;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
+import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.subiektgt.own.product.ProductType;
 import pl.kamil_dywan.service.ProductService;
 
@@ -81,9 +82,24 @@ public class ProductsGui extends ChangeableGui {
 
         ProductOfferResponse productOfferResponse = (ProductOfferResponse) rawProductOffer;
 
+        String externalIdValue = productOfferResponse.getExternalIdValue();
+
+        String producerCode = null;
+        String ean = null;
+
+        if (externalIdValue != null) {
+
+            ExternalId externalId = productOfferResponse.getExternalId();
+
+            producerCode = externalId.getProducerCode();
+            ean = externalId.getEanCode();
+        }
+
         return new Object[]{
                 productOfferResponse.getId(),
-                productOfferResponse.getExternalIdValue() != null ? productOfferResponse.getExternalIdValue() : "Brak",
+                producerCode != null ? producerCode : "Brak",
+                ean != null ? ean : "Brak",
+                productOfferResponse.getSubiektId() != null ? productOfferResponse.getSubiektId() : "Brak",
                 productOfferResponse.getName(),
                 productOfferResponse.getPriceWithoutTax().toString() + " zł",
                 productOfferResponse.getPriceWithTax() + " zł",
@@ -227,7 +243,7 @@ public class ProductsGui extends ChangeableGui {
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
-        String[] columnsHeaders = {"Identyfikator", "Zewnętrzny identyfikator", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
+        String[] columnsHeaders = {"Allegro Id", "Kod producenta", "EAN (GTIN)", "Subiekt Id", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
 
         paginationTableGui = new PaginationTableGui(columnsHeaders, this::loadProductsPage, this::convertProductToRow);
 

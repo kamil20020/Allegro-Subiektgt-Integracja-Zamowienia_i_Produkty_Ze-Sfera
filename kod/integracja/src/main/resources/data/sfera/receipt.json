@@ -9,12 +9,14 @@
   "products": [
     {
       "code": "7777917953",
+      "ean": null,
       "qty": 1,
       "price": 20.00,
       "name": "Nillkin backs for Samsung Galaxy S23 Ultra Nature TPU Pro colorless"
     },
     {
       "code": "DOSTAWA123",
+      "ean": null,
       "qty": 1,
       "price": 10.99,
       "name": "Dostawa do klienta"

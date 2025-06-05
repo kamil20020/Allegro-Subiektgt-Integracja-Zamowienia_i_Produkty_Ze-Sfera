@@ -41,7 +41,7 @@ class ProductServiceTestIT {
     @BeforeEach
     public void setUp(){
 
-        productService = new ProductService(null);
+        productService = new ProductService(null, null);
     }
 
     @Test

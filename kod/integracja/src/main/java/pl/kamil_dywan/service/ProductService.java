@@ -28,6 +28,8 @@ public class ProductService {
 
     private final ProductApi productApi;
 
+    private final SferaProductService sferaProductService;
+
     private static final FileWriter<Object> subiektProductFileWriter;
     private static final ExecutorService productsExecutorService = Executors.newFixedThreadPool(8);
 
@@ -42,9 +44,10 @@ public class ProductService {
         subiektProductFileWriter = new EppFileWriter<>(headersNames, toWriteHeadersIndexes, rowsLengths, writeIndexes);
     }
 
-    public ProductService(ProductApi productApi){
+    public ProductService(ProductApi productApi, SferaProductService sferaProductService){
 
         this.productApi = productApi;
+        this.sferaProductService = sferaProductService;
     }
 
     public static EppFileWriter<?> getFileWriter(){
@@ -102,7 +105,40 @@ public class ProductService {
 
         HttpResponse<String> gotResponse = productApi.getProductOfferById(id);
 
-        return Api.extractBody(gotResponse, ProductOfferResponse.class);
+        ProductOfferResponse gotProduct = Api.extractBody(gotResponse, ProductOfferResponse.class);
+
+        setSubiektId(gotProduct);
+
+        return gotProduct;
+    }
+
+    private void setSubiektId(ProductOfferResponse gotProduct){
+
+        ExternalId externalId = gotProduct.getExternalId();
+
+        String code = gotProduct.getExternalIdValue();
+
+        String producerCode = null;
+        String ean = null;
+
+        if(gotProduct.getExternalIdValue() != null){
+
+            producerCode = externalId.getProducerCode();
+            ean = externalId.getProducerCode();
+        }
+
+        if(producerCode != null){
+
+            code = producerCode;
+        }
+
+        Optional<String> foundSubiektIdOpt = sferaProductService.getSubiektIdByCodeOrEan(code, ean);
+
+        if(foundSubiektIdOpt.isEmpty()){
+            return;
+        }
+
+        gotProduct.setSubiektId(foundSubiektIdOpt.get());
     }
 
     public void setExternalIdForAllOffers(List<ProductOfferResponse> productOfferResponses) throws Exception{

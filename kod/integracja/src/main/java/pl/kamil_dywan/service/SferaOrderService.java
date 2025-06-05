@@ -1,9 +1,7 @@
 package pl.kamil_dywan.service;
 
-import pl.kamil_dywan.App;
 import pl.kamil_dywan.api.Api;
-import pl.kamil_dywan.api.allegro.request.ExistsDocumentByExternalIdRequest;
-import pl.kamil_dywan.api.allegro.response.OrderResponse;
+import pl.kamil_dywan.api.allegro.request.GetDocumentByExternalIdRequest;
 import pl.kamil_dywan.api.sfera.SferaOrderApi;
 import pl.kamil_dywan.api.sfera.request.CreateOrderRequest;
 import pl.kamil_dywan.api.sfera.request.GetOrderRequest;
@@ -11,22 +9,15 @@ import pl.kamil_dywan.api.sfera.response.CreatedDocumentResponse;
 import pl.kamil_dywan.api.sfera.response.DocumentResponse;
 import pl.kamil_dywan.api.sfera.response.ErrorResponse;
 import pl.kamil_dywan.api.sfera.response.GeneralResponse;
-import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
 import pl.kamil_dywan.external.sfera.generated.ResponseStatus;
-import pl.kamil_dywan.file.read.JSONFileReader;
-import pl.kamil_dywan.mapper.Base64Mapper;
 import pl.kamil_dywan.mapper.sfera.SferaOrderMapper;
 
 import java.net.http.HttpResponse;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class SferaOrderService {
 
@@ -92,9 +83,9 @@ public class SferaOrderService {
         order.setExternalId(gotOrderExternalId);
     }
 
-    public Optional<String> getSubiektIdByExternalId(String orderExternalId){
+    public Optional<String> getSubiektIdByExternalId(String orderExternalId) throws IllegalStateException{
 
-        ExistsDocumentByExternalIdRequest request = new ExistsDocumentByExternalIdRequest(orderExternalId);
+        GetDocumentByExternalIdRequest request = new GetDocumentByExternalIdRequest(orderExternalId);
 
         HttpResponse<String> gotResponse = sferaOrderApi.getSubiektIdByExternalId(request);
 

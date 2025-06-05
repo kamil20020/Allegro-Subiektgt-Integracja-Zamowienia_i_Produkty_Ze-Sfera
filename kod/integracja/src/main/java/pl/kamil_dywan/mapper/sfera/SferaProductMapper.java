@@ -17,15 +17,27 @@ public interface SferaProductMapper {
 
         ExternalId externalId = allegroOffer.getExternal();
 
+        String code = productId;
+
+        String producerCode = null;
+        String eanCode = null;
+
         if(externalId != null && externalId.getId() != null){
 
-            productId = externalId.getId();
+            producerCode = externalId.getProducerCode();
+            eanCode = externalId.getEanCode();
+        }
+
+        if(producerCode != null){
+
+            code = producerCode;
         }
 
         BigDecimal priceWithTax = allegroOrderItem.getPrice().getAmount();
 
         return Product.builder()
-            .code(productId)
+            .code(code)
+            .ean(eanCode)
             .name(allegroOffer.getName())
             .priceWithTax(priceWithTax)
             .quantity(allegroOrderItem.getQuantity())

@@ -2,6 +2,7 @@
 namespace APISubiektGT\SubiektGT;
 use COM;
 use APISubiektGT\MSSql;
+use APISubiektGT\Helper;
 use APISubiektGT\Logger;
 use APISubiektGT\SubiektGT\SubiektObj;
 use APISubiektGT\SubiektGT;
@@ -9,7 +10,7 @@ use APISubiektGT\SubiektGT;
 class Product extends SubiektObj{
 
 	protected $productGt = false;	
-	protected $ean = 0;
+	protected $ean = null;
 	protected $code = '';
 	protected $price;
 	protected $wholesale_price = 0;
@@ -33,16 +34,37 @@ class Product extends SubiektObj{
 	protected $products_qtys_by_supplier = 0;
 	protected $group_id = '';
 	protected $off_prefix = 0;
+	protected $productDetail = null;
 
 	public function __construct($subiektGt,$productDetail = array()){		
 		parent::__construct($subiektGt, $productDetail);
 		$this->excludeAttr(array('productGt','off_prefix','is_exists','objDetail'));
-		
-		if($this->code!='' &&  $subiektGt->Towary->Istnieje($this->code)){
-			$this->productGt = $subiektGt->Towary->Wczytaj($this->code);			
-			$this->is_exists = true;			
+
+		$to_search_code = "";
+
+		if($this->code != null && $this->code != '' && $subiektGt->Towary->Istnieje($this->code)){
+
+			$to_search_code = $this->code;
+			$is_exists = true;
+		}
+		else if($this->ean != null && $this->ean != '' && $subiektGt->Towary->Istnieje($this->ean)){
+
+			$to_search_code = $this->ean;
+			$is_exists = true;
+		}
+
+		if($is_exists){
+
+			$this->productGt = $subiektGt->Towary->Wczytaj($to_search_code);					
 			$this->getGtObject();
-		}		
+		}
+	
+		$this->productDetail = $productDetail;
+	}
+
+	public function doesExist(){
+
+		return $is_exists != null && $is_exists != '';
 	}
 
 	protected function setGtObject(){				
@@ -222,7 +244,6 @@ class Product extends SubiektObj{
 		return $qtys;
 	}
 
-
 	public function getQtysBySupplier(){		
 		$sql = "SELECT tw_Id as id ,tw_Symbol as code, Rezerwacja as reservation , Dostepne as available, Stan as on_store, tc_CenaNetto1 as price1, tc_CenaNetto2 as price2, tc_CenaNetto3 as price3, tc_CenaNetto4 as price4, tc_CenaNetto5 as price5, tw_Nazwa as name  FROM vwTowar LEFT JOIN 
 			tw_KodKreskowy ON kk_IdTowar = tw_Id 
@@ -234,6 +255,29 @@ class Product extends SubiektObj{
 		return $data;
 	}
 
+	public function getSymbolByCodeOrEan(){
+
+		$code = Helper::toWin($this->productDetail['code']);
+		$ean = Helper::toWin($this->productDetail['ean']);
+
+		$sql = "SELECT tw_Symbol
+				FROM tw__Towar
+				WHERE 
+					tw_Symbol = '{$code}' OR tw_Symbol = '{$ean}' OR
+					(tw_Opis != '' AND (tw_Opis = '{$code}' OR tw_Opis = '{$ean}')) OR
+					(tw_PodstKodKresk != '' AND (tw_PodstKodKresk = '{$code}' OR tw_PodstKodKresk = '{$ean}'))
+					
+		";
+
+		$data = MSSql::getInstance()->query($sql);
+
+		if(empty($data)){
+	
+			return null;
+		}
+
+		return $data[0]['tw_Symbol'];
+	}
 
 	protected function getQty(){
 		$sql = "SELECT TOP 1 Rezerwacja,Dostepne,Stan  FROM vwTowar WHERE tw_Id = {$this->gt_id} AND st_MagId = ".intval($this->id_store);		

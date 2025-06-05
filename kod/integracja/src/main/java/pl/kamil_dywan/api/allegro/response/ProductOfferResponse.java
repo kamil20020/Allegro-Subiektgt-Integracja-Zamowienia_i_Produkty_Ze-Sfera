@@ -56,8 +56,24 @@ public class ProductOfferResponse {
     private ExternalId externalId;
 
     @JsonIgnore
+    private String subiektId;
+
+    @JsonIgnore
     private static final String PRODUCER_CODE_KEY = "Kod producenta";
     private static final String EAN_CODE_KEY = "EAN (GTIN)";
+
+    @JsonIgnore
+    public void setSubiektId(String subiektId) {
+
+        this.subiektId = subiektId;
+
+        if(subiektId == null){
+
+            return;
+        }
+
+        this.subiektId = subiektId.replaceAll("\"", "");
+    }
 
     @JsonIgnore
     public String getExternalIdValue(){

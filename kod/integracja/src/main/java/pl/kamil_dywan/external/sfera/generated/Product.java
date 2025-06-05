@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @JsonPropertyOrder({
     "code",
+    "ean",
     "qty",
     "price",
     "name",
@@ -25,6 +26,9 @@ public class Product {
 
     @JsonProperty("code")
     private String code;
+
+    @JsonProperty("ean")
+    private String ean;
 
     @JsonProperty("name")
     private String name;

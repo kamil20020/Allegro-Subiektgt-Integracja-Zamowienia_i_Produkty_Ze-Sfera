@@ -6,6 +6,7 @@ import pl.kamil_dywan.api.allegro.LoginApi;
 import pl.kamil_dywan.api.allegro.OrderApi;
 import pl.kamil_dywan.api.allegro.ProductApi;
 import pl.kamil_dywan.api.sfera.SferaOrderApi;
+import pl.kamil_dywan.api.sfera.SferaProductApi;
 import pl.kamil_dywan.api.sfera.request.CreateOrderRequest;
 import pl.kamil_dywan.external.sfera.generated.Customer;
 import pl.kamil_dywan.external.sfera.generated.Product;
@@ -31,6 +32,7 @@ public class App {
         OrderApi orderApi = new OrderApi();
         ProductApi productApi = new ProductApi();
         SferaOrderApi sferaOrderApi = new SferaOrderApi();
+        SferaProductApi sferaProductApi = new SferaProductApi();
 
         BasicInfoService basicInfoService = new BasicInfoService();
         BasicInfoService.init();
@@ -44,7 +46,9 @@ public class App {
 
         SferaOrderService sferaOrderService = new SferaOrderService(sferaOrderApi);
         OrderService orderService = new OrderService(orderApi, sferaOrderService);
-        ProductService productService = new ProductService(productApi);
+        SferaProductService sferaProductService = new SferaProductService(sferaProductApi);
+        ProductService productService = new ProductService(productApi, sferaProductService);
+
         new MainGui(authService, productService, orderService, sferaOrderService, basicInfoService);
 //
 //        Customer customer = Customer.builder()

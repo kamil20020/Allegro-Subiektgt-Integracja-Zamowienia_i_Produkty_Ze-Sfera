@@ -41,7 +41,8 @@ class ExternalIdTest {
     @ParameterizedTest
     @CsvSource(value = {
         "producer#ean, producer",
-        "producer#, producer"
+        "producer#, producer",
+        "producer, producer"
     })
     void shouldGetProducerCodeWhenIsSet(String expectedCombinedCode, String expectedGotProducerCode) {
 
@@ -94,6 +95,7 @@ class ExternalIdTest {
     @ParameterizedTest
     @CsvSource(value = {
         "producer#,",
+        "producer,",
         "#,",
     })
     void shouldGetEanCodeWhenIsNotSet(String expectedCombinedCode) {

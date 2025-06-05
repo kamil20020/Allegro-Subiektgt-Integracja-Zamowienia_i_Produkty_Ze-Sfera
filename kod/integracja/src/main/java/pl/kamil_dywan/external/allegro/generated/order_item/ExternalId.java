@@ -69,6 +69,15 @@ public class ExternalId {
 
         String[] data = id.split(SEPARATOR, 2);
 
+        if(data.length == 1){
+
+            if(position == 0){
+                return data[0];
+            }
+
+            return null;
+        }
+
         String codeOnPosition = data[position];
 
         if(!verifyCode(codeOnPosition)){
