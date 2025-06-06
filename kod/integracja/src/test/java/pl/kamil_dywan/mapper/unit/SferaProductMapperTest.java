@@ -23,6 +23,8 @@ class SferaProductMapperTest {
         "offer_id, producer#ean, producer, ean",
         "offer_id, #ean, offer_id, ean",
         "offer_id, producer#, producer, ",
+        "offer_id, producer, producer, ",
+        "offer_id, #, offer_id, ",
         "offer_id, , offer_id, ",
     })
     void shouldMapWithExternalId(String expectedOfferId, String expectedCombinedCode, String expectedCode, String expectedEan) {
@@ -54,6 +56,39 @@ class SferaProductMapperTest {
         assertNotNull(gotProduct);
         assertEquals(expectedCode, gotProduct.getCode());
         assertEquals(expectedEan, gotProduct.getEan());
+        assertEquals(offer.getName(), gotProduct.getName());
+        assertEquals(orderItem.getPrice().getAmount(), gotProduct.getPriceWithTax());
+        assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
+    }
+
+    @Test
+    void shouldMapWithPartiallyExternalId() {
+
+        //given
+        Offer offer = Offer.builder()
+            .id(UUID.randomUUID().toString())
+            .name("Oferta 123")
+            .external(new ExternalId())
+            .build();
+
+        Cost cost = new Cost(
+            new BigDecimal("32.48"),
+            Currency.PLN
+        );
+
+        OrderItem orderItem = OrderItem.builder()
+            .offer(offer)
+            .price(cost)
+            .quantity(2)
+            .build();
+
+        //when
+        Product gotProduct = SferaProductMapper.map(orderItem);
+
+        //then
+        assertNotNull(gotProduct);
+        assertEquals(offer.getId(), gotProduct.getCode());
+        assertNull(gotProduct.getEan());
         assertEquals(offer.getName(), gotProduct.getName());
         assertEquals(orderItem.getPrice().getAmount(), gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());

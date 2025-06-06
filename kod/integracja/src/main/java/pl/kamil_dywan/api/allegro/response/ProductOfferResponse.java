@@ -124,56 +124,54 @@ public class ProductOfferResponse {
     }
 
     @JsonIgnore
-    public Optional<String> getEANCode(){
+    public String getEANCode(){
 
         return getParameterCode(EAN_CODE_KEY);
     }
 
     @JsonIgnore
-    public Optional<String> getProducerCode(){
+    public String getProducerCode(){
 
         return getParameterCode(PRODUCER_CODE_KEY);
     }
 
     @JsonIgnore
-    private Optional<String> getParameterCode(String parameterName){
-
-        Optional<String> emptyResult = Optional.empty();
+    private String getParameterCode(String parameterName){
 
         Optional<ProductOfferProduct> firstProductOfferProduct = getFirstProductOfferProduct();
 
         if(firstProductOfferProduct.isEmpty()){
-            return emptyResult;
+            return null;
         }
 
         List<OfferProductParameter> parameters = firstProductOfferProduct.get().getParameters();
 
         if(parameters == null || parameters.isEmpty()) {
-            return emptyResult;
+            return null;
         }
 
-        Optional<OfferProductParameter> producerCodeParameter = parameters.stream()
+        Optional<OfferProductParameter> foundCodeParameter = parameters.stream()
             .filter(parameter -> Objects.equals(parameter.getName(), parameterName))
             .findFirst();
 
-        if(producerCodeParameter.isEmpty()) {
-            return emptyResult;
+        if(foundCodeParameter.isEmpty()) {
+            return null;
         }
 
-        List<String> parameterValues = producerCodeParameter.get().getValues();
+        List<String> parameterValues = foundCodeParameter.get().getValues();
 
         if(parameterValues == null || parameterValues.isEmpty()) {
-            return emptyResult;
+            return null;
         }
 
-        String gotExternalIdValue = parameterValues.get(0);
+        String gotFirstValue = parameterValues.get(0);
 
-        if(gotExternalIdValue != null){
+        if(gotFirstValue != null){
 
-            gotExternalIdValue = gotExternalIdValue.replaceAll("\\s", "");
+            gotFirstValue = gotFirstValue.replaceAll("\\s", "");
         }
 
-        return Optional.ofNullable(gotExternalIdValue);
+        return gotFirstValue;
     }
 
     @JsonIgnore

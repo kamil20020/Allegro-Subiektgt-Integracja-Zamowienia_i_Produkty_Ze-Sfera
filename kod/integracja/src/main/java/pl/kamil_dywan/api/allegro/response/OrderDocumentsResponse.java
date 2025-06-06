@@ -20,4 +20,5 @@ public class OrderDocumentsResponse {
 
     @JsonProperty("invoices")
     private List<Object> invoices;
+
 }

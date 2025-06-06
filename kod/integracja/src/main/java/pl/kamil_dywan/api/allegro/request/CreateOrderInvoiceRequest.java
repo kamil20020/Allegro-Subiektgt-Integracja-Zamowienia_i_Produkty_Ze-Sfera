@@ -24,4 +24,5 @@ public class CreateOrderInvoiceRequest {
 
     @JsonProperty("invoiceNumber")
     private String invoiceNumber;
+
 }

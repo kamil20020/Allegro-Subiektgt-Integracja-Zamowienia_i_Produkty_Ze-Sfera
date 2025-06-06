@@ -42,7 +42,7 @@ public class ExternalId {
 
         if(combinedCode.equals(SEPARATOR)){
 
-            combinedCode = null;
+            return null;
         }
 
         return combinedCode;

@@ -35,6 +35,9 @@ class AllegroOrderItemMapperTest {
         assertEquals(allegroDelivery.getCost().getAmount(), gotDeliveryOrderItem.getPrice().getAmount());
         assertEquals(allegroDelivery.getCost().getAmount(), gotDeliveryOrderItem.getOriginalPrice().getAmount());
         assertEquals(allegroDelivery.getTime().getFrom(), gotDeliveryOrderItem.getBoughtAt());
+        assertEquals("DOSTAWA123", gotDeliveryOrderItem.getOffer().getId());
+        assertEquals("Dostawa do klienta", gotDeliveryOrderItem.getOffer().getName());
         assertEquals(expectedTaxRatePercentage, gotDeliveryOrderItem.getTax().getRate());
     }
+
 }

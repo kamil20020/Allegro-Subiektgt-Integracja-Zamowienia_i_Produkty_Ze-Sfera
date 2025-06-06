@@ -120,16 +120,6 @@ public class Order {
         addDeliveryToOrderItems();
     }
 
-    public boolean isHasDocument() {
-
-        return hasDocument;
-    }
-
-    public void setHasDocument(boolean hasDocument) {
-
-        this.hasDocument = hasDocument;
-    }
-
     @JsonIgnore
     public void addDeliveryToOrderItems(){
 
@@ -199,6 +189,7 @@ public class Order {
         return deliveryCost.getAmount().intValue() > 0;
     }
 
+    @JsonIgnore
     public void setExternalId(String externalId){
 
         this.externalId = externalId;

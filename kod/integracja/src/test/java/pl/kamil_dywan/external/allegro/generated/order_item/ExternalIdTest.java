@@ -27,12 +27,24 @@ class ExternalIdTest {
     }
 
     @Test
-    public void shouldGetCombinedCodeForEmptyId(){
+    public void shouldGetCombinedCodeForEmptyCodes(){
 
         //given
 
         //when
         String gotCombinedKey = ExternalId.getCombinedCode("", "");
+
+        //then
+        assertNull(gotCombinedKey);
+    }
+
+    @Test
+    public void shouldGetCombinedCodeForNotGivenCodes(){
+
+        //given
+
+        //when
+        String gotCombinedKey = ExternalId.getCombinedCode(null, null);
 
         //then
         assertNull(gotCombinedKey);
@@ -44,7 +56,7 @@ class ExternalIdTest {
         "producer#, producer",
         "producer, producer"
     })
-    void shouldGetProducerCodeWhenIsSet(String expectedCombinedCode, String expectedGotProducerCode) {
+    void shouldGetProducerCodeWhenItIsSet(String expectedCombinedCode, String expectedGotProducerCode) {
 
         //given
         ExternalId externalId = new ExternalId(expectedCombinedCode);
@@ -59,13 +71,39 @@ class ExternalIdTest {
 
     @ParameterizedTest
     @CsvSource(value = {
-        "#ean,",
-        "#,",
+        "#ean",
+        "#"
     })
-    void shouldGetProducerCodeWhenIsNotSet(String expectedCombinedCode) {
+    void shouldGetProducerCodeWhenItIsNotSet(String expectedCombinedCode) {
 
         //given
         ExternalId externalId = new ExternalId(expectedCombinedCode);
+
+        //when
+        String gotProducerCode = externalId.getProducerCode();
+
+        //then
+        assertNull(gotProducerCode);
+    }
+
+    @Test
+    void shouldGetProducerCodeWhenCombinedCodeIsEmpty() {
+
+        //given
+        ExternalId externalId = new ExternalId("");
+
+        //when
+        String gotProducerCode = externalId.getProducerCode();
+
+        //then
+        assertNull(gotProducerCode);
+    }
+
+    @Test
+    void shouldGetProducerCodeWhenCombinedCodeIsNotGiven() {
+
+        //given
+        ExternalId externalId = new ExternalId(null);
 
         //when
         String gotProducerCode = externalId.getProducerCode();
@@ -79,7 +117,7 @@ class ExternalIdTest {
         "producer#ean, ean",
         "#ean, ean"
     })
-    void shouldGetEanCodeWhenIsSet(String expectedCombinedCode, String expectedGotEanCode) {
+    void shouldGetEanCodeWhenItIsSet(String expectedCombinedCode, String expectedGotEanCode) {
 
         //given
         ExternalId externalId = new ExternalId(expectedCombinedCode);
@@ -94,14 +132,40 @@ class ExternalIdTest {
 
     @ParameterizedTest
     @CsvSource(value = {
-        "producer#,",
-        "producer,",
-        "#,",
+        "producer#",
+        "producer",
+        "#",
     })
-    void shouldGetEanCodeWhenIsNotSet(String expectedCombinedCode) {
+    void shouldGetEanCodeWhenItIsNotSet(String expectedCombinedCode) {
 
         //given
         ExternalId externalId = new ExternalId(expectedCombinedCode);
+
+        //when
+        String gotEanCode = externalId.getEanCode();
+
+        //then
+        assertNull(gotEanCode);
+    }
+
+    @Test
+    void shouldGetEanCodeWhenCombinedCodeIsEmpty() {
+
+        //given
+        ExternalId externalId = new ExternalId("");
+
+        //when
+        String gotEanCode = externalId.getEanCode();
+
+        //then
+        assertNull(gotEanCode);
+    }
+
+    @Test
+    void shouldGetEanCodeWhenCombinedCodeIsNotGiven() {
+
+        //given
+        ExternalId externalId = new ExternalId(null);
 
         //when
         String gotEanCode = externalId.getEanCode();

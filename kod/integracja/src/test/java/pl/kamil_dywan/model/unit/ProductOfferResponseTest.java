@@ -13,12 +13,48 @@ import pl.kamil_dywan.external.allegro.own.Currency;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductOfferResponseTest {
+
+    @Test
+    void shouldSetSubiektIdWithoutSpaces(){
+
+        //given
+        String expectedSubiektId = "subiekt-id";
+
+        ProductOfferResponse productOfferResponse = new ProductOfferResponse();
+
+        //when
+        productOfferResponse.setSubiektId(expectedSubiektId);
+
+        String gotSubiektId = productOfferResponse.getSubiektId();
+
+        //then
+        assertNotNull(gotSubiektId);
+        assertEquals(expectedSubiektId, gotSubiektId);
+    }
+
+    @Test
+    void shouldSetSubiektIdWithComma(){
+
+        //given
+        String inputSubiektId = "\"subiektid\"";
+        String expectedSubiektId = "subiektid";
+
+        ProductOfferResponse productOfferResponse = new ProductOfferResponse();
+
+        //when
+        productOfferResponse.setSubiektId(inputSubiektId);
+
+        String gotSubiektId = productOfferResponse.getSubiektId();
+
+        //then
+        assertNotNull(gotSubiektId);
+        assertEquals(expectedSubiektId, gotSubiektId);
+    }
 
     @Test
     void shouldGetExternalIdValue(){
@@ -41,7 +77,7 @@ class ProductOfferResponseTest {
     }
 
     @Test
-    void shouldNotGetExternalIdValueWhenThereIsNot(){
+    void shouldNotGetExternalIdValueWhenExternalIdIsNull(){
 
         //given
         ProductOfferResponse productOfferResponse = new ProductOfferResponse();
@@ -54,7 +90,7 @@ class ProductOfferResponseTest {
     }
 
     @Test
-    void shouldNotGetExternalIdValueWhenThereIsNotExternalIdValue(){
+    void shouldNotGetExternalIdValueWhenThereExternalIdValueIsNull(){
 
         //given
         ExternalId externalId = new ExternalId();
@@ -71,7 +107,7 @@ class ProductOfferResponseTest {
     }
 
     @Test
-    void shouldGetTaxRateWithGiven() {
+    void shouldGetTaxRateWithGivenTaxSetting() {
 
         //given
         BigDecimal taxRateValue = new BigDecimal("23");
@@ -175,7 +211,7 @@ class ProductOfferResponseTest {
         "23.00, 16.26",
         "0.00, 20.00"
     })
-    void shouldGetPriceWithoutTaxFor23PercentTax(BigDecimal taxRateValue, BigDecimal expectedPriceWithoutTax) {
+    void shouldGetPriceWithoutTax(BigDecimal taxRateValue, BigDecimal expectedPriceWithoutTax) {
 
         //given
         TaxForCountry taxForCountry = new TaxForCountry(taxRateValue, Country.PL.toString());
@@ -230,11 +266,11 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCodeOpt = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCodeOpt.isPresent());
-        assertEquals(expectedProducerCode, gotProducerCodeOpt.get());
+        assertNotNull(gotProducerCode);
+        assertEquals(expectedProducerCode, gotProducerCode);
     }
 
     @Test
@@ -245,7 +281,7 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCode = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
         assertTrue(gotProducerCode.isEmpty());
@@ -260,7 +296,7 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCode = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
         assertTrue(gotProducerCode.isEmpty());
@@ -287,7 +323,7 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCode = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
         assertTrue(gotProducerCode.isEmpty());
@@ -304,7 +340,7 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCode = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
         assertTrue(gotProducerCode.isEmpty());
@@ -323,7 +359,7 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCode = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
         assertTrue(gotProducerCode.isEmpty());
@@ -342,7 +378,7 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCode = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
         assertTrue(gotProducerCode.isEmpty());
@@ -367,7 +403,7 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCode = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
         assertTrue(gotProducerCode.isEmpty());
@@ -391,7 +427,7 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCode = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
         assertTrue(gotProducerCode.isEmpty());
@@ -416,7 +452,7 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCode = productOfferResponse.getProducerCode();
+        String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
         assertTrue(gotProducerCode.isEmpty());
@@ -451,11 +487,11 @@ class ProductOfferResponseTest {
             .build();
 
         //when
-        Optional<String> gotProducerCodeOpt = productOfferResponse.getEANCode();
+        String gotEanCode = productOfferResponse.getEANCode();
 
         //then
-        assertTrue(gotProducerCodeOpt.isPresent());
-        assertEquals(expectedEanCode, gotProducerCodeOpt.get());
+        assertNotNull(gotEanCode);
+        assertEquals(expectedEanCode, gotEanCode);
     }
 
 }

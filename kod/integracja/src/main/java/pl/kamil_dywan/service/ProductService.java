@@ -5,6 +5,7 @@ import pl.kamil_dywan.api.allegro.ProductApi;
 import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.api.allegro.response.OfferProductResponse;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
+import pl.kamil_dywan.external.allegro.generated.offer_product.ProductOfferProduct;
 import pl.kamil_dywan.external.allegro.generated.offer_product.SellingMode;
 import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.subiektgt.own.product.*;
@@ -48,11 +49,6 @@ public class ProductService {
 
         this.productApi = productApi;
         this.sferaProductService = sferaProductService;
-    }
-
-    public static EppFileWriter<?> getFileWriter(){
-
-        return (EppFileWriter) subiektProductFileWriter;
     }
 
     public OfferProductResponse getGeneralProductsPage(int offset, int limit) throws UnloggedException {
@@ -116,7 +112,7 @@ public class ProductService {
 
         ExternalId externalId = gotProduct.getExternalId();
 
-        String code = gotProduct.getExternalIdValue();
+        String code = gotProduct.getId().toString();
 
         String producerCode = null;
         String ean = null;
@@ -124,7 +120,7 @@ public class ProductService {
         if(gotProduct.getExternalIdValue() != null){
 
             producerCode = externalId.getProducerCode();
-            ean = externalId.getProducerCode();
+            ean = externalId.getEanCode();
         }
 
         if(producerCode != null){
@@ -141,39 +137,31 @@ public class ProductService {
         gotProduct.setSubiektId(foundSubiektIdOpt.get());
     }
 
-    public void setExternalIdForAllOffers(List<ProductOfferResponse> productOfferResponses) throws Exception{
+    public void setExternalIdForAllOffers(List<ProductOfferResponse> productOfferResponses) throws IllegalStateException {
 
         if(productOfferResponses == null || productOfferResponses.isEmpty()){
 
             return;
         }
 
-        List<Callable<HttpResponse<String>>> productsOffersTasks = new ArrayList<>(productOfferResponses.size());
+        List<Callable<Void>> productsOffersTasks = new ArrayList<>(productOfferResponses.size());
 
-        productOfferResponses
-            .forEach(productOffer -> {
+        for(ProductOfferResponse productOffer : productOfferResponses){
 
-                Optional<String> gotProducerCode = productOffer.getProducerCode();
-                Optional<String> gotEanCodeOpt = productOffer.getEANCode();
+            Callable<Void> task = () -> {
 
-                String combinedKey = ExternalId.getCombinedCode(gotProducerCode.get(), gotEanCodeOpt.get());
+                setExternalIdForOffer(productOffer);
 
-                if(combinedKey == null){
-                    return;
-                }
+                return null;
+            };
 
-                Callable<HttpResponse<String>> productOfferCallable = () -> {
-
-                   return productApi.patchOfferExternalById(productOffer.getId(), combinedKey);
-                };
-
-                productsOffersTasks.add(productOfferCallable);
-            });
+            productsOffersTasks.add(task);
+        }
 
         try{
-            List<Future<HttpResponse<String>>> gotProductsOffersFutures = productsExecutorService.invokeAll(productsOffersTasks);
+            List<Future<Void>> gotProductsOffersFutures = productsExecutorService.invokeAll(productsOffersTasks);
 
-            for(Future<HttpResponse<String>> gotProductOfferFuture : gotProductsOffersFutures){
+            for(Future<Void> gotProductOfferFuture : gotProductsOffersFutures){
 
                 if(gotProductOfferFuture.isCancelled()){
 
@@ -188,6 +176,25 @@ public class ProductService {
             e.printStackTrace();
 
             throw new IllegalStateException("Could not patch products externals ids");
+        }
+    }
+
+    public void setExternalIdForOffer(ProductOfferResponse productOffer) throws IllegalStateException{
+
+        String gotProducerCode = productOffer.getProducerCode();
+        String gotEanCodeOpt = productOffer.getEANCode();
+
+        String combinedKey = ExternalId.getCombinedCode(gotProducerCode, gotEanCodeOpt);
+
+        if(combinedKey == null || combinedKey.isEmpty()){
+
+            return;
+        }
+
+        HttpResponse<String> gotResponse = productApi.patchOfferExternalById(productOffer.getId(), combinedKey);
+
+        if(gotResponse.statusCode() != 200){
+            throw new IllegalStateException("Nie udało się zaktualizować zewnętrznego id dla produktu: " + productOffer.getId());
         }
     }
 

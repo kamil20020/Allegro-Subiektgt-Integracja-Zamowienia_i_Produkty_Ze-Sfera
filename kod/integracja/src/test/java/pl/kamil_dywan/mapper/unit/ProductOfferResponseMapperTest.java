@@ -48,16 +48,18 @@ class ProductOfferResponseMapperTest {
         BigDecimal expectedUnitPriceWithTax = sellingMode.getPrice().getAmount();
         BigDecimal expectedUnitPriceWithoutTax = new BigDecimal("28.03");
 
+        ProductType expectedProductType = ProductType.GOODS;
+
         //when
-        Product subiektProduct = ProductOfferMapper.map(allegroProductOfferResponse, ProductType.GOODS);
+        Product subiektProduct = ProductOfferMapper.map(allegroProductOfferResponse, expectedProductType);
 
         //then
         assertNotNull(subiektProduct);
-        assertEquals(ProductType.GOODS, subiektProduct.getType());
         assertEquals(allegroProductOfferResponse.getId().toString(), subiektProduct.getId());
         assertEquals(allegroProductOfferResponse.getName(), subiektProduct.getName());
-        assertEquals(expectedTaxRate, subiektProduct.getTaxRatePercentage());
+        assertEquals(expectedProductType, subiektProduct.getType());
         assertEquals(expectedUnitPriceWithoutTax, subiektProduct.getUnitPriceWithoutTax());
+        assertEquals(expectedTaxRate, subiektProduct.getTaxRatePercentage());
     }
 
     @Test
@@ -96,11 +98,11 @@ class ProductOfferResponseMapperTest {
 
         //then
         assertNotNull(subiektProduct);
-        assertEquals(ProductType.GOODS, subiektProduct.getType());
         assertEquals(allegroProductOfferResponse.getId().toString(), subiektProduct.getId());
         assertEquals(allegroProductOfferResponse.getName(), subiektProduct.getName());
-        assertEquals(expectedTaxRate, subiektProduct.getTaxRatePercentage());
+        assertEquals(ProductType.GOODS, subiektProduct.getType());
         assertEquals(expectedUnitPriceWithoutTax, subiektProduct.getUnitPriceWithoutTax());
+        assertEquals(expectedTaxRate, subiektProduct.getTaxRatePercentage());
     }
 
     @Test
@@ -115,11 +117,11 @@ class ProductOfferResponseMapperTest {
         );
 
         TaxSettings taxSettings = new TaxSettings(
-                List.of(
-                        new TaxForCountry(new BigDecimal("23"), Country.PL.toString())
-                ),
-                "",
-                ""
+            List.of(
+                new TaxForCountry(new BigDecimal("23"), Country.PL.toString())
+            ),
+            "",
+            ""
         );
 
         String expectedId = "12";

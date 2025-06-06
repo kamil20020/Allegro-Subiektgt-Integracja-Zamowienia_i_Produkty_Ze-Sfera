@@ -418,7 +418,47 @@ class OrderTest {
         assertNotNull(order);
         assertEquals(2, order.getOrderItems().size());
         assertTrue(order.getOrderItems().contains(orderItem));
+        assertEquals("Product 123", order.getOrderItems().get(0).getOffer().getName());
         assertEquals("DOSTAWA123", order.getOrderItems().get(1).getOffer().getId());
+    }
+
+    @ParameterizedTest
+    @CsvSource(value = {
+        "external-id, external-id",
+        "\"external-id\", external-id",
+    })
+    public void shouldSetExternalId(String inputExternalId, String expectedExternalId){
+
+        //given
+        Order order = Order.builder()
+            .orderItems(new ArrayList<>())
+            .build();
+
+        //when
+        order.setExternalId(inputExternalId);
+
+        String gotExternalId = order.getExternalId();
+
+        //then
+        assertNotNull(gotExternalId);
+        assertEquals(expectedExternalId, gotExternalId);
+    }
+
+    @Test
+    public void shouldSetExternalIdWhenItIsNull(){
+
+        //given
+        Order order = Order.builder()
+            .orderItems(new ArrayList<>())
+            .build();
+
+        //when
+        order.setExternalId(null);
+
+        String gotExternalId = order.getExternalId();
+
+        //then
+        assertNull(gotExternalId);
     }
 
 }

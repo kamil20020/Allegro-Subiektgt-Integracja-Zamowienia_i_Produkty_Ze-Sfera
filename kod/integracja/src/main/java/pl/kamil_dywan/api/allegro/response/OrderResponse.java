@@ -28,4 +28,5 @@ public class OrderResponse {
 
     @JsonProperty("totalCount")
     private Integer totalCount;
+
 }
