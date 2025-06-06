@@ -284,7 +284,7 @@ class ProductOfferResponseTest {
         String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCode.isEmpty());
+        assertNull(gotProducerCode);
     }
 
     @Test
@@ -299,7 +299,7 @@ class ProductOfferResponseTest {
         String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCode.isEmpty());
+        assertNull(gotProducerCode);
     }
 
     @Test
@@ -326,7 +326,7 @@ class ProductOfferResponseTest {
         String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCode.isEmpty());
+        assertNull(gotProducerCode);
     }
 
     @Test
@@ -343,7 +343,7 @@ class ProductOfferResponseTest {
         String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCode.isEmpty());
+        assertNull(gotProducerCode);
     }
 
     @Test
@@ -362,7 +362,7 @@ class ProductOfferResponseTest {
         String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCode.isEmpty());
+        assertNull(gotProducerCode);
     }
 
     @Test
@@ -381,7 +381,7 @@ class ProductOfferResponseTest {
         String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCode.isEmpty());
+        assertNull(gotProducerCode);
     }
 
     @Test
@@ -406,7 +406,7 @@ class ProductOfferResponseTest {
         String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCode.isEmpty());
+        assertNull(gotProducerCode);
     }
 
     @Test
@@ -430,7 +430,7 @@ class ProductOfferResponseTest {
         String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCode.isEmpty());
+        assertNull(gotProducerCode);
     }
 
     @Test
@@ -455,7 +455,7 @@ class ProductOfferResponseTest {
         String gotProducerCode = productOfferResponse.getProducerCode();
 
         //then
-        assertTrue(gotProducerCode.isEmpty());
+        assertNull(gotProducerCode);
     }
 
     @Test

@@ -51,23 +51,72 @@ public class OrderService {
         return gotOrderResponse;
     }
 
-    private void setOrdersExternalIds(List<Order> orders){
+    public void setOrdersDocumentsExist(List<Order> orders) throws UnloggedException, IllegalStateException{
+
+        List<Callable<Void>> toExecuteList = new ArrayList<>();
+
+        orders
+            .forEach(order -> {
+
+                Callable<Void> toExecute = () -> {
+
+                    setOrderDocumentExist(order);
+
+                    return null;
+                };
+
+                toExecuteList.add(toExecute);
+            });
+
+        try{
+
+            List<Future<Void>> gotFutureList = ordersExecutorService.invokeAll(toExecuteList);
+
+            for(Future<Void> gotFuture : gotFutureList){
+
+                if(gotFuture.isCancelled()){
+
+                    throw new IllegalStateException("Order document fetch was canceled");
+                }
+
+                gotFuture.get();
+            }
+        }
+        catch (InterruptedException | ExecutionException e) {
+
+            e.printStackTrace();
+
+            throw new IllegalStateException("Could not fetch orders documents");
+        }
+    }
+
+    public void setOrderDocumentExist(Order order) throws UnloggedException, IllegalStateException{
+
+        String orderId = order.getId().toString();
+
+        HttpResponse<String> gotResponse = orderApi.getDocuments(orderId);
+
+        if(gotResponse.statusCode() != 200){
+
+            throw new IllegalStateException(gotResponse.body());
+        }
+
+        OrderDocumentsResponse orderDocumentsResponse = Api.extractBody(gotResponse, OrderDocumentsResponse.class);
+
+        boolean documentExists = orderDocumentsResponse.getInvoices().size() > 0;
+
+        order.setHasDocument(documentExists);
+    }
+
+    public void setOrdersExternalIds(List<Order> orders){
 
         List<Callable<Void>> toExecuteList = new ArrayList<>();
 
         for(Order order : orders){
 
-            String externalOrderId = order.getId().toString();
-
             Callable<Void> toExecute = () -> {
 
-                Optional<String> gotSubiektNrOpt = sferaOrderService.getSubiektIdByExternalId(externalOrderId);
-
-                if (gotSubiektNrOpt.isEmpty()) {
-                    return null;
-                }
-
-                order.setExternalId(gotSubiektNrOpt.get());
+                setOrderExternalId(order);
 
                 return null;
             };
@@ -95,6 +144,15 @@ public class OrderService {
 
             throw new IllegalStateException("Could not get sfera external ids");
         }
+    }
+
+    public void setOrderExternalId(Order order){
+
+        String externalOrderId = order.getId().toString();
+
+        String gotSubiektNr = sferaOrderService.getSubiektIdByExternalId(externalOrderId);
+
+        order.setExternalId(gotSubiektNr);
     }
 
     public List<Integer> uploadDocuments(List<Order> orders) throws UnloggedException, IllegalArgumentException {
@@ -160,11 +218,16 @@ public class OrderService {
         return uploadedOrdersIndices;
     }
 
-    private void uploadDocument(String orderId, byte[] documentContent) throws UnloggedException, IllegalStateException {
+    public void uploadDocument(String orderId, byte[] documentContent) throws UnloggedException, IllegalStateException {
 
         String createdDocumentId = createDocument(orderId);
 
-        saveDocument(orderId, createdDocumentId, documentContent);
+        HttpResponse<String> gotResponse = orderApi.saveDocument(orderId, createdDocumentId, documentContent);
+
+        if(gotResponse.statusCode() != 200){
+
+            throw new IllegalStateException(gotResponse.body());
+        }
     }
 
     private String createDocument(String orderId) throws UnloggedException, IllegalStateException{
@@ -186,77 +249,5 @@ public class OrderService {
         DocumentIdResponse documentIdResponse = Api.extractBody(gotResponse, DocumentIdResponse.class);
 
         return documentIdResponse.getId();
-    }
-
-    private void saveDocument(String orderId, String documentId, byte[] data) throws UnloggedException, IllegalStateException{
-
-        HttpResponse<String> gotResponse = orderApi.saveDocument(orderId, documentId, data);
-
-        if(gotResponse.statusCode() != 200){
-
-            throw new IllegalStateException(gotResponse.body());
-        }
-    }
-
-    private void setOrdersDocumentsExist(List<Order> orders) throws UnloggedException, IllegalStateException{
-
-        List<Callable<Void>> toExecuteList = new ArrayList<>();
-
-        orders
-            .forEach(order -> {
-
-                Callable<Void> toExecute = () -> {
-
-                    setDocumentsExist(order);
-
-                    return null;
-                };
-
-                toExecuteList.add(toExecute);
-            });
-
-        try{
-
-            List<Future<Void>> gotFutureList = ordersExecutorService.invokeAll(toExecuteList);
-
-            for(Future<Void> gotFuture : gotFutureList){
-
-                if(gotFuture.isCancelled()){
-
-                    throw new IllegalStateException("Order document fetch was canceled");
-                }
-
-                gotFuture.get();
-            }
-        }
-        catch (InterruptedException | ExecutionException e) {
-
-            e.printStackTrace();
-
-            throw new IllegalStateException("Could not fetch orders documents");
-        }
-    }
-
-    private void setDocumentsExist(Order order) throws UnloggedException, IllegalStateException{
-
-        String orderId = order.getId().toString();
-
-        boolean gotResult = documentsExist(orderId);
-
-        order.setHasDocument(gotResult);
-    }
-
-    private boolean documentsExist(String orderId) throws UnloggedException, IllegalStateException{
-
-        HttpResponse<String> gotResponse = orderApi.getDocuments(orderId);
-
-        if(gotResponse.statusCode() != 200){
-
-            throw new IllegalStateException(gotResponse.body());
-        }
-
-        OrderDocumentsResponse orderDocumentsResponse = Api.extractBody(gotResponse, OrderDocumentsResponse.class);
-
-        return orderDocumentsResponse.getInvoices().size() > 0;
     }
 }

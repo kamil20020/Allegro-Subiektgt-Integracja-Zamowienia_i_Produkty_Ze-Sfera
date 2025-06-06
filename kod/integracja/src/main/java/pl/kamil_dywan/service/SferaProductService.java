@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public class SferaProductService {
 
-    private SferaProductApi sferaProductApi;
+    private final SferaProductApi sferaProductApi;
 
     public SferaProductService(SferaProductApi sferaProductApi){
 
@@ -33,7 +33,7 @@ public class SferaProductService {
         return generalResponse;
     }
 
-    public Optional<String> getSubiektIdByCodeOrEan(String code, String ean) throws IllegalStateException{
+    public String getSubiektIdByCodeOrEan(String code, String ean) throws IllegalStateException{
 
         GetProductByCodeAndEanRequest request = new GetProductByCodeAndEanRequest(code, ean);
 
@@ -48,7 +48,7 @@ public class SferaProductService {
             gotSubiektId = null;
         }
 
-        return Optional.ofNullable(gotSubiektId);
+        return gotSubiektId;
     }
 
 }

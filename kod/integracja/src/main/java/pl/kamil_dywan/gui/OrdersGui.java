@@ -142,7 +142,7 @@ public class OrdersGui extends ChangeableGui {
         }
 
         paginationTableGui
-                .addFilter(filterIndex, values -> values[ALLEGRO_IS_INVOICE_COL_INDEX].equals(value));
+            .addFilter(filterIndex, values -> values[ALLEGRO_IS_INVOICE_COL_INDEX].equals(value));
     }
 
     private void handleDoesExistInSubiektChange(Object option) throws IllegalArgumentException {
@@ -321,7 +321,8 @@ public class OrdersGui extends ChangeableGui {
             try {
 
                 savedOrdersDocumentsIndices = orderService.uploadDocuments(selectedOrders);
-            } catch (UnloggedException e) {
+            }
+            catch (UnloggedException e) {
 
                 handleLogout.run();
 

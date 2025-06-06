@@ -68,7 +68,7 @@ public class SferaOrderService {
         return numberOfSavedOrders;
     }
 
-    private void create(Order order) throws IllegalStateException {
+    public void create(Order order) throws IllegalStateException {
 
         CreateOrderRequest createOrderRequest = SferaOrderMapper.map(order);
 
@@ -76,14 +76,14 @@ public class SferaOrderService {
 
         GeneralResponse gotGeneralResponse = handleResponseErrors(gotResponse);
 
-        CreatedDocumentResponse createdDocumentResponse = Api.extractBody((String) gotGeneralResponse.getData(), CreatedDocumentResponse.class);
+        CreatedDocumentResponse createdDocumentResponse = Api.extractBody(gotGeneralResponse.getData(), CreatedDocumentResponse.class);
 
         String gotOrderExternalId = createdDocumentResponse.getOrderExternalId();
 
         order.setExternalId(gotOrderExternalId);
     }
 
-    public Optional<String> getSubiektIdByExternalId(String orderExternalId) throws IllegalStateException{
+    public String getSubiektIdByExternalId(String orderExternalId) throws IllegalStateException{
 
         GetDocumentByExternalIdRequest request = new GetDocumentByExternalIdRequest(orderExternalId);
 
@@ -98,7 +98,7 @@ public class SferaOrderService {
             gotSubiektId = null;
         }
 
-        return Optional.ofNullable(gotSubiektId);
+        return gotSubiektId;
     }
 
     public List<byte[]> getContents(List<Order> orders) throws IllegalStateException{
@@ -125,7 +125,7 @@ public class SferaOrderService {
         return contents;
     }
 
-    private byte[] getDocumentContent(String orderExternalId) throws IllegalStateException{
+    public byte[] getDocumentContent(String orderExternalId) throws IllegalStateException{
 
         if(orderExternalId == null){
 

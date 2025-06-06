@@ -113,7 +113,7 @@ class ProductServiceTest {
 
         //when
         Mockito.when(productApi.getProductOfferById(any())).thenReturn(expectedHttpResponse);
-        Mockito.when(sferaProductService.getSubiektIdByCodeOrEan(any(), any())).thenReturn(Optional.ofNullable(expectedSubiektId));
+        Mockito.when(sferaProductService.getSubiektIdByCodeOrEan(any(), any())).thenReturn(expectedSubiektId);
 
         try(
             MockedStatic<Api> apiMock = Mockito.mockStatic(Api.class);
@@ -214,27 +214,33 @@ class ProductServiceTest {
 
     @ParameterizedTest
     @CsvSource(value = {
-        ""
+        "producer, ean, producer#ean",
+        "producer, , producer#",
+        ", ean, #ean"
     })
-    public void shouldSetExternalIdForOffer(){
+    public void shouldSetExternalIdForOffer(String expectedProducerCode, String expectedEanCode, String expectedExternalIdValue){
 
         //given
         Long expectedId = 123L;
 
-        String expectedProducerCode = "producer";
-        String expectedEanCode = "ean";
-        String expectedExternalIdValue = "producer#ean";
+        List<String> producerCodeParameterValues = new ArrayList<>();
+
+        producerCodeParameterValues.add(expectedProducerCode);
 
         OfferProductParameter producerCodeParameter = OfferProductParameter.builder()
             .id(345L)
             .name("Kod producenta")
-            .values(List.of(expectedProducerCode))
+            .values(producerCodeParameterValues)
             .build();
+
+        List<String> eanCodeParameterValues = new ArrayList<>();
+
+        eanCodeParameterValues.add(expectedEanCode);
 
         OfferProductParameter eanCodeParameter = OfferProductParameter.builder()
             .id(678L)
             .name("EAN (GTIN)")
-            .values(List.of(expectedEanCode))
+            .values(eanCodeParameterValues)
             .build();
 
         List<OfferProductParameter> parameters = List.of(producerCodeParameter, eanCodeParameter);
@@ -256,17 +262,81 @@ class ProductServiceTest {
         //when
         Mockito.when(productApi.patchOfferExternalById(any(), any())).thenReturn(expectedHttpResponse);
 
-        try(
-            MockedStatic<Api> apiMock = Mockito.mockStatic(Api.class);
-        ){
-
-            productService.setExternalIdForOffer(productOfferResponse);
-
-            apiMock.verify(() -> Api.extractBody(expectedHttpResponse, ProductOfferResponse.class));
-        }
+        productService.setExternalIdForOffer(productOfferResponse);
 
         //then
+        assertEquals(expectedExternalIdValue, productOfferResponse.getExternalIdValue());
+
         Mockito.verify(productApi).patchOfferExternalById(expectedId, expectedExternalIdValue);
+    }
+
+    @Test
+    public void shouldSetExternalIdForAllOffers() throws InterruptedException {
+
+        //given
+        ExecutorService executorServiceMock = Mockito.mock(ExecutorService.class);
+        TestUtils.updatePrivateStaticField(ProductService.class, "productsExecutorService", executorServiceMock);
+
+        List<String> producerCodeParameterValues = new ArrayList<>();
+
+        producerCodeParameterValues.add("producer");
+
+        OfferProductParameter producerCodeParameter = OfferProductParameter.builder()
+            .id(345L)
+            .name("Kod producenta")
+            .values(producerCodeParameterValues)
+            .build();
+
+        List<OfferProductParameter> parameters = List.of(producerCodeParameter);
+
+        ProductOfferProduct product = new ProductOfferProduct(UUID.randomUUID(), parameters);
+
+        ProductOfferProductRelatedData productOfferProductRelatedData = new ProductOfferProductRelatedData(
+            product,
+            new ProductOfferProductRelatedDataQuantity(2)
+        );
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .id(123L)
+            .productSet(List.of(productOfferProductRelatedData))
+            .build();
+
+        ProductOfferResponse productOfferResponse1 = ProductOfferResponse.builder()
+            .id(456L)
+            .productSet(List.of(productOfferProductRelatedData))
+            .build();
+
+        List<ProductOfferResponse> productOfferResponses = List.of(productOfferResponse, productOfferResponse1);
+
+        HttpResponse<String> expectedHttpResponse = getTestHttpResponse(200);
+
+        //when
+        Mockito.when(executorServiceMock.invokeAll(any())).thenAnswer(answer -> {
+
+            List<Callable<ProductOfferResponse>> productsTasks = answer.getArgument(0);
+            List<Future<ProductOfferResponse>> productsFutures = new ArrayList<>();
+
+            for(Callable<ProductOfferResponse> task : productsTasks){
+
+                ProductOfferResponse gotProduct = task.call();
+
+                productsFutures.add(CompletableFuture.completedFuture(gotProduct));
+            }
+
+            return productsFutures;
+        });
+
+        Mockito.when(productApi.patchOfferExternalById(any(), any())).thenReturn(expectedHttpResponse);
+
+        productService.setExternalIdForAllOffers(productOfferResponses);
+
+        //then
+        for(ProductOfferResponse productOffer : productOfferResponses){
+
+            Mockito.verify(productApi).patchOfferExternalById(productOffer.getId(), "producer#");
+        }
+
+        Mockito.verify(executorServiceMock).invokeAll(any());
     }
 
 }

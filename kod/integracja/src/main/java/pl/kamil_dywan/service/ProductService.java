@@ -128,13 +128,9 @@ public class ProductService {
             code = producerCode;
         }
 
-        Optional<String> foundSubiektIdOpt = sferaProductService.getSubiektIdByCodeOrEan(code, ean);
+        String foundSubiektId = sferaProductService.getSubiektIdByCodeOrEan(code, ean);
 
-        if(foundSubiektIdOpt.isEmpty()){
-            return;
-        }
-
-        gotProduct.setSubiektId(foundSubiektIdOpt.get());
+        gotProduct.setSubiektId(foundSubiektId);
     }
 
     public void setExternalIdForAllOffers(List<ProductOfferResponse> productOfferResponses) throws IllegalStateException {
@@ -182,9 +178,9 @@ public class ProductService {
     public void setExternalIdForOffer(ProductOfferResponse productOffer) throws IllegalStateException{
 
         String gotProducerCode = productOffer.getProducerCode();
-        String gotEanCodeOpt = productOffer.getEANCode();
+        String gotEanCode = productOffer.getEANCode();
 
-        String combinedKey = ExternalId.getCombinedCode(gotProducerCode, gotEanCodeOpt);
+        String combinedKey = ExternalId.getCombinedCode(gotProducerCode, gotEanCode);
 
         if(combinedKey == null || combinedKey.isEmpty()){
 
@@ -196,6 +192,10 @@ public class ProductService {
         if(gotResponse.statusCode() != 200){
             throw new IllegalStateException("Nie udało się zaktualizować zewnętrznego id dla produktu: " + productOffer.getId());
         }
+
+        ExternalId externalId = new ExternalId(combinedKey);
+
+        productOffer.setExternalId(externalId);
     }
 
     private List<Object> getEmptyProductRelatedDataForEpp() {

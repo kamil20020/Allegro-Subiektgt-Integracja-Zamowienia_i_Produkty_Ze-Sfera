@@ -60,6 +60,8 @@ public class ProductOfferResponse {
 
     @JsonIgnore
     private static final String PRODUCER_CODE_KEY = "Kod producenta";
+
+    @JsonIgnore
     private static final String EAN_CODE_KEY = "EAN (GTIN)";
 
     @JsonIgnore
