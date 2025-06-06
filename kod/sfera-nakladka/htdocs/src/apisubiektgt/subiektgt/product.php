@@ -64,7 +64,7 @@ class Product extends SubiektObj{
 
 	public function doesExist(){
 
-		return $is_exists != null && $is_exists != '';
+		return $this->productGt != null;
 	}
 
 	protected function setGtObject(){				

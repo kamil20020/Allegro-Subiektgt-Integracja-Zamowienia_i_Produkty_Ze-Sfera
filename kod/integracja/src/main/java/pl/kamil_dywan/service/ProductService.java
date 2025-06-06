@@ -146,7 +146,13 @@ public class ProductService {
 
             Callable<Void> task = () -> {
 
-                setExternalIdForOffer(productOffer);
+                try {
+                    setExternalIdForOffer(productOffer);
+                }
+                catch (IllegalStateException e){
+
+                    e.printStackTrace();
+                }
 
                 return null;
             };

@@ -50,7 +50,7 @@ class Order extends SubiektObj {
 	protected function addPosition($product){
 		$position = false;
 		$p = new Product($this->subiektGt,$product);
-		if(!$p->isExists()){
+		if(!$p->doesExist()){
 			return false;
 		}
 		$p_data = $p->get();
