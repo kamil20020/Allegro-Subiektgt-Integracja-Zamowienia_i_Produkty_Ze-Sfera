@@ -48,7 +48,7 @@ public class SferaOrderService {
 
         for (Order selectedOrder : orders) {
 
-            if (selectedOrder.getExternalId() != null && !selectedOrder.getExternalId().isEmpty()) {
+            if ((selectedOrder.getExternalId() != null && !selectedOrder.getExternalId().isEmpty()) || selectedOrder.isHasDocument()) {
                 continue;
             }
 

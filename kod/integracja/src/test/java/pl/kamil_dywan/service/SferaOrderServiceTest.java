@@ -68,10 +68,7 @@ class SferaOrderServiceTest {
 
         Order order1 = Order.builder()
             .id(UUID.randomUUID())
-            .summary(summary)
-            .invoice(invoice)
-            .orderItems(new ArrayList<>())
-            .externalId("")
+            .hasDocument(true)
             .build();
 
         Order order2 = Order.builder()
@@ -79,9 +76,17 @@ class SferaOrderServiceTest {
             .summary(summary)
             .invoice(invoice)
             .orderItems(new ArrayList<>())
+            .externalId("")
             .build();
 
-        List<Order> orders = List.of(order, order1, order2);
+        Order order3 = Order.builder()
+            .id(UUID.randomUUID())
+            .summary(summary)
+            .invoice(invoice)
+            .orderItems(new ArrayList<>())
+            .build();
+
+        List<Order> orders = List.of(order, order1, order2, order3);
 
         List<String> ordersIds = orders.stream()
             .map(o -> o.getId().toString())
@@ -109,12 +114,12 @@ class SferaOrderServiceTest {
 
             assertEquals(expectedNumberOfCreatedOrders, gotNumberOfCreatedOrders);
 
-            apiMock.verify(() -> Api.extractBody(expectedHttpResponse, GeneralResponse.class), times(orders.size() - 1));
-            apiMock.verify(() -> Api.extractBody(expectedResponseStr, CreatedDocumentResponse.class), times(orders.size() - 1));
+            apiMock.verify(() -> Api.extractBody(expectedHttpResponse, GeneralResponse.class), times(expectedNumberOfCreatedOrders));
+            apiMock.verify(() -> Api.extractBody(expectedResponseStr, CreatedDocumentResponse.class), times(expectedNumberOfCreatedOrders));
         }
 
         //then
-        for(int i = 1; i < orders.size(); i++){
+        for(int i = orders.size() - expectedNumberOfCreatedOrders; i < orders.size(); i++){
 
             String expectedOrderId = ordersIds.get(i);
 

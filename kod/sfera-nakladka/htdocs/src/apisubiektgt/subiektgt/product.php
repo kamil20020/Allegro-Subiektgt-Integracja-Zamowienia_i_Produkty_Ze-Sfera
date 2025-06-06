@@ -40,22 +40,11 @@ class Product extends SubiektObj{
 		parent::__construct($subiektGt, $productDetail);
 		$this->excludeAttr(array('productGt','off_prefix','is_exists','objDetail'));
 
-		$to_search_code = "";
+		$got_symbol = $this->getSymbolByCodeOrEanParams($this->code, $this->ean);
 
-		if($this->code != null && $this->code != '' && $subiektGt->Towary->Istnieje($this->code)){
+		if($got_symbol != null){
 
-			$to_search_code = $this->code;
-			$is_exists = true;
-		}
-		else if($this->ean != null && $this->ean != '' && $subiektGt->Towary->Istnieje($this->ean)){
-
-			$to_search_code = $this->ean;
-			$is_exists = true;
-		}
-
-		if($is_exists){
-
-			$this->productGt = $subiektGt->Towary->Wczytaj($to_search_code);					
+			$this->productGt = $subiektGt->Towary->Wczytaj($got_symbol);					
 			$this->getGtObject();
 		}
 	
@@ -259,6 +248,11 @@ class Product extends SubiektObj{
 
 		$code = Helper::toWin($this->productDetail['code']);
 		$ean = Helper::toWin($this->productDetail['ean']);
+
+		return $this->getSymbolByCodeOrEanParams($code, $ean);
+	}
+
+	protected function getSymbolByCodeOrEanParams($code, $ean){
 
 		$sql = "SELECT tw_Symbol
 				FROM tw__Towar
