@@ -333,7 +333,20 @@ public class PaginationTableGui extends JPanel {
         return selectedData;
     }
 
-    public void updateRowCol(int rowIndex, int colIndex, Object newValue) {
+    public void updateRowCol(int rowIndex, int colIndex, String firstFieldId, Object newValue) throws IllegalStateException {
+
+        Optional<Object[]> foundRowOpt = data.stream()
+            .filter(dataRow -> Objects.equals(dataRow[0], firstFieldId))
+            .findFirst();
+
+        if(foundRowOpt.isEmpty()){
+
+            throw new IllegalStateException("Nie znaleziono wiersza o id " + firstFieldId);
+        }
+
+        Object[] foundRow = foundRowOpt.get();
+
+        foundRow[colIndex] = newValue;
 
         tableModel.setValueAt(newValue, rowIndex, colIndex);
     }

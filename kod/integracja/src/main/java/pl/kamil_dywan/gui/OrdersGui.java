@@ -237,9 +237,9 @@ public class OrdersGui extends ChangeableGui {
 
     }
 
-    private void updateTableRowCol(int rowIndex, int colIndex, Object newValue) {
+    private void updateTableRowCol(int rowIndex, int colIndex, String orderId, Object newValue) {
 
-        paginationTableGui.updateRowCol(rowIndex, colIndex, newValue);
+        paginationTableGui.updateRowCol(rowIndex, colIndex, orderId, newValue);
     }
 
     private void saveOrders() {
@@ -278,7 +278,9 @@ public class OrdersGui extends ChangeableGui {
                         continue;
                     }
 
-                    updateTableRowCol(rowIndex, SUBIEKT_ID_SENT_COL_INDEX, selectedOrder.getExternalId());
+                    String orderId = selectedOrder.getId().toString();
+
+                    updateTableRowCol(rowIndex, SUBIEKT_ID_SENT_COL_INDEX, orderId, selectedOrder.getExternalId());
                 }
 
                 mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -335,8 +337,11 @@ public class OrdersGui extends ChangeableGui {
 
                     int savedOrderDocumentIndex = savedOrdersDocumentsIndices.get(i);
                     int rowIndex = selectedRowsIndices[savedOrderDocumentIndex];
+                    Order order = selectedOrders.get(rowIndex);
 
-                    updateTableRowCol(rowIndex, ALLEGRO_DOCUMENT_SENT_COL_INDEX, "Wysłano");
+                    String orderId = order.getId().toString();
+
+                    updateTableRowCol(rowIndex, ALLEGRO_DOCUMENT_SENT_COL_INDEX, orderId, "Wysłano");
                 }
 
                 mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
