@@ -235,14 +235,13 @@ class ProductOfferResponseTest {
         assertEquals(expectedPriceWithoutTax, gotPriceWithoutTax);
     }
 
-    @ParameterizedTest
-    @CsvSource(value = {
-        "12345, 12345",
-        "123 456, 123456",
-    })
-    public void shouldGetExistingProducerCode(String inputProducerCode, String expectedProducerCode){
+    @Test
+    public void shouldGetExistingProducerCode(){
 
         //given
+        String inputProducerCode = "12345";
+        String expectedProducerCode = "12345";
+
         OfferProductParameter producerCodeParameter = OfferProductParameter.builder()
             .id(123L)
             .name("Kod producenta")

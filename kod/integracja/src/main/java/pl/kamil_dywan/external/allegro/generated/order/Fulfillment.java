@@ -7,6 +7,8 @@ import pl.kamil_dywan.external.allegro.own.order.FulFillmentStatus;
 import javax.annotation.processing.Generated;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
     "status",

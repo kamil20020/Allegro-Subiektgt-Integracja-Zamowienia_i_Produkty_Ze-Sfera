@@ -336,10 +336,10 @@ public class PaginationTableGui extends JPanel {
     public void updateRowCol(int rowIndex, int colIndex, String firstFieldId, Object newValue) throws IllegalStateException {
 
         Optional<Object[]> foundRowOpt = data.stream()
-            .filter(dataRow -> Objects.equals(dataRow[0], firstFieldId))
-            .findFirst();
+                .filter(dataRow -> Objects.equals(dataRow[0], firstFieldId))
+                .findFirst();
 
-        if(foundRowOpt.isEmpty()){
+        if (foundRowOpt.isEmpty()) {
 
             throw new IllegalStateException("Nie znaleziono wiersza o id " + firstFieldId);
         }

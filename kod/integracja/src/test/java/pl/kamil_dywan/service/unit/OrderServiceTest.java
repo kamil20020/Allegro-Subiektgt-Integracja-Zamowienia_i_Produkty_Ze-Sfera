@@ -15,7 +15,9 @@ import pl.kamil_dywan.api.allegro.request.CreateOrderInvoiceFile;
 import pl.kamil_dywan.api.allegro.request.CreateOrderInvoiceRequest;
 import pl.kamil_dywan.api.allegro.response.DocumentIdResponse;
 import pl.kamil_dywan.api.allegro.response.OrderDocumentsResponse;
+import pl.kamil_dywan.external.allegro.generated.order.Fulfillment;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
+import pl.kamil_dywan.external.allegro.own.order.FulFillmentStatus;
 import pl.kamil_dywan.service.OrderService;
 import pl.kamil_dywan.service.SferaOrderService;
 

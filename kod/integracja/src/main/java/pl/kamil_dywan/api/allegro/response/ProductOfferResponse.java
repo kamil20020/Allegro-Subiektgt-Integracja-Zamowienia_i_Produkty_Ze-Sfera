@@ -168,11 +168,6 @@ public class ProductOfferResponse {
 
         String gotFirstValue = parameterValues.get(0);
 
-        if(gotFirstValue != null){
-
-            gotFirstValue = gotFirstValue.replaceAll("\\s", "");
-        }
-
         return gotFirstValue;
     }
 

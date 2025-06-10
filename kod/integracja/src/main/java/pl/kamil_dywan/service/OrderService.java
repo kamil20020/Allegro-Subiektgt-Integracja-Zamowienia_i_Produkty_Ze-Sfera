@@ -39,7 +39,9 @@ public class OrderService {
 
         OrderResponse gotOrderResponse = Api.extractBody(gotResponse, OrderResponse.class);
 
-        List<Order> gotOrders = gotOrderResponse.getOrders();
+        List<Order> gotOrders = gotOrderResponse.getOrders().stream()
+            .filter(order -> !order.isCancelled())
+            .collect(Collectors.toList());
 
         setOrdersDocumentsExist(gotOrders);
 

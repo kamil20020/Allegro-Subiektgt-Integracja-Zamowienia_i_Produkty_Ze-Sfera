@@ -11,10 +11,12 @@ import pl.kamil_dywan.external.allegro.generated.invoice.Invoice;
 import pl.kamil_dywan.external.allegro.generated.invoice.InvoiceAddress;
 import pl.kamil_dywan.external.allegro.generated.invoice.InvoiceCompany;
 import pl.kamil_dywan.external.allegro.generated.invoice.InvoiceNaturalPerson;
+import pl.kamil_dywan.external.allegro.generated.order.Fulfillment;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
 import pl.kamil_dywan.external.allegro.generated.order_item.Offer;
 import pl.kamil_dywan.external.allegro.generated.order_item.OrderItem;
 import pl.kamil_dywan.external.allegro.own.Currency;
+import pl.kamil_dywan.external.allegro.own.order.FulFillmentStatus;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -459,6 +461,75 @@ class OrderTest {
 
         //then
         assertNull(gotExternalId);
+    }
+
+    @Test
+    public void shouldGetIsCancelledWhenIsNot(){
+
+        //given
+        Fulfillment fulfillment = new Fulfillment(FulFillmentStatus.NEW, null);
+
+        Order order = Order.builder()
+            .orderItems(new ArrayList<>())
+            .fulfillment(fulfillment)
+            .build();
+
+        //when
+        boolean result = order.isCancelled();
+
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    public void shouldGetIsCancelledWhenItIs(){
+
+        //given
+        Fulfillment fulfillment = new Fulfillment(FulFillmentStatus.CANCELLED, null);
+
+        Order order = Order.builder()
+            .orderItems(new ArrayList<>())
+            .fulfillment(fulfillment)
+            .build();
+
+        //when
+        boolean result = order.isCancelled();
+
+        //then
+        assertTrue(result);
+    }
+
+    @Test
+    public void shouldGetIsCancelledWhenFullfillmentIsNull(){
+
+        //given
+        Order order = Order.builder()
+            .orderItems(new ArrayList<>())
+            .build();
+
+        //when
+        boolean result = order.isCancelled();
+
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    public void shouldGetIsCancelledWhenFullfillmentStatusIsNull(){
+
+        //given
+        Fulfillment fulfillment = new Fulfillment(null, null);
+
+        Order order = Order.builder()
+            .orderItems(new ArrayList<>())
+            .fulfillment(fulfillment)
+            .build();
+
+        //when
+        boolean result = order.isCancelled();
+
+        //then
+        assertFalse(result);
     }
 
 }

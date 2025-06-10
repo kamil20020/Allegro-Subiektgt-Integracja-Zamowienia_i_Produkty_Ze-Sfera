@@ -202,4 +202,16 @@ public class Order {
         this.externalId = externalId.replaceAll("\"", "");
     }
 
+    @JsonIgnore
+    public boolean isCancelled(){
+
+        if(fulfillment == null){
+            return false;
+        }
+
+        FulFillmentStatus fulFillmentStatus = fulfillment.getStatus();
+
+        return fulFillmentStatus == FulFillmentStatus.CANCELLED;
+    }
+
 }
