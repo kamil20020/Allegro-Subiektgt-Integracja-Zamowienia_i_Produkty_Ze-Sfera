@@ -43,6 +43,8 @@ public class OrderService {
             .filter(order -> !order.isCancelled())
             .collect(Collectors.toList());
 
+        gotOrderResponse.setOrders(gotOrders);
+
         setOrdersDocumentsExist(gotOrders);
 
         gotOrders
