@@ -1,5 +1,7 @@
 package pl.kamil_dywan.mapper.sfera;
 
+import pl.kamil_dywan.external.allegro.generated.order.Order;
+import pl.kamil_dywan.external.allegro.generated.order_item.OrderProduct;
 import pl.kamil_dywan.external.sfera.generated.Product;
 import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.allegro.generated.order_item.Offer;
@@ -33,14 +35,13 @@ public interface SferaProductMapper {
             code = producerCode;
         }
 
-        BigDecimal priceWithTax = allegroOrderItem.getPrice().getAmount();
-
         return Product.builder()
             .code(code)
             .ean(eanCode)
             .name(allegroOffer.getName())
-            .priceWithTax(priceWithTax)
+            .priceWithTax(allegroOrderItem.getTotalPriceWithTax())
             .quantity(allegroOrderItem.getQuantity())
             .build();
     }
+
 }

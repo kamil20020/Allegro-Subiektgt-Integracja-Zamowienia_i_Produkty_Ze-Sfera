@@ -3,10 +3,13 @@ package pl.kamil_dywan.external.allegro.generated.order_item;
 
 import javax.annotation.processing.Generated;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -34,9 +37,26 @@ public class Offer {
     @JsonProperty("productSet")
     private OrderProductSet productSet;
 
+    @JsonIgnore
     public Offer(String name){
 
         this.name = name;
+    }
+
+    @JsonIgnore
+    public boolean hasSingleProduct(){
+
+        if(productSet == null){
+            return false;
+        }
+
+        List<OrderProduct> orderProducts = productSet.getProducts();
+
+        if(orderProducts == null){
+            return false;
+        }
+
+        return orderProducts.size() == 1;
     }
 
 }

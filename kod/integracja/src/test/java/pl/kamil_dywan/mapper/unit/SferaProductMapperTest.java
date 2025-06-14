@@ -30,6 +30,8 @@ class SferaProductMapperTest {
     void shouldMapWithExternalId(String expectedOfferId, String expectedCombinedCode, String expectedCode, String expectedEan) {
 
         //given
+        BigDecimal expectedTotalPriceWithTax = new BigDecimal("64.96");
+
         ExternalId externalId = new ExternalId(expectedCombinedCode);
 
         Offer offer = Offer.builder()
@@ -57,7 +59,7 @@ class SferaProductMapperTest {
         assertEquals(expectedCode, gotProduct.getCode());
         assertEquals(expectedEan, gotProduct.getEan());
         assertEquals(offer.getName(), gotProduct.getName());
-        assertEquals(orderItem.getPrice().getAmount(), gotProduct.getPriceWithTax());
+        assertEquals(expectedTotalPriceWithTax, gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
     }
 
@@ -65,6 +67,8 @@ class SferaProductMapperTest {
     void shouldMapWithPartiallyExternalId() {
 
         //given
+        BigDecimal expectedTotalPriceWithTax = new BigDecimal("64.96");
+
         Offer offer = Offer.builder()
             .id(UUID.randomUUID().toString())
             .name("Oferta 123")
@@ -90,7 +94,7 @@ class SferaProductMapperTest {
         assertEquals(offer.getId(), gotProduct.getCode());
         assertNull(gotProduct.getEan());
         assertEquals(offer.getName(), gotProduct.getName());
-        assertEquals(orderItem.getPrice().getAmount(), gotProduct.getPriceWithTax());
+        assertEquals(expectedTotalPriceWithTax, gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
     }
 
@@ -98,6 +102,8 @@ class SferaProductMapperTest {
     void shouldMapWithoutExternalId() {
 
         //given
+        BigDecimal expectedTotalPriceWithTax = new BigDecimal("64.96");
+
         Offer offer = Offer.builder()
             .id(UUID.randomUUID().toString())
             .name("Oferta 123")
@@ -122,7 +128,7 @@ class SferaProductMapperTest {
         assertEquals(offer.getId(), gotProduct.getCode());
         assertNull(gotProduct.getEan());
         assertEquals(offer.getName(), gotProduct.getName());
-        assertEquals(orderItem.getPrice().getAmount(), gotProduct.getPriceWithTax());
+        assertEquals(expectedTotalPriceWithTax, gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
     }
 

@@ -30,7 +30,7 @@
       </component>
       <grid id="a1b26" binding="productsPanelPlaceholder" custom-create="true" layout-manager="CardLayout" hgap="0" vgap="0">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
           <gridbag top="10" left="0" bottom="0" right="0" weightx="1.0" weighty="10.0"/>
         </constraints>
         <properties>
@@ -43,7 +43,7 @@
       </grid>
       <toolbar id="50f2">
         <constraints>
-          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="-1" height="20"/>
           </grid>
           <gridbag weightx="0.0" weighty="0.0"/>
@@ -91,6 +91,38 @@
               <minimumSize width="180" height="30"/>
               <preferredSize width="180" height="30"/>
               <text value="Zaktualizuj zewnętrzne id"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+      <toolbar id="fbe37">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="20"/>
+          </grid>
+          <gridbag weightx="1.0" weighty="1.0"/>
+        </constraints>
+        <properties>
+          <floatable value="false"/>
+          <opaque value="false"/>
+        </properties>
+        <border type="empty">
+          <size top="32" left="0" bottom="20" right="0"/>
+        </border>
+        <children>
+          <component id="f9acf" class="javax.swing.JTextField" binding="searchFieldInput">
+            <constraints/>
+            <properties>
+              <autoscrolls value="true"/>
+              <minimumSize width="100" height="30"/>
+              <preferredSize width="100" height="30"/>
+              <toolTipText value="Tytuł oferty"/>
+            </properties>
+          </component>
+          <component id="7903a" class="javax.swing.JButton" binding="searchButton">
+            <constraints/>
+            <properties>
+              <text value="Wyszukaj"/>
             </properties>
           </component>
         </children>

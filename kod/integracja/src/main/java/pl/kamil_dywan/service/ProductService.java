@@ -51,9 +51,9 @@ public class ProductService {
         this.sferaProductService = sferaProductService;
     }
 
-    public OfferProductResponse getGeneralProductsPage(int offset, int limit) throws UnloggedException {
+    public OfferProductResponse getGeneralProductsPage(String search, int offset, int limit) throws UnloggedException {
 
-        HttpResponse<String> gotResponse = productApi.getOffersProducts(offset, limit);
+        HttpResponse<String> gotResponse = productApi.getOffersProducts(search, offset, limit);
 
         return Api.extractBody(gotResponse, OfferProductResponse.class);
     }

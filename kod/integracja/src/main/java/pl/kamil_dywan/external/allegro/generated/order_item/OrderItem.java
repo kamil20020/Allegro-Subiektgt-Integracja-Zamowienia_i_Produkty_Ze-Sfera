@@ -73,4 +73,32 @@ public class OrderItem {
         return tax.getRate();
     }
 
+    @JsonIgnore
+    public Integer getQuantity() {
+
+        Integer orderItemQuantity = quantity;
+
+        if(!offer.hasSingleProduct()){
+
+            return orderItemQuantity;
+        }
+
+        OrderProductSet orderProductSet = offer.getProductSet();
+        OrderProduct orderProduct = orderProductSet.getProducts().get(0);
+
+        return orderItemQuantity * orderProduct.getQuantity();
+    }
+
+    @JsonIgnore
+    public BigDecimal getTotalPriceWithTax(){
+
+        BigDecimal unitPriceWithTax = price.getAmount();
+
+        BigDecimal quantityConverted = BigDecimal.valueOf(quantity);
+
+        BigDecimal totalPriceWithTax = unitPriceWithTax.multiply(quantityConverted);
+        totalPriceWithTax = totalPriceWithTax.setScale(2, RoundingMode.HALF_UP);
+
+        return totalPriceWithTax;
+    }
 }

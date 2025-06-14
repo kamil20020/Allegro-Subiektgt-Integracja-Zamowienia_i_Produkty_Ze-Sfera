@@ -18,7 +18,7 @@ public class ProductApi extends BearerAuthApi {
         super("api", "/sale");
     }
 
-    public HttpResponse<String> getOffersProducts(int offset, int limit) throws IllegalStateException, UnloggedException {
+    public HttpResponse<String> getOffersProducts(String search, int offset, int limit) throws IllegalStateException, UnloggedException {
 
         String offsetStr = String.valueOf(offset);
         String limitStr = String.valueOf(limit);
@@ -26,6 +26,7 @@ public class ProductApi extends BearerAuthApi {
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
             .GET()
             .uri(URI.create(API_PREFIX +  "/offers" + getQueryParamsPostFix(
+                    "name", search,
                     "offset", offsetStr,
                     "limit", limitStr,
                     "publication.status", OfferProductStatus.ACTIVE.toString()

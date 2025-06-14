@@ -66,6 +66,7 @@ class SferaOrderMapperTest {
 
         OrderItem orderItem = OrderItem.builder()
             .offer(offer)
+            .quantity(1)
             .price(new Cost(new BigDecimal("24.48"), Currency.PLN))
             .build();
 
@@ -76,6 +77,7 @@ class SferaOrderMapperTest {
 
         OrderItem orderItem1 = OrderItem.builder()
             .offer(offer1)
+            .quantity(1)
             .price(new Cost(new BigDecimal("24.42"), Currency.PLN))
             .build();
 
@@ -140,6 +142,7 @@ class SferaOrderMapperTest {
 
         OrderItem orderItem = OrderItem.builder()
             .price(new Cost(new BigDecimal("24.48"), Currency.PLN))
+            .quantity(1)
             .offer(offer)
             .build();
 

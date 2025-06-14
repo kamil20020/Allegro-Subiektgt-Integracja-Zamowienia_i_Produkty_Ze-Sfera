@@ -28,6 +28,9 @@ public class ProductsGui extends ChangeableGui {
     private JButton deliveryButton;
     private JButton setExternalButton;
 
+    private JTextField searchFieldInput;
+    private JButton searchButton;
+
     private List<ProductOfferResponse> products;
 
     private final ProductService productService;
@@ -40,6 +43,8 @@ public class ProductsGui extends ChangeableGui {
 
         $$$setupUI$$$();
 
+        searchButton.addActionListener(e -> handleSearch());
+
         exportButton.addActionListener(e -> saveProductsToFile());
 
         deliveryButton.addActionListener(e -> saveDeliveryToFile());
@@ -49,10 +54,12 @@ public class ProductsGui extends ChangeableGui {
 
     private PaginationTableGui.PaginationTableData loadProductsPage(int offset, int limit) {
 
+        String search = searchFieldInput.getText();
+
         OfferProductResponse generalProductsPage;
 
         try {
-            generalProductsPage = productService.getGeneralProductsPage(offset, limit);
+            generalProductsPage = productService.getGeneralProductsPage(search, offset, limit);
         } catch (UnloggedException e) {
 
             handleLogout.run();
@@ -106,6 +113,16 @@ public class ProductsGui extends ChangeableGui {
                 productOfferResponse.getTaxRate().toString() + '%',
                 productOfferResponse.getCreatedAt().toLocalDate().toString()
         };
+    }
+
+    private void handleChangeSearchFieldInput(String newValue) {
+
+
+    }
+
+    private void handleSearch() {
+
+        paginationTableGui.handleLoadTableExceptions();
     }
 
     private void saveDeliveryToFile() {
@@ -287,7 +304,7 @@ public class ProductsGui extends ChangeableGui {
         productsPanelPlaceholder.setRequestFocusEnabled(true);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 1;
+        gbc.gridy = 2;
         gbc.weightx = 1.0;
         gbc.weighty = 10.0;
         gbc.fill = GridBagConstraints.BOTH;
@@ -301,7 +318,7 @@ public class ProductsGui extends ChangeableGui {
         toolBar1.setVisible(true);
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         mainPanel.add(toolBar1, gbc);
         exportButton = new JButton();
         exportButton.setMaximumSize(new Dimension(180, 30));
@@ -327,6 +344,25 @@ public class ProductsGui extends ChangeableGui {
         setExternalButton.setPreferredSize(new Dimension(180, 30));
         setExternalButton.setText("Zaktualizuj zewnętrzne id");
         toolBar1.add(setExternalButton);
+        final JToolBar toolBar2 = new JToolBar();
+        toolBar2.setFloatable(false);
+        toolBar2.setOpaque(false);
+        gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        mainPanel.add(toolBar2, gbc);
+        toolBar2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(32, 0, 20, 0), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        searchFieldInput = new JTextField();
+        searchFieldInput.setAutoscrolls(true);
+        searchFieldInput.setMinimumSize(new Dimension(100, 30));
+        searchFieldInput.setPreferredSize(new Dimension(100, 30));
+        searchFieldInput.setToolTipText("Tytuł oferty");
+        toolBar2.add(searchFieldInput);
+        searchButton = new JButton();
+        searchButton.setText("Wyszukaj");
+        toolBar2.add(searchButton);
     }
 
     /**

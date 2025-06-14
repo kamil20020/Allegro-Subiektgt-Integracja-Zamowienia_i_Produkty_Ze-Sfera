@@ -63,6 +63,7 @@ class ProductServiceTest {
     public void shouldGetGeneralProductsPage(){
 
         //given
+        String expectedSearch = "samsung";
         int offset = 10;
         int limit = 20;
 
@@ -70,14 +71,14 @@ class ProductServiceTest {
         OfferProductResponse expectedResponse = new OfferProductResponse();
 
         //when
-        Mockito.when(productApi.getOffersProducts(anyInt(), anyInt())).thenReturn(expectedHttpResponse);
+        Mockito.when(productApi.getOffersProducts(anyString(), anyInt(), anyInt())).thenReturn(expectedHttpResponse);
 
         try(
             MockedStatic<Api> apiMock = Mockito.mockStatic(Api.class);
         ){
             apiMock.when(() -> Api.extractBody(any(TestHttpResponse.class), any())).thenReturn(expectedResponse);
 
-            OfferProductResponse gotResponse = productService.getGeneralProductsPage(offset, limit);
+            OfferProductResponse gotResponse = productService.getGeneralProductsPage(expectedSearch, offset, limit);
 
             //then
             apiMock.verify(() -> Api.extractBody(expectedHttpResponse, OfferProductResponse.class));
@@ -86,7 +87,7 @@ class ProductServiceTest {
             assertEquals(expectedResponse, gotResponse);
         }
 
-        Mockito.verify(productApi).getOffersProducts(offset, limit);
+        Mockito.verify(productApi).getOffersProducts(expectedSearch, offset, limit);
     }
 
     @ParameterizedTest
