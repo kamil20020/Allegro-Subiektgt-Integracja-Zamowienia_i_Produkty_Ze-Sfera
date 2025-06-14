@@ -1,9 +1,10 @@
-package pl.kamil_dywan.external.allegro.generated.order_item;
+package pl.kamil_dywan.model.unit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import pl.kamil_dywan.external.allegro.generated.Cost;
+import pl.kamil_dywan.external.allegro.generated.order_item.*;
 import pl.kamil_dywan.external.allegro.own.Currency;
 
 import java.math.BigDecimal;

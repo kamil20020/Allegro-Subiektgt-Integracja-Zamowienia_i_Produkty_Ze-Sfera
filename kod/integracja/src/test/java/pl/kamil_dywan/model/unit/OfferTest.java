@@ -1,6 +1,9 @@
-package pl.kamil_dywan.external.allegro.generated.order_item;
+package pl.kamil_dywan.model.unit;
 
 import org.junit.jupiter.api.Test;
+import pl.kamil_dywan.external.allegro.generated.order_item.Offer;
+import pl.kamil_dywan.external.allegro.generated.order_item.OrderProduct;
+import pl.kamil_dywan.external.allegro.generated.order_item.OrderProductSet;
 
 import java.util.ArrayList;
 import java.util.List;
