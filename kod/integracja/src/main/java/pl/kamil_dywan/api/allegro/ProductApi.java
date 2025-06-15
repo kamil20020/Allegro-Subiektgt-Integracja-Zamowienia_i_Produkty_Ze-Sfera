@@ -7,8 +7,10 @@ import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.allegro.own.OfferProductStatus;
 
 import java.net.URI;
+import java.net.URLEncoder;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 
 public class ProductApi extends BearerAuthApi {
@@ -19,6 +21,8 @@ public class ProductApi extends BearerAuthApi {
     }
 
     public HttpResponse<String> getOffersProducts(String search, int offset, int limit) throws IllegalStateException, UnloggedException {
+
+        search = URLEncoder.encode(search, StandardCharsets.UTF_8);
 
         String offsetStr = String.valueOf(offset);
         String limitStr = String.valueOf(limit);

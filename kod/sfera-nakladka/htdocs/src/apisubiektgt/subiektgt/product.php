@@ -259,8 +259,15 @@ class Product extends SubiektObj{
 				WHERE 
 					tw_Symbol = '{$code}' OR tw_Symbol = '{$ean}' OR
 					(tw_Opis != '' AND (tw_Opis = '{$code}' OR tw_Opis = '{$ean}')) OR
-					(tw_PodstKodKresk != '' AND (tw_PodstKodKresk = '{$code}' OR tw_PodstKodKresk = '{$ean}'))
-					
+					(tw_PodstKodKresk != '' AND (tw_PodstKodKresk = '{$code}' OR tw_PodstKodKresk = '{$ean}')) OR
+					EXISTS (
+						SELECT 1
+						FROM STRING_SPLIT(
+							REPLACE(tw_opis, CHAR(13), ''),
+							CHAR(10)
+						) AS line
+						WHERE line.value != '' AND (line.value = '{$code}' OR line.value = '{$ean}')
+					);
 		";
 
 		$data = MSSql::getInstance()->query($sql);

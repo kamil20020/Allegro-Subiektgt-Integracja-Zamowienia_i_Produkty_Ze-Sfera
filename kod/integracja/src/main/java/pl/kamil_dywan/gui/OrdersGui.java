@@ -333,15 +333,15 @@ public class OrdersGui extends ChangeableGui {
 
             SwingUtilities.invokeLater(() -> {
 
-                for (int i = 0; i < savedOrdersDocumentsIndices.size(); i++) {
+                for (int savedOrderDocumentIndex : savedOrdersDocumentsIndices) {
 
-                    int savedOrderDocumentIndex = savedOrdersDocumentsIndices.get(i);
-                    int rowIndex = selectedRowsIndices[savedOrderDocumentIndex];
-                    Order order = selectedOrders.get(rowIndex);
+                    Order order = ordersPage.get(savedOrderDocumentIndex);
 
                     String orderId = order.getId().toString();
 
-                    updateTableRowCol(rowIndex, ALLEGRO_DOCUMENT_SENT_COL_INDEX, orderId, "Wysłano");
+                    int rowIndex = selectedRowsIndices[savedOrderDocumentIndex];
+
+                    updateTableRowCol(rowIndex, ALLEGRO_DOCUMENT_SENT_COL_INDEX, orderId, BooleanSelectOptions.YES.toString());
                 }
 
                 mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
