@@ -69,7 +69,7 @@ class OrderServiceTest {
             .statusCode(200)
             .build();
 
-        OrderDocumentsResponse expectedResponse = new OrderDocumentsResponse(new ArrayList<>());
+        OrderDocumentsResponse expectedResponse = new OrderDocumentsResponse(new ArrayList<>(), false);
 
         ExecutorService executorServiceMock = Mockito.mock(ExecutorService.class);
         TestUtils.updatePrivateStaticField(OrderService.class, "ordersExecutorService", executorServiceMock);
@@ -130,7 +130,7 @@ class OrderServiceTest {
 
         List<Object> invoices = List.of(new Object(), new Object());
 
-        OrderDocumentsResponse response = new OrderDocumentsResponse(invoices);
+        OrderDocumentsResponse response = new OrderDocumentsResponse(invoices, false);
 
         //when
         Mockito.when(orderApi.getDocuments(any())).thenReturn(expectedHttpResponse);
@@ -174,7 +174,7 @@ class OrderServiceTest {
             .statusCode(200)
             .build();
 
-        OrderDocumentsResponse response = new OrderDocumentsResponse(new ArrayList<>());
+        OrderDocumentsResponse response = new OrderDocumentsResponse(new ArrayList<>(), false);
 
         //when
         Mockito.when(orderApi.getDocuments(any())).thenReturn(expectedHttpResponse);

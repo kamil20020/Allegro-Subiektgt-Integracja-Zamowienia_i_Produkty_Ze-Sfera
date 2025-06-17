@@ -107,7 +107,7 @@ public class OrderService {
 
         OrderDocumentsResponse orderDocumentsResponse = Api.extractBody(gotResponse, OrderDocumentsResponse.class);
 
-        boolean documentExists = orderDocumentsResponse.getInvoices().size() > 0;
+        boolean documentExists = orderDocumentsResponse.documentsExist();
 
         order.setHasDocument(documentExists);
     }
