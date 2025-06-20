@@ -23,13 +23,13 @@ public class LoggedUserContent extends ChangeableGui {
 
     private final List<ChangeableGui> tabs = new ArrayList<>();
 
-    public LoggedUserContent(JFrame frame, ProductService productService, OrderService orderService, SferaOrderService sferaOrderService, BasicInfoService basicInfoService, Runnable handleLogout) {
+    public LoggedUserContent(JFrame frame, ProductService productService, SferaProductService sferaProductService, OrderService orderService, SferaOrderService sferaOrderService, BasicInfoService basicInfoService, Runnable handleLogout) {
 
         this.frame = frame;
         this.basicInfoService = basicInfoService;
         this.handleLogout = handleLogout;
 
-        ProductsGui productsGui = new ProductsGui(productService, handleLogout);
+        ProductsGui productsGui = new ProductsGui(productService, sferaProductService, handleLogout);
         OrdersGui ordersGui = new OrdersGui(orderService, sferaOrderService, handleLogout);
 
         tabs.add(ordersGui);

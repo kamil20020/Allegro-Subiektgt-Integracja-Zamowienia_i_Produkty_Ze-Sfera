@@ -9,6 +9,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ExternalIdTest {
 
+    @Test
+    public void shouldCreateExternalId(){
+
+        //given
+        String expectedProducerCode = "producer";
+        String expectedEanCode = "ean";
+        String expectedCombinedCode = "producer#ean";
+
+        //when
+        ExternalId externalId = new ExternalId(expectedProducerCode, expectedEanCode);
+
+        //then
+        assertNotNull(externalId);
+        assertEquals(expectedCombinedCode, externalId.getId());
+    }
+
     @ParameterizedTest
     @CsvSource(value = {
         "producer, ean, producer#ean",

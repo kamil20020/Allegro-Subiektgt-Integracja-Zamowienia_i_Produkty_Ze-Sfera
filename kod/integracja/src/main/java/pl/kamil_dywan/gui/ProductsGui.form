@@ -56,7 +56,7 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="a16b2" class="javax.swing.JButton" binding="exportButton">
+          <component id="a16b2" class="javax.swing.JButton" binding="exportProductsButton">
             <constraints/>
             <properties>
               <maximumSize width="180" height="30"/>
@@ -71,6 +71,19 @@
             <constraints/>
             <properties/>
           </component>
+          <component id="61455" class="javax.swing.JButton" binding="exportProductsSetsButton">
+            <constraints/>
+            <properties>
+              <maximumSize width="180" height="30"/>
+              <minimumSize width="180" height="30"/>
+              <preferredSize width="180" height="30"/>
+              <text value="Zapisz zestawy do pliku"/>
+            </properties>
+          </component>
+          <component id="fef91" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
           <component id="81bf4" class="javax.swing.JButton" binding="deliveryButton">
             <constraints/>
             <properties>
@@ -80,7 +93,7 @@
               <text value="Zapisz dostawę do pliku"/>
             </properties>
           </component>
-          <component id="fef91" class="javax.swing.JToolBar$Separator">
+          <component id="f8f76" class="javax.swing.JToolBar$Separator">
             <constraints/>
             <properties/>
           </component>

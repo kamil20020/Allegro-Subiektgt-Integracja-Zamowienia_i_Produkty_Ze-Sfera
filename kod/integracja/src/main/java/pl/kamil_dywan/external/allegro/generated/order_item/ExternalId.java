@@ -25,6 +25,11 @@ public class ExternalId {
     @JsonIgnore
     private static final String SEPARATOR = "#";
 
+    public ExternalId(String producerCode, String eanCode){
+
+        id = getCombinedCode(producerCode, eanCode);
+    }
+
     @JsonIgnore
     public static String getCombinedCode(String producerCode, String eanCode){
 

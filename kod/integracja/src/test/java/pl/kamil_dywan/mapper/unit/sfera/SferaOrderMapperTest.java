@@ -1,4 +1,4 @@
-package pl.kamil_dywan.mapper.unit;
+package pl.kamil_dywan.mapper.unit.sfera;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

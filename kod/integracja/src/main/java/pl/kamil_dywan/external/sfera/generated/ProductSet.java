@@ -1,5 +1,4 @@
-package pl.kamil_dywan.api.allegro.request;
-
+package pl.kamil_dywan.external.sfera.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -9,22 +8,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.annotation.processing.Generated;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonPropertyOrder({
-    "code",
-    "ean"
+        "productSet",
+        "products"
 })
 @Generated("jsonschema2pojo")
-public class GetProductByCodeAndEanRequest {
+public class ProductSet {
 
-    @JsonProperty("code")
-    private String code;
+    @JsonProperty("productSet")
+    private Product productSet;
 
-    @JsonProperty("ean")
-    private String ean;
+    @JsonProperty("products")
+    private List<ProductSetProduct> products;
 
 }
+

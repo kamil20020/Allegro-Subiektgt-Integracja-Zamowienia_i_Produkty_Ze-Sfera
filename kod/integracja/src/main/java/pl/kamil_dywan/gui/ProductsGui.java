@@ -7,6 +7,7 @@ import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
 import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.subiektgt.own.product.ProductType;
 import pl.kamil_dywan.service.ProductService;
+import pl.kamil_dywan.service.SferaProductService;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -24,28 +25,32 @@ public class ProductsGui extends ChangeableGui {
     private JPanel productsPanelPlaceholder;
     private PaginationTableGui paginationTableGui;
 
-    private JButton exportButton;
+    private JButton exportProductsButton;
+    private JButton exportProductsSetsButton;
     private JButton deliveryButton;
     private JButton setExternalButton;
 
     private JTextField searchFieldInput;
     private JButton searchButton;
-
     private List<ProductOfferResponse> products;
 
     private final ProductService productService;
+    private final SferaProductService sferaProductService;
     private final Runnable handleLogout;
 
-    public ProductsGui(ProductService productService, Runnable handleLogout) {
+    public ProductsGui(ProductService productService, SferaProductService sferaProductService, Runnable handleLogout) {
 
         this.productService = productService;
+        this.sferaProductService = sferaProductService;
         this.handleLogout = handleLogout;
 
         $$$setupUI$$$();
 
         searchButton.addActionListener(e -> handleSearch());
 
-        exportButton.addActionListener(e -> saveProductsToFile());
+        exportProductsButton.addActionListener(e -> saveProductsToFile());
+
+        exportProductsSetsButton.addActionListener(e -> saveProductsSets());
 
         deliveryButton.addActionListener(e -> saveDeliveryToFile());
 
@@ -106,6 +111,7 @@ public class ProductsGui extends ChangeableGui {
                 productOfferResponse.getId(),
                 producerCode != null ? producerCode : "Brak",
                 ean != null ? ean : "Brak",
+                productOfferResponse.hasManyProducts() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO,
                 productOfferResponse.getSubiektId() != null ? productOfferResponse.getSubiektId() : "Brak",
                 productOfferResponse.getName(),
                 productOfferResponse.getPriceWithoutTax().toString() + " zł",
@@ -113,11 +119,6 @@ public class ProductsGui extends ChangeableGui {
                 productOfferResponse.getTaxRate().toString() + '%',
                 productOfferResponse.getCreatedAt().toLocalDate().toString()
         };
-    }
-
-    private void handleChangeSearchFieldInput(String newValue) {
-
-
     }
 
     private void handleSearch() {
@@ -170,6 +171,52 @@ public class ProductsGui extends ChangeableGui {
 
             return;
         }
+
+        String savedFilePath = FileDialogHandler.getSaveFileDialogSelectedPath(
+                "Zapisywanie produktów do pliku",
+                "produkty",
+                ".epp"
+        );
+
+        if (savedFilePath.isBlank()) {
+            return;
+        }
+
+        try {
+
+            productService.writeProductsToFile(products, savedFilePath, ProductType.GOODS);
+        } catch (IllegalStateException e) {
+
+            JOptionPane.showMessageDialog(
+                    mainPanel,
+                    "Nie udało się zapisać produktów do pliku",
+                    "Powiadomienie o błędzie",
+                    JOptionPane.ERROR_MESSAGE
+            );
+
+            return;
+        }
+
+        JOptionPane.showMessageDialog(
+                mainPanel,
+                "Zapisano produkty do pliku " + savedFilePath,
+                "Powiadomienie",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    private void saveProductsSets() {
+
+        List<ProductOfferResponse> productsSets = productService.extractProductsSets(products);
+
+        if (productsSets == null) {
+
+            JOptionPane.showMessageDialog(mainPanel, "Brak zestawów produktów do zapisania", "Błąd", JOptionPane.ERROR_MESSAGE);
+
+            return;
+        }
+
+//        sferaProductService.saveProductsSets(productsSets);
 
         String savedFilePath = FileDialogHandler.getSaveFileDialogSelectedPath(
                 "Zapisywanie produktów do pliku",
@@ -260,7 +307,7 @@ public class ProductsGui extends ChangeableGui {
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
-        String[] columnsHeaders = {"Allegro Id", "Kod producenta", "EAN (GTIN)", "Subiekt Id", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
+        String[] columnsHeaders = {"Allegro Id", "Kod producenta", "EAN (GTIN)", "Zestaw", "Subiekt Id", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
 
         paginationTableGui = new PaginationTableGui(columnsHeaders, this::loadProductsPage, this::convertProductToRow);
 
@@ -320,24 +367,32 @@ public class ProductsGui extends ChangeableGui {
         gbc.gridx = 0;
         gbc.gridy = 3;
         mainPanel.add(toolBar1, gbc);
-        exportButton = new JButton();
-        exportButton.setMaximumSize(new Dimension(180, 30));
-        exportButton.setMinimumSize(new Dimension(180, 30));
-        exportButton.setOpaque(true);
-        exportButton.setPreferredSize(new Dimension(180, 30));
-        exportButton.setText("Zapisz produkty do pliku");
-        exportButton.setVisible(true);
-        toolBar1.add(exportButton);
+        exportProductsButton = new JButton();
+        exportProductsButton.setMaximumSize(new Dimension(180, 30));
+        exportProductsButton.setMinimumSize(new Dimension(180, 30));
+        exportProductsButton.setOpaque(true);
+        exportProductsButton.setPreferredSize(new Dimension(180, 30));
+        exportProductsButton.setText("Zapisz produkty do pliku");
+        exportProductsButton.setVisible(true);
+        toolBar1.add(exportProductsButton);
         final JToolBar.Separator toolBar$Separator1 = new JToolBar.Separator();
         toolBar1.add(toolBar$Separator1);
+        exportProductsSetsButton = new JButton();
+        exportProductsSetsButton.setMaximumSize(new Dimension(180, 30));
+        exportProductsSetsButton.setMinimumSize(new Dimension(180, 30));
+        exportProductsSetsButton.setPreferredSize(new Dimension(180, 30));
+        exportProductsSetsButton.setText("Zapisz zestawy do pliku");
+        toolBar1.add(exportProductsSetsButton);
+        final JToolBar.Separator toolBar$Separator2 = new JToolBar.Separator();
+        toolBar1.add(toolBar$Separator2);
         deliveryButton = new JButton();
         deliveryButton.setMaximumSize(new Dimension(180, 30));
         deliveryButton.setMinimumSize(new Dimension(180, 30));
         deliveryButton.setPreferredSize(new Dimension(180, 30));
         deliveryButton.setText("Zapisz dostawę do pliku");
         toolBar1.add(deliveryButton);
-        final JToolBar.Separator toolBar$Separator2 = new JToolBar.Separator();
-        toolBar1.add(toolBar$Separator2);
+        final JToolBar.Separator toolBar$Separator3 = new JToolBar.Separator();
+        toolBar1.add(toolBar$Separator3);
         setExternalButton = new JButton();
         setExternalButton.setMaximumSize(new Dimension(180, 30));
         setExternalButton.setMinimumSize(new Dimension(180, 30));

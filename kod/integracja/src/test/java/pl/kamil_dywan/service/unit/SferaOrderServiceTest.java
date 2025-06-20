@@ -1,4 +1,4 @@
-package pl.kamil_dywan.service;
+package pl.kamil_dywan.service.unit;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -6,7 +6,7 @@ import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.kamil_dywan.TestHttpResponse;
 import pl.kamil_dywan.api.Api;
-import pl.kamil_dywan.api.allegro.request.GetDocumentByExternalIdRequest;
+import pl.kamil_dywan.api.sfera.request.GetDocumentByExternalIdRequest;
 import pl.kamil_dywan.api.sfera.SferaOrderApi;
 import pl.kamil_dywan.api.sfera.request.CreateOrderRequest;
 import pl.kamil_dywan.api.sfera.request.GetOrderRequest;
@@ -18,9 +18,9 @@ import pl.kamil_dywan.external.allegro.generated.delivery.Delivery;
 import pl.kamil_dywan.external.allegro.generated.invoice.Invoice;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
 import pl.kamil_dywan.external.allegro.generated.order.Summary;
-import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.allegro.own.Currency;
 import pl.kamil_dywan.external.sfera.generated.ResponseStatus;
+import pl.kamil_dywan.service.SferaOrderService;
 
 import java.math.BigDecimal;
 import java.net.http.HttpResponse;

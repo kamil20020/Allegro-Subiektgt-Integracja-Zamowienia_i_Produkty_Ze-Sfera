@@ -1,7 +1,7 @@
 package pl.kamil_dywan.api.sfera;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import pl.kamil_dywan.api.allegro.request.GetDocumentByExternalIdRequest;
+import pl.kamil_dywan.api.sfera.request.GetDocumentByExternalIdRequest;
 import pl.kamil_dywan.api.sfera.request.CreateOrderRequest;
 import pl.kamil_dywan.api.sfera.request.GeneralRequest;
 import pl.kamil_dywan.api.sfera.request.GetOrderRequest;
@@ -21,15 +21,7 @@ public class SferaOrderApi extends SferaApi{
 
         GeneralRequest generalRequest = createGeneralRequest(createOrderRequest);
 
-        String requestStr = "";
-
-        try {
-            requestStr = objectMapper.writeValueAsString(generalRequest);
-        }
-        catch (JsonProcessingException e) {
-
-            e.printStackTrace();
-        }
+        String requestStr = handleMapRequestToString(generalRequest);
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.ofString(requestStr))
@@ -44,21 +36,13 @@ public class SferaOrderApi extends SferaApi{
 
         GeneralRequest generalRequest = createGeneralRequest(request);
 
-        String requestStr = "";
-
-        try {
-            requestStr = objectMapper.writeValueAsString(generalRequest);
-        }
-        catch (JsonProcessingException e) {
-
-            e.printStackTrace();
-        }
+        String requestStr = handleMapRequestToString(generalRequest);
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.ofString(requestStr))
             .uri(URI.create(API_PREFIX + "/getNrByExternalId"))
             .header("Content-Type", "application/json")
-            .header("Accept", "application/pdf");
+            .header("Accept", "application/json");
 
         return send(httpRequestBuilder);
     }
@@ -67,15 +51,7 @@ public class SferaOrderApi extends SferaApi{
 
         GeneralRequest generalRequest = createGeneralRequest(getOrderRequest);
 
-        String requestStr = "";
-
-        try {
-            requestStr = objectMapper.writeValueAsString(generalRequest);
-        }
-        catch (JsonProcessingException e) {
-
-            e.printStackTrace();
-        }
+        String requestStr = handleMapRequestToString(generalRequest);
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.ofString(requestStr))

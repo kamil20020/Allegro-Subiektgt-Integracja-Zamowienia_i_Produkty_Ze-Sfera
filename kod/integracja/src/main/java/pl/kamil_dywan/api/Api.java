@@ -1,8 +1,10 @@
 package pl.kamil_dywan.api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.kamil_dywan.api.sfera.request.GeneralRequest;
 import pl.kamil_dywan.file.read.JSONFileReader;
 import pl.kamil_dywan.service.AppProperties;
 
@@ -113,5 +115,19 @@ public abstract class Api {
         log.info(gotConvertedBody.toString() + "\n");
 
         return gotConvertedBody;
+    }
+
+    protected static String handleMapRequestToString(Object object) throws IllegalStateException{
+
+        try {
+
+            return objectMapper.writeValueAsString(object);
+        }
+        catch (JsonProcessingException e) {
+
+            e.printStackTrace();
+
+            throw new IllegalStateException(e.getMessage());
+        }
     }
 }

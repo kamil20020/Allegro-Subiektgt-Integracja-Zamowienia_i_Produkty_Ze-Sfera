@@ -1,8 +1,11 @@
-package pl.kamil_dywan.mapper.unit;
+package pl.kamil_dywan.mapper.unit.sfera;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
+import pl.kamil_dywan.external.allegro.generated.offer_product.ProductOfferProduct;
+import pl.kamil_dywan.external.allegro.generated.offer_product.SellingMode;
 import pl.kamil_dywan.external.sfera.generated.Product;
 import pl.kamil_dywan.external.allegro.generated.Cost;
 import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
@@ -130,6 +133,43 @@ class SferaProductMapperTest {
         assertEquals(offer.getName(), gotProduct.getName());
         assertEquals(expectedTotalPriceWithTax, gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
+    }
+
+    @Test
+    public void shouldMapFromProductOfferResponse(){
+
+        //given
+        Long expectedOfferId = 123L;
+        String expectedCombinedCode = "producer#ean";
+        String expectedCode = "producer";
+        String expectedEan = "ean";
+
+        ExternalId externalId = new ExternalId(expectedCombinedCode);
+
+        Cost cost = new Cost(
+            new BigDecimal("32.48"),
+            Currency.PLN
+        );
+
+        SellingMode sellingMode = new SellingMode(cost);
+
+        ProductOfferResponse product = ProductOfferResponse.builder()
+            .id(expectedOfferId)
+            .externalId(externalId)
+            .name("Oferta 123")
+            .sellingMode(sellingMode)
+            .build();
+
+        //when
+        Product gotProduct = SferaProductMapper.map(product);
+
+        //then
+        assertNotNull(gotProduct);
+        assertEquals(expectedCode, gotProduct.getCode());
+        assertEquals(expectedEan, gotProduct.getEan());
+        assertEquals(product.getName(), gotProduct.getName());
+        assertEquals(cost.getAmount(), gotProduct.getPriceWithTax());
+        assertEquals(1, gotProduct.getQuantity());
     }
 
 }

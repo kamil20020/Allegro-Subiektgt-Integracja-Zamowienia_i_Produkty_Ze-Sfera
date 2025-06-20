@@ -1,0 +1,268 @@
+{
+  "name": "Folia ochronna 3MK do Samsung Galaxy M02s 1 szt.",
+  "productSet": [
+    {
+      "product": {
+        "id": "025871c4-cd89-4c3a-a3e7-1ea2435a1e53",
+        "publication": {
+          "status": "LISTED"
+        },
+        "parameters": [
+          {
+            "id": "225693",
+            "name": "EAN (GTIN)",
+            "values": [
+              "5903108353724"
+            ],
+            "valuesIds": null,
+            "rangeValue": null
+          },
+          {
+            "id": "248927",
+            "name": "Marka",
+            "values": [
+              "3&m GPSR"
+            ],
+            "valuesIds": [
+              "248927_968585"
+            ],
+            "rangeValue": null
+          },
+          {
+            "id": "17448",
+            "name": "Waga produktu z opakowaniem jednostkowym",
+            "values": [
+              "0.15"
+            ],
+            "valuesIds": null,
+            "rangeValue": null
+          }
+        ]
+      },
+      "quantity": {
+        "value": 2
+      },
+      "responsiblePerson": null,
+      "responsibleProducer": {
+        "id": "3631f67a-cf28-4ca8-abd0-3b4c045da113"
+      },
+      "safetyInformation": {
+        "type": "NO_SAFETY_INFORMATION"
+      },
+      "marketedBeforeGPSRObligation": true
+    },
+    {
+      "product": {
+        "id": "025b7401-2d8f-4590-aac2-73b7da655df8",
+        "publication": {
+          "status": "LISTED"
+        },
+        "parameters": []
+      },
+      "quantity": {
+        "value": 3
+      },
+      "responsiblePerson": null,
+      "responsibleProducer": {
+        "id": "ce6478e3-6077-4d3b-b4f3-3dbd901a71ac"
+      },
+      "safetyInformation": {
+        "type": "NO_SAFETY_INFORMATION"
+      },
+      "marketedBeforeGPSRObligation": true
+    }
+  ],
+  "parameters": [
+    {
+      "id": "11323",
+      "name": "Stan",
+      "values": [
+        "Nowy"
+      ],
+      "valuesIds": [
+        "11323_1"
+      ],
+      "rangeValue": null
+    }
+  ],
+  "images": [
+    "https://a.allegroimg.allegrosandbox.pl/original/11ea06/2f7459034fbba35c6b8272ff7479"
+  ],
+  "afterSalesServices": {
+    "impliedWarranty": {
+      "id": "c0c6e6c6-2101-4996-bd8b-7b7d7f3a677e"
+    },
+    "returnPolicy": {
+      "id": "db008aac-8fba-44fc-be12-f65741e44db4"
+    },
+    "warranty": null
+  },
+  "payments": {
+    "invoice": "NO_INVOICE"
+  },
+  "sellingMode": {
+    "format": "BUY_NOW",
+    "price": {
+      "amount": "40.00",
+      "currency": "PLN"
+    },
+    "startingPrice": null,
+    "minimalPrice": null
+  },
+  "stock": {
+    "available": 1000,
+    "unit": "UNIT"
+  },
+  "location": {
+    "countryCode": "PL",
+    "province": "DOLNOSLASKIE",
+    "city": "Miasto firmy",
+    "postCode": "12-345"
+  },
+  "delivery": {
+    "shippingRates": {
+      "id": "ddf13ff4-2a5f-4603-9cc4-7f64ce6d12d0"
+    },
+    "handlingTime": "PT0S",
+    "additionalInfo": null,
+    "shipmentDate": null
+  },
+  "description": {
+    "sections": [
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<p>Folia ochronna 3MK do Samsung Galaxy M02s 1 szt.</p> <p>100,00</p> <p>Opis testowy</p>"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "IMAGE",
+            "url": "https://a.allegroimg.allegrosandbox.pl/original/11ea06/2f7459034fbba35c6b8272ff7479"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<p>5903108353724</p>"
+          }
+        ]
+      },
+      {
+        "items": [
+          {
+            "type": "TEXT",
+            "content": "<p>sddddddd</p>"
+          }
+        ]
+      }
+    ]
+  },
+  "external": null,
+  "category": {
+    "id": "19733"
+  },
+  "taxSettings": null,
+  "sizeTable": null,
+  "discounts": {
+    "wholesalePriceList": null
+  },
+  "contact": null,
+  "fundraisingCampaign": null,
+  "messageToSellerSettings": {
+    "mode": "OPTIONAL"
+  },
+  "attachments": [],
+  "b2b": null,
+  "additionalServices": null,
+  "compatibilityList": null,
+  "additionalMarketplaces": {
+    "allegro-sk": {
+      "sellingMode": {
+        "price": {
+          "amount": "9.36",
+          "currency": "EUR"
+        }
+      },
+      "publication": {
+        "state": "APPROVED",
+        "refusalReasons": []
+      }
+    },
+    "allegro-cz": {
+      "sellingMode": {
+        "price": {
+          "amount": "232.00",
+          "currency": "CZK"
+        }
+      },
+      "publication": {
+        "state": "APPROVED",
+        "refusalReasons": []
+      }
+    },
+    "allegro-hu": {
+      "sellingMode": {
+        "price": {
+          "amount": "3775.00",
+          "currency": "HUF"
+        }
+      },
+      "publication": {
+        "state": "APPROVED",
+        "refusalReasons": []
+      }
+    },
+    "allegro-business-cz": {
+      "sellingMode": {
+        "price": {
+          "amount": "232.00",
+          "currency": "CZK"
+        }
+      },
+      "publication": {
+        "state": "NOT_REQUESTED",
+        "refusalReasons": []
+      }
+    }
+  },
+  "warnings": [],
+  "id": "7778723574",
+  "language": "pl-PL",
+  "publication": {
+    "status": "ACTIVE",
+    "duration": null,
+    "endedBy": null,
+    "endingAt": null,
+    "startingAt": null,
+    "republish": false,
+    "marketplaces": {
+      "base": {
+        "id": "allegro-pl"
+      },
+      "additional": [
+        {
+          "id": "allegro-sk"
+        },
+        {
+          "id": "allegro-cz"
+        },
+        {
+          "id": "allegro-hu"
+        }
+      ]
+    }
+  },
+  "validation": {
+    "errors": [],
+    "warnings": [],
+    "validatedAt": "2025-06-19T23:37:32.173Z"
+  },
+  "createdAt": "2025-06-19T23:32:27.000Z",
+  "updatedAt": "2025-06-19T23:37:44.133Z"
+}

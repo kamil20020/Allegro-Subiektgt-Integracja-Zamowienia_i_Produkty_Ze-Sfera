@@ -1,4 +1,4 @@
-package pl.kamil_dywan.model.unit;
+package pl.kamil_dywan.api.allegro.response;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -13,6 +13,7 @@ import pl.kamil_dywan.external.allegro.own.Currency;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -273,182 +274,12 @@ class ProductOfferResponseTest {
     }
 
     @Test
-    public void shouldNotGetExistingProducerCodeWhenThereIsNotProductSet(){
+    public void shouldGetProducerCodeWhenThereNoProducts(){
 
         //given
         ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNull(gotProducerCode);
-    }
-
-    @Test
-    public void shouldNotGetExistingProducerCodeWhenThereIsEmptyProductSet(){
-
-        //given
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(new ArrayList<>())
-            .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNull(gotProducerCode);
-    }
-
-    @Test
-    public void shouldNotGetExistingProducerCodeWhenThereIsMoreThanOneProduct(){
-
-        //given
-        OfferProductParameter producerCodeParameter = OfferProductParameter.builder()
-            .id(123L)
-            .name("Kod producenta")
-            .values(List.of("12345"))
-            .build();
-
-        ProductOfferProduct product = new ProductOfferProduct(UUID.randomUUID(), List.of(producerCodeParameter));
-        ProductOfferProduct product1 = new ProductOfferProduct();
-
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
-        ProductOfferProductRelatedData productRelatedData1 = new ProductOfferProductRelatedData(product1);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(List.of(productRelatedData, productRelatedData1))
-            .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNull(gotProducerCode);
-    }
-
-    @Test
-    public void shouldNotGetExistingProducerCodeWhenThereIsEmptyProduct(){
-
-        //given
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(null);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(List.of(productRelatedData))
-            .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNull(gotProducerCode);
-    }
-
-    @Test
-    public void shouldNotGetExistingProducerCodeWhenThereAreNotParameters(){
-
-        //given
-        ProductOfferProduct product = new ProductOfferProduct();
-
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(List.of(productRelatedData))
-            .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNull(gotProducerCode);
-    }
-
-    @Test
-    public void shouldNotGetExistingProducerCodeWhenThereAreEmptyParameters(){
-
-        //given
-        ProductOfferProduct product = new ProductOfferProduct(UUID.randomUUID(), new ArrayList<>());
-
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(List.of(productRelatedData))
-            .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNull(gotProducerCode);
-    }
-
-    @Test
-    public void shouldNotGetExistingProducerCodeWhenThereIsNotProducerParameter(){
-
-        //given
-        OfferProductParameter otherParameter = OfferProductParameter.builder()
-            .id(456L)
-            .name("Inny parametr")
-            .values(List.of("6789"))
-            .build();
-
-        ProductOfferProduct product = new ProductOfferProduct(UUID.randomUUID(), List.of(otherParameter));
-
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(List.of(productRelatedData))
-            .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNull(gotProducerCode);
-    }
-
-    @Test
-    public void shouldNotGetExistingProducerCodeWhenThereAreNotProducerParameterValues(){
-
-        //given
-        OfferProductParameter otherParameter = OfferProductParameter.builder()
-            .id(456L)
-            .name("Kod producenta")
-            .build();
-
-        ProductOfferProduct product = new ProductOfferProduct(UUID.randomUUID(), List.of(otherParameter));
-
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(List.of(productRelatedData))
-            .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNull(gotProducerCode);
-    }
-
-    @Test
-    public void shouldNotGetExistingProducerCodeWhenProducerParameterValuesAreEmpty(){
-
-        //given
-        OfferProductParameter otherParameter = OfferProductParameter.builder()
-            .id(456L)
-            .name("Kod producenta")
-            .values(new ArrayList<>())
-            .build();
-
-        ProductOfferProduct product = new ProductOfferProduct(UUID.randomUUID(), List.of(otherParameter));
-
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(List.of(productRelatedData))
-            .build();
+                .productSet(new ArrayList<>())
+                .build();
 
         //when
         String gotProducerCode = productOfferResponse.getProducerCode();
@@ -491,6 +322,288 @@ class ProductOfferResponseTest {
         //then
         assertNotNull(gotEanCode);
         assertEquals(expectedEanCode, gotEanCode);
+    }
+
+
+    @Test
+    public void shouldGetEanCodeWhenThereNoProducts(){
+
+        //given
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(new ArrayList<>())
+            .build();
+
+        //when
+        String gotEanCode = productOfferResponse.getEANCode();
+
+        //then
+        assertNull(gotEanCode);
+    }
+
+    @Test
+    public void shouldGetFirstProductOfferProductWhenHasSingleProduct(){
+
+        //given
+        ProductOfferProduct product = new ProductOfferProduct();
+        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
+
+        List<ProductOfferProductRelatedData> productsRelatedData = List.of(productRelatedData);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(productsRelatedData)
+            .build();
+
+        //when
+        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
+
+        //then
+        assertTrue(gotProductOpt.isPresent());
+        assertEquals(product, gotProductOpt.get());
+    }
+
+    @Test
+    public void shouldGetFirstProductOfferProductWhenHasManyProducts(){
+
+        //given
+        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData();
+        ProductOfferProductRelatedData productRelatedData1 = new ProductOfferProductRelatedData();
+
+        List<ProductOfferProductRelatedData> productsRelatedData = List.of(productRelatedData, productRelatedData1);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(productsRelatedData)
+            .build();
+
+        //when
+        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
+
+        //then
+        assertTrue(gotProductOpt.isEmpty());
+    }
+
+    @Test
+    public void shouldGetFirstProductOfferProductWhenHasEmptyProduct(){
+
+        //given
+        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData();
+
+        List<ProductOfferProductRelatedData> productsRelatedData = List.of(productRelatedData);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(productsRelatedData)
+            .build();
+
+        //when
+        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
+
+        //then
+        assertTrue(gotProductOpt.isEmpty());
+    }
+
+    @Test
+    public void shouldGetFirstProductOfferProductWhenHasNoProducts(){
+
+        //given
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(new ArrayList<>())
+            .build();
+
+        //when
+        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
+
+        //then
+        assertTrue(gotProductOpt.isEmpty());
+    }
+
+    @Test
+    public void shouldGetFirstProductOfferProductWhenProductsIsNull(){
+
+        //given
+        ProductOfferResponse productOfferResponse = new ProductOfferResponse();
+
+        //when
+        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
+
+        //then
+        assertTrue(gotProductOpt.isEmpty());
+    }
+
+    @Test
+    public void shouldGetHasProductsWhenHas(){
+
+        //given
+        ProductOfferProductRelatedData product = new ProductOfferProductRelatedData();
+
+        List<ProductOfferProductRelatedData> productsRelatedData = List.of(product);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(productsRelatedData)
+            .build();
+
+        //when
+        boolean gotResult = productOfferResponse.hasProducts();
+
+        //then
+        assertTrue(gotResult);
+    }
+
+    @Test
+    public void shouldGetHasProductsWhenThereAreNoProducts(){
+
+        //given
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(new ArrayList<>())
+            .build();
+
+        //when
+        boolean gotResult = productOfferResponse.hasProducts();
+
+        //then
+        assertFalse(gotResult);
+    }
+
+    @Test
+    public void shouldGetHasProductsWhenProductsSetIsNull(){
+
+        //given
+        ProductOfferResponse productOfferResponse = new ProductOfferResponse();
+
+        //when
+        boolean gotResult = productOfferResponse.hasProducts();
+
+        //then
+        assertFalse(gotResult);
+    }
+
+    @Test
+    public void shouldGetHasSingleProductsWhenHas(){
+
+        //given
+        ProductOfferProductRelatedData product = new ProductOfferProductRelatedData();
+
+        List<ProductOfferProductRelatedData> productsRelatedData = List.of(product);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(productsRelatedData)
+            .build();
+
+        //when
+        boolean gotResult = productOfferResponse.hasSingleProduct();
+
+        //then
+        assertTrue(gotResult);
+    }
+
+    @Test
+    public void shouldGetHasSingleProductWhenThereAreMultipleProducts(){
+
+        //given
+        ProductOfferProductRelatedData product = new ProductOfferProductRelatedData();
+        ProductOfferProductRelatedData product1 = new ProductOfferProductRelatedData();
+
+        List<ProductOfferProductRelatedData> productsRelatedData = List.of(product, product1);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(productsRelatedData)
+            .build();
+
+        //when
+        boolean gotResult = productOfferResponse.hasSingleProduct();
+
+        //then
+        assertFalse(gotResult);
+    }
+
+    @Test
+    public void shouldGetHasSingleProductWhenThereAreNoProducts(){
+
+        //given
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(new ArrayList<>())
+            .build();
+
+        //when
+        boolean gotResult = productOfferResponse.hasSingleProduct();
+
+        //then
+        assertFalse(gotResult);
+    }
+
+    @Test
+    public void shouldGetHasSingleProductWhenProductsSetIsNull(){
+
+        //given
+        ProductOfferResponse productOfferResponse = new ProductOfferResponse();
+
+        //when
+        boolean gotResult = productOfferResponse.hasSingleProduct();
+
+        //then
+        assertFalse(gotResult);
+    }
+
+    @Test
+    public void shouldGetHasManyProductsWhenHas(){
+
+        //given
+        ProductOfferProductRelatedData product1 = new ProductOfferProductRelatedData();
+        ProductOfferProductRelatedData product2 = new ProductOfferProductRelatedData();
+
+        List<ProductOfferProductRelatedData> productsRelatedData = List.of(product1, product2);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(productsRelatedData)
+            .build();
+
+        //when
+        boolean gotResult = productOfferResponse.hasManyProducts();
+
+        assertTrue(gotResult);
+    }
+
+    @Test
+    public void shouldGetHasManyProductsWhenHasOneProduct(){
+
+        //given
+        ProductOfferProductRelatedData product1 = new ProductOfferProductRelatedData();
+
+        List<ProductOfferProductRelatedData> productsRelatedData = List.of(product1);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+                .productSet(productsRelatedData)
+                .build();
+
+        //when
+        boolean gotResult = productOfferResponse.hasManyProducts();
+
+        assertFalse(gotResult);
+    }
+
+
+    @Test
+    public void shouldGetHasManyProductsWhenHasNoProducts(){
+
+        //given
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(new ArrayList<>())
+            .build();
+
+        //when
+        boolean gotResult = productOfferResponse.hasManyProducts();
+
+        assertFalse(gotResult);
+    }
+
+    @Test
+    public void shouldGetHasManyProductsWhenProductsAreNull(){
+
+        //given
+        ProductOfferResponse productOfferResponse = new ProductOfferResponse();
+
+        //when
+        boolean gotResult = productOfferResponse.hasManyProducts();
+
+        assertFalse(gotResult);
     }
 
 }

@@ -51,21 +51,13 @@ public class ProductApi extends BearerAuthApi {
         return send(httpRequestBuilder);
     }
 
-    public HttpResponse<String> patchOfferExternalById(Long offerId, String externalValue){
+    public HttpResponse<String> patchOfferExternalById(Long offerId, String externalValue) throws IllegalStateException{
 
         ExternalId externalId = new ExternalId(externalValue);
 
         PatchProductOfferRequest patchProductOfferRequest = new PatchProductOfferRequest(externalId);
 
-        String content = "";
-
-        try {
-            content = objectMapper.writeValueAsString(patchProductOfferRequest);
-        }
-        catch (JsonProcessingException e) {
-
-            e.printStackTrace();
-        }
+        String content = handleMapRequestToString(patchProductOfferRequest);
 
         HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString(content);
 

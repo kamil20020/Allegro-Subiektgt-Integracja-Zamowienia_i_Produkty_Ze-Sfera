@@ -59,12 +59,6 @@ public class ProductOfferResponse {
     private String subiektId;
 
     @JsonIgnore
-    private static final String PRODUCER_CODE_KEY = "Kod producenta";
-
-    @JsonIgnore
-    private static final String EAN_CODE_KEY = "EAN (GTIN)";
-
-    @JsonIgnore
     public void setSubiektId(String subiektId) {
 
         this.subiektId = subiektId;
@@ -128,17 +122,17 @@ public class ProductOfferResponse {
     @JsonIgnore
     public String getEANCode(){
 
-        return getParameterCode(EAN_CODE_KEY);
+        Optional<ProductOfferProduct> firstProductOfferProduct = getFirstProductOfferProduct();
+
+        if(firstProductOfferProduct.isEmpty()){
+            return null;
+        }
+
+        return firstProductOfferProduct.get().getEANCode();
     }
 
     @JsonIgnore
     public String getProducerCode(){
-
-        return getParameterCode(PRODUCER_CODE_KEY);
-    }
-
-    @JsonIgnore
-    private String getParameterCode(String parameterName){
 
         Optional<ProductOfferProduct> firstProductOfferProduct = getFirstProductOfferProduct();
 
@@ -146,49 +140,45 @@ public class ProductOfferResponse {
             return null;
         }
 
-        List<OfferProductParameter> parameters = firstProductOfferProduct.get().getParameters();
-
-        if(parameters == null || parameters.isEmpty()) {
-            return null;
-        }
-
-        Optional<OfferProductParameter> foundCodeParameter = parameters.stream()
-            .filter(parameter -> Objects.equals(parameter.getName(), parameterName))
-            .findFirst();
-
-        if(foundCodeParameter.isEmpty()) {
-            return null;
-        }
-
-        List<String> parameterValues = foundCodeParameter.get().getValues();
-
-        if(parameterValues == null || parameterValues.isEmpty()) {
-            return null;
-        }
-
-        String gotFirstValue = parameterValues.get(0);
-
-        return gotFirstValue;
+        return firstProductOfferProduct.get().getProducerCode();
     }
 
     @JsonIgnore
-    private Optional<ProductOfferProduct> getFirstProductOfferProduct(){
+    public Optional<ProductOfferProduct> getFirstProductOfferProduct(){
 
         Optional<ProductOfferProduct> emptyResult = Optional.empty();
 
-        if(productSet == null || productSet.isEmpty() || productSet.size() > 1) {
+        if(!hasSingleProduct()) {
             return emptyResult;
         }
 
         ProductOfferProductRelatedData productOfferProductRelatedData = productSet.get(0);
 
-        ProductOfferProduct product = productSet.get(0).getProduct();
+        ProductOfferProduct product = productOfferProductRelatedData.getProduct();
 
         if(product == null){
             return emptyResult;
         }
 
         return Optional.ofNullable(product);
+    }
+
+    @JsonIgnore
+    public boolean hasSingleProduct(){
+
+        return hasProducts() && productSet.size() == 1;
+    }
+
+    @JsonIgnore
+    public boolean hasManyProducts(){
+
+        return hasProducts() && productSet.size() > 1;
+    }
+
+    @JsonIgnore
+    public boolean hasProducts(){
+
+        return productSet != null && !productSet.isEmpty();
     }
 
 }

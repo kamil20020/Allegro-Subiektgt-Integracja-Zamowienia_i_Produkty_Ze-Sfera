@@ -1,4 +1,4 @@
-package pl.kamil_dywan.api.allegro.request;
+package pl.kamil_dywan.external.sfera.generated;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -14,12 +14,20 @@ import javax.annotation.processing.Generated;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonPropertyOrder({
-    "external_id"
+    "code",
+    "ean",
+    "qty"
 })
 @Generated("jsonschema2pojo")
-public class GetDocumentByExternalIdRequest {
+public class ProductSetProduct {
 
-    @JsonProperty("external_id")
-    private String externalId;
+    @JsonProperty("code")
+    private String code;
+
+    @JsonProperty("ean")
+    private String ean;
+
+    @JsonProperty("qty")
+    private Integer quantity;
 
 }

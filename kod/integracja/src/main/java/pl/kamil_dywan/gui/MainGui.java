@@ -21,7 +21,7 @@ public class MainGui {
 
     private final JFrame frame;
 
-    public MainGui(AuthService authService, ProductService productService, OrderService orderService, SferaOrderService sferaOrderService, BasicInfoService basicInfoService) {
+    public MainGui(AuthService authService, ProductService productService, SferaProductService sferaProductService, OrderService orderService, SferaOrderService sferaOrderService, BasicInfoService basicInfoService) {
 
         this.authService = authService;
         this.basicInfoService = basicInfoService;
@@ -36,7 +36,7 @@ public class MainGui {
         loadMainPanelLayoutConstraints();
 
         loginGui = new LoginGui(authService, this::handleSuccessAuth);
-        loggedUserContent = new LoggedUserContent(frame, productService, orderService, sferaOrderService, basicInfoService, this::handleLogout);
+        loggedUserContent = new LoggedUserContent(frame, productService, sferaProductService, orderService, sferaOrderService, basicInfoService, this::handleLogout);
 
         handleAuth();
 

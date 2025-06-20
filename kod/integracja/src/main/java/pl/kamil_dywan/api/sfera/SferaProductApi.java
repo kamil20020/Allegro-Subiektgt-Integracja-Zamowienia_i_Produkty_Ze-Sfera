@@ -1,7 +1,8 @@
 package pl.kamil_dywan.api.sfera;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import pl.kamil_dywan.api.allegro.request.GetProductByCodeAndEanRequest;
+import pl.kamil_dywan.api.sfera.request.CreateProductsSetsRequest;
+import pl.kamil_dywan.api.sfera.request.GetProductByCodeAndEanRequest;
 import pl.kamil_dywan.api.sfera.request.GeneralRequest;
 
 import java.net.URI;
@@ -19,15 +20,7 @@ public class SferaProductApi extends SferaApi{
 
         GeneralRequest generalRequest = createGeneralRequest(request);
 
-        String requestStr = "";
-
-        try {
-            requestStr = objectMapper.writeValueAsString(generalRequest);
-        }
-        catch (JsonProcessingException e) {
-
-            e.printStackTrace();
-        }
+        String requestStr = handleMapRequestToString(generalRequest);
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.ofString(requestStr))
@@ -37,4 +30,20 @@ public class SferaProductApi extends SferaApi{
 
         return send(httpRequestBuilder);
     }
+
+    public HttpResponse<String> saveProductsSets(CreateProductsSetsRequest request){
+
+        GeneralRequest generalRequest = createGeneralRequest(request);
+
+        String requestStr = handleMapRequestToString(generalRequest);
+
+        HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(requestStr))
+            .uri(URI.create(API_PREFIX + "/createProductsSets"))
+            .header("Content-Type", "application/json")
+            .header("Accept", "application/json");
+
+        return send(httpRequestBuilder);
+    }
+
 }

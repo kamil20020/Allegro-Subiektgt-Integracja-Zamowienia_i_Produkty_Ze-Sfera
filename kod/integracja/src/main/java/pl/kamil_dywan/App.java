@@ -49,7 +49,7 @@ public class App {
         SferaProductService sferaProductService = new SferaProductService(sferaProductApi);
         ProductService productService = new ProductService(productApi, sferaProductService);
 
-        new MainGui(authService, productService, orderService, sferaOrderService, basicInfoService);
+        new MainGui(authService, productService, sferaProductService, orderService, sferaOrderService, basicInfoService);
 //
 //        Customer customer = Customer.builder()
 //            .name("Kamil Nowak")

@@ -1,5 +1,6 @@
 package pl.kamil_dywan.api.sfera;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import pl.kamil_dywan.api.Api;
 import pl.kamil_dywan.api.sfera.request.GeneralRequest;
 import pl.kamil_dywan.mapper.Base64Mapper;

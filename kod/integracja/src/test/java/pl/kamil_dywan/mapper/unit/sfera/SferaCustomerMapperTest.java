@@ -1,4 +1,4 @@
-package pl.kamil_dywan.mapper.unit;
+package pl.kamil_dywan.mapper.unit.sfera;
 
 import org.junit.jupiter.api.Test;
 import pl.kamil_dywan.external.allegro.generated.order.Order;

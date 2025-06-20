@@ -1,0 +1,51 @@
+{
+  "name": "Folia ochronna 3MK do Samsung Galaxy M02s 1 szt.",
+  "productSet": [
+    {
+      "product": {
+        "id": "025871c4-cd89-4c3a-a3e7-1ea2435a1e53",
+        "parameters": [
+          {
+            "id": "225693",
+            "name": "EAN (GTIN)",
+            "values": [
+              "5903108353724"
+            ]
+          }
+        ]
+      },
+      "quantity": {
+        "value": 2
+      }
+    },
+    {
+      "product": {
+        "id": "025b7401-2d8f-4590-aac2-73b7da655df8",
+        "publication": {
+          "status": "LISTED"
+        },
+        "parameters": [
+          {
+            "id": "225693",
+            "name": "Kod producenta",
+            "values": [
+              "12345"
+            ]
+          }
+        ]
+      },
+      "quantity": {
+        "value": 3
+      }
+    }
+  ],
+  "sellingMode": {
+    "price": {
+      "amount": "40.00",
+      "currency": "PLN"
+    }
+  },
+  "external": null,
+  "id": "7778723574",
+  "createdAt": "2025-06-19T23:32:27.000Z"
+}

@@ -1,5 +1,6 @@
 package pl.kamil_dywan.mapper.sfera;
 
+import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
 import pl.kamil_dywan.external.allegro.generated.order_item.OrderProduct;
 import pl.kamil_dywan.external.sfera.generated.Product;
@@ -19,21 +20,8 @@ public interface SferaProductMapper {
 
         ExternalId externalId = allegroOffer.getExternal();
 
-        String code = productId;
-
-        String producerCode = null;
-        String eanCode = null;
-
-        if(externalId != null && externalId.getId() != null){
-
-            producerCode = externalId.getProducerCode();
-            eanCode = externalId.getEanCode();
-        }
-
-        if(producerCode != null){
-
-            code = producerCode;
-        }
+        String code = getCode(productId, externalId);
+        String eanCode = getEanCode(externalId);
 
         return Product.builder()
             .code(code)
@@ -42,6 +30,51 @@ public interface SferaProductMapper {
             .priceWithTax(allegroOrderItem.getTotalPriceWithTax())
             .quantity(allegroOrderItem.getQuantity())
             .build();
+    }
+
+    public static Product map(ProductOfferResponse allegroProduct){
+
+        Long productId = allegroProduct.getId();
+
+        ExternalId externalId = allegroProduct.getExternalId();
+
+        String code = getCode(productId.toString(), externalId);
+        String eanCode = getEanCode(externalId);
+
+        return Product.builder()
+            .code(code)
+            .ean(eanCode)
+            .name(allegroProduct.getName())
+            .priceWithTax(allegroProduct.getPriceWithTax())
+            .quantity(1)
+            .build();
+    }
+
+    public static String getCode(String offerId, ExternalId externalId){
+
+        String code = offerId;
+
+        if(externalId != null && externalId.getId() != null){
+
+            code = externalId.getProducerCode();
+        }
+
+        if(code == null){
+
+            code = offerId;
+        }
+
+        return code;
+    }
+
+    public static String getEanCode(ExternalId externalId){
+
+        if(externalId == null || externalId.getId() == null){
+
+            return null;
+        }
+
+        return externalId.getEanCode();
     }
 
 }

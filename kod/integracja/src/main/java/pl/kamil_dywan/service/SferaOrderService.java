@@ -1,7 +1,7 @@
 package pl.kamil_dywan.service;
 
 import pl.kamil_dywan.api.Api;
-import pl.kamil_dywan.api.allegro.request.GetDocumentByExternalIdRequest;
+import pl.kamil_dywan.api.sfera.request.GetDocumentByExternalIdRequest;
 import pl.kamil_dywan.api.sfera.SferaOrderApi;
 import pl.kamil_dywan.api.sfera.request.CreateOrderRequest;
 import pl.kamil_dywan.api.sfera.request.GetOrderRequest;
@@ -17,7 +17,6 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 
 public class SferaOrderService {
 

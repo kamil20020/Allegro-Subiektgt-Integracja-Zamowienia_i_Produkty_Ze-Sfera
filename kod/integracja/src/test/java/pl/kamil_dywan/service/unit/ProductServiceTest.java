@@ -340,4 +340,60 @@ class ProductServiceTest {
         Mockito.verify(executorServiceMock).invokeAll(any());
     }
 
+    @Test
+    public void shouldExtractProductsSets(){
+
+        //given
+        ProductOfferProduct product = new ProductOfferProduct();
+        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
+
+        ProductOfferProduct product1 = new ProductOfferProduct();
+        ProductOfferProductRelatedData productRelatedData1 = new ProductOfferProductRelatedData(product1);
+
+        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
+            .productSet(List.of(productRelatedData))
+            .build();
+
+        ProductOfferResponse productOfferResponse1 = ProductOfferResponse.builder()
+            .productSet(List.of(productRelatedData, productRelatedData1))
+            .build();
+
+        List<ProductOfferResponse> products = List.of(productOfferResponse, productOfferResponse1);
+
+        //when
+        List<ProductOfferResponse> gotProducts = productService.extractProductsSets(products);
+
+        //then
+        assertNotNull(gotProducts);
+        assertFalse(gotProducts.isEmpty());
+        assertEquals(1, gotProducts.size());
+        assertTrue(gotProducts.contains(productOfferResponse1));
+    }
+
+    @Test
+    public void shouldExtractProductsSetsWhenThereAreEmptyProductsSets(){
+
+        //given
+
+        //when
+        List<ProductOfferResponse> gotProducts = productService.extractProductsSets(new ArrayList<>());
+
+        //then
+        assertNotNull(gotProducts);
+        assertTrue(gotProducts.isEmpty());
+    }
+
+    @Test
+    public void shouldExtractProductsSetsWhenProductsSetsAreNull(){
+
+        //given
+
+        //when
+        List<ProductOfferResponse> gotProducts = productService.extractProductsSets(null);
+
+        //then
+        assertNotNull(gotProducts);
+        assertTrue(gotProducts.isEmpty());
+    }
+
 }

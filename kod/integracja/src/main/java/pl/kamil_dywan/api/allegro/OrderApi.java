@@ -35,17 +35,9 @@ public class OrderApi extends BearerAuthApi {
         return send(httpRequestBuilder);
     }
 
-    public HttpResponse<String> createDocument(String orderId,  CreateOrderInvoiceRequest createOrderInvoiceRequest){
+    public HttpResponse<String> createDocument(String orderId, CreateOrderInvoiceRequest createOrderInvoiceRequest) throws IllegalStateException{
 
-        String content = "";
-
-        try {
-            content = objectMapper.writeValueAsString(createOrderInvoiceRequest);
-        }
-        catch (JsonProcessingException e) {
-
-            e.printStackTrace();
-        }
+        String content = handleMapRequestToString(createOrderInvoiceRequest);
 
         HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString(content);
 

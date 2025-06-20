@@ -24,6 +24,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 public class ProductService {
 
@@ -204,17 +205,16 @@ public class ProductService {
         productOffer.setExternalId(externalId);
     }
 
-    private List<Object> getEmptyProductRelatedDataForEpp() {
+    public List<ProductOfferResponse> extractProductsSets(List<ProductOfferResponse> products){
 
-        List<Product> gotConvertedSubiektProducts = new ArrayList<>();
-        List<ProductDetailedPrice> productsDetailedPrices = new ArrayList<>();
+        if(products == null){
+            
+            return new ArrayList<>();
+        }
 
-        List<Object> productRelatedData = new ArrayList<>();
-
-        productRelatedData.add(gotConvertedSubiektProducts);
-        productRelatedData.add(productsDetailedPrices);
-
-        return productRelatedData;
+        return products.stream()
+            .filter(product -> product.hasManyProducts())
+            .collect(Collectors.toList());
     }
 
     public void writeDeliveryToFile(String filePath) throws IllegalStateException{
@@ -228,6 +228,19 @@ public class ProductService {
         ((List<Product>) productRelatedData.get(0)).get(0).setId("DOSTAWA123");
 
         writeProductsToFile(productRelatedData, filePath);
+    }
+
+    private List<Object> getEmptyProductRelatedDataForEpp() {
+
+        List<Product> gotConvertedSubiektProducts = new ArrayList<>();
+        List<ProductDetailedPrice> productsDetailedPrices = new ArrayList<>();
+
+        List<Object> productRelatedData = new ArrayList<>();
+
+        productRelatedData.add(gotConvertedSubiektProducts);
+        productRelatedData.add(productsDetailedPrices);
+
+        return productRelatedData;
     }
 
     public void writeProductsToFile(List<ProductOfferResponse> productsOffers, String filePath, ProductType productsTypes) throws IllegalStateException{
