@@ -99,13 +99,12 @@ class SferaProductServiceTest {
 
         List<ProductOfferResponse> expectedRawProductsSets = List.of(expectedRawProductsSet, expectedRawProductsSet1);
 
-        ProductSet expectedProductSet = new ProductSet();
-        ProductSet expectedProductSet1 = new ProductSet();
+        CreateProductsSetRequest expectedProductSetRequest = new CreateProductsSetRequest();
 
-        List<ProductSet> expectedProductsSets = List.of(expectedProductSet, expectedProductSet1);
+        Integer expectedSavedProductsSetsNumberOf = 2;
 
         //when
-        Mockito.when(sferaProductApi.saveProductsSets(any())).thenReturn(expectedHttpResponse);
+        Mockito.when(sferaProductApi.saveProductsSet(any())).thenReturn(expectedHttpResponse);
 
         try(
             MockedStatic<SferaProductSetMapper> sferaProductSetMapper = Mockito.mockStatic(SferaProductSetMapper.class);
@@ -114,32 +113,71 @@ class SferaProductServiceTest {
 
             apiMock.when(() -> Api.extractBody(any(TestHttpResponse.class), any())).thenReturn(generalResponse);
 
-            for(int i = 0; i < expectedRawProductsSets.size(); i++){
+            for (ProductOfferResponse rawProduct : expectedRawProductsSets) {
 
-                ProductOfferResponse rawProduct = expectedRawProductsSets.get(i);
-                ProductSet product = expectedProductsSets.get(i);
-
-                sferaProductSetMapper.when(() -> SferaProductSetMapper.map(rawProduct)).thenReturn(product);
+                sferaProductSetMapper.when(() -> SferaProductSetMapper.map(rawProduct)).thenReturn(expectedProductSetRequest);
             }
 
-            sferaProductService.saveProductsSets(expectedRawProductsSets);
+            Integer gotSavedProductsSetsNumberOf = sferaProductService.saveProductsSets(expectedRawProductsSets);
 
             //then
-            ArgumentCaptor<CreateProductsSetRequest> requestCaptor = ArgumentCaptor.forClass(CreateProductsSetRequest.class);
-
-            Mockito.verify(sferaProductApi).saveProductsSets(requestCaptor.capture());
-
-            CreateProductsSetRequest gotRequest = requestCaptor.getValue();
-
-            assertNotNull(gotRequest);
-            assertEquals(expectedProductsSets, gotRequest.getProductsSets());
-
-            apiMock.verify(() -> Api.extractBody(expectedHttpResponse, GeneralResponse.class));
+            assertNotNull(gotSavedProductsSetsNumberOf);
+            assertEquals(expectedSavedProductsSetsNumberOf, gotSavedProductsSetsNumberOf);
 
             for (ProductOfferResponse rawProduct : expectedRawProductsSets) {
 
                 sferaProductSetMapper.verify(() -> SferaProductSetMapper.map(rawProduct), times(2));
             }
         }
+
+        Mockito.verify(sferaProductApi, times(2)).saveProductsSet(expectedProductSetRequest);
+    }
+
+    @Test
+    public void shouldSaveProductsSet(){
+
+        //given
+        HttpResponse<String> expectedHttpResponse = TestHttpResponse.builder()
+            .statusCode(200)
+            .uri(URI.create("http://localhost:9000"))
+            .build();
+
+        GeneralResponse generalResponse = GeneralResponse.builder()
+            .status("success")
+            .data(null)
+            .build();
+
+        ProductOfferResponse expectedRawProductsSet = new ProductOfferResponse();
+
+        CreateProductsSetRequest expectedProductSetRequest = new CreateProductsSetRequest();
+
+        //when
+        Mockito.when(sferaProductApi.saveProductsSet(any())).thenReturn(expectedHttpResponse);
+
+        try(
+            MockedStatic<SferaProductSetMapper> sferaProductSetMapper = Mockito.mockStatic(SferaProductSetMapper.class);
+            MockedStatic<Api> apiMock = Mockito.mockStatic(Api.class);
+        ){
+
+            sferaProductSetMapper.when(() -> SferaProductSetMapper.map(any())).thenReturn(expectedProductSetRequest);
+            apiMock.when(() -> Api.extractBody(any(TestHttpResponse.class), any())).thenReturn(generalResponse);
+
+            sferaProductService.saveProductsSet(expectedRawProductsSet);
+
+            //then
+            ArgumentCaptor<CreateProductsSetRequest> requestCaptor = ArgumentCaptor.forClass(CreateProductsSetRequest.class);
+
+            Mockito.verify(sferaProductApi).saveProductsSet(requestCaptor.capture());
+
+            CreateProductsSetRequest gotRequest = requestCaptor.getValue();
+
+            assertNotNull(gotRequest);
+            assertEquals(expectedProductSetRequest, gotRequest);
+
+            apiMock.verify(() -> Api.extractBody(expectedHttpResponse, GeneralResponse.class));
+            sferaProductSetMapper.verify(() -> SferaProductSetMapper.map(expectedRawProductsSet));
+        }
+
+        Mockito.verify(sferaProductApi).saveProductsSet(expectedProductSetRequest);
     }
 }

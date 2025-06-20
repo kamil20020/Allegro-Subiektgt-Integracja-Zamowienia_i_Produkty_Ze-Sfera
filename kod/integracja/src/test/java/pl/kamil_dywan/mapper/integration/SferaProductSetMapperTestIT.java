@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import pl.kamil_dywan.TestUtils;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
+import pl.kamil_dywan.api.sfera.request.CreateProductsSetRequest;
 import pl.kamil_dywan.file.read.FileReader;
 import pl.kamil_dywan.file.read.JSONFileReader;
 import pl.kamil_dywan.mapper.sfera.SferaProductSetMapper;
@@ -44,7 +45,7 @@ class SferaProductSetMapperTestIT {
         //given
 
         //when
-        ProductSet gotProductSet = SferaProductSetMapper.map(expectedAllegroProductSet);
+        CreateProductsSetRequest gotProductSet = SferaProductSetMapper.map(expectedAllegroProductSet);
 
         String gotProductSetStr = objectMapper.writeValueAsString(gotProductSet);
         gotProductSetStr = TestUtils.removeWhiteSpace(gotProductSetStr);

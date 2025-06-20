@@ -216,36 +216,11 @@ public class ProductsGui extends ChangeableGui {
             return;
         }
 
-//        sferaProductService.saveProductsSets(productsSets);
-
-        String savedFilePath = FileDialogHandler.getSaveFileDialogSelectedPath(
-                "Zapisywanie produktów do pliku",
-                "produkty",
-                ".epp"
-        );
-
-        if (savedFilePath.isBlank()) {
-            return;
-        }
-
-        try {
-
-            productService.writeProductsToFile(products, savedFilePath, ProductType.GOODS);
-        } catch (IllegalStateException e) {
-
-            JOptionPane.showMessageDialog(
-                    mainPanel,
-                    "Nie udało się zapisać produktów do pliku",
-                    "Powiadomienie o błędzie",
-                    JOptionPane.ERROR_MESSAGE
-            );
-
-            return;
-        }
+        Integer numberOfSavedProductsSets = sferaProductService.saveProductsSets(productsSets);
 
         JOptionPane.showMessageDialog(
                 mainPanel,
-                "Zapisano produkty do pliku " + savedFilePath,
+                "Utworzono " + numberOfSavedProductsSets + " zestawów produktów",
                 "Powiadomienie",
                 JOptionPane.INFORMATION_MESSAGE
         );
@@ -381,7 +356,7 @@ public class ProductsGui extends ChangeableGui {
         exportProductsSetsButton.setMaximumSize(new Dimension(180, 30));
         exportProductsSetsButton.setMinimumSize(new Dimension(180, 30));
         exportProductsSetsButton.setPreferredSize(new Dimension(180, 30));
-        exportProductsSetsButton.setText("Zapisz zestawy do pliku");
+        exportProductsSetsButton.setText("Zapisz zestawy");
         toolBar1.add(exportProductsSetsButton);
         final JToolBar.Separator toolBar$Separator2 = new JToolBar.Separator();
         toolBar1.add(toolBar$Separator2);

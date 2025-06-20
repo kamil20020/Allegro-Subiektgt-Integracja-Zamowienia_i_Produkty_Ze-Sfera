@@ -23,6 +23,11 @@ public interface SferaProductMapper {
         String code = getCode(productId, externalId);
         String eanCode = getEanCode(externalId);
 
+        if(allegroOffer.hasManyProducts()){
+
+            code = "Zestaw-" + productId;
+        }
+
         return Product.builder()
             .code(code)
             .ean(eanCode)
@@ -40,6 +45,11 @@ public interface SferaProductMapper {
 
         String code = getCode(productId.toString(), externalId);
         String eanCode = getEanCode(externalId);
+
+        if(allegroProduct.hasManyProducts()){
+
+            code = "Zestaw-" + productId;
+        }
 
         return Product.builder()
             .code(code)

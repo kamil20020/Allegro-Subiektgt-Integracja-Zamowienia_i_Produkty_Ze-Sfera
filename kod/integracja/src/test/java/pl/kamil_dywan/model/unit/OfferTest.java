@@ -14,7 +14,77 @@ import static org.junit.jupiter.api.Assertions.*;
 class OfferTest {
 
     @Test
-    void shouldGetHasSingleProductForSingleProduct() {
+    void shouldGetHasProductsForSingleProduct() {
+
+        //given
+        OrderProduct orderProduct = new OrderProduct(UUID.randomUUID(), 2);
+
+        List<OrderProduct> orderProducts = List.of(orderProduct);
+
+        OrderProductSet orderProductSet = new OrderProductSet(orderProducts);
+
+        Offer offer = Offer.builder()
+            .productSet(orderProductSet)
+            .build();
+
+        //when
+        boolean result = offer.hasProducts();
+
+        //then
+        assertTrue(result);
+    }
+
+    @Test
+    void shouldNotGetHasProductsForNoProductSet() {
+
+        //given
+        Offer offer = new Offer();
+
+        //when
+        boolean result = offer.hasProducts();
+
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    void shouldNotGetHasProductsForProductSetNullProducts() {
+
+        //given
+        OrderProductSet orderProductSet = new OrderProductSet();
+
+        Offer offer = Offer.builder()
+            .productSet(orderProductSet)
+            .build();
+
+        //when
+        boolean result = offer.hasProducts();
+
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    void shouldNotGetHasProductsForProductSetEmptyProducts() {
+
+        //given
+        List<OrderProduct> orderProducts = new ArrayList<>();
+
+        OrderProductSet orderProductSet = new OrderProductSet(orderProducts);
+
+        Offer offer = Offer.builder()
+            .productSet(orderProductSet)
+            .build();
+
+        //when
+        boolean result = offer.hasProducts();
+
+        //then
+        assertFalse(result);
+    }
+
+    @Test
+    public void shouldGetHasSingleProductsForSingleProduct(){
 
         //given
         OrderProduct orderProduct = new OrderProduct(UUID.randomUUID(), 2);
@@ -35,11 +105,11 @@ class OfferTest {
     }
 
     @Test
-    void shouldNotGetHasSingleProductForMultipleProducts() {
+    public void shouldGetHasSingleProductsForManyProducts(){
 
         //given
         OrderProduct orderProduct = new OrderProduct(UUID.randomUUID(), 2);
-        OrderProduct orderProduct1 = new OrderProduct(UUID.randomUUID(), 3);
+        OrderProduct orderProduct1 = new OrderProduct(UUID.randomUUID(), 4);
 
         List<OrderProduct> orderProducts = List.of(orderProduct, orderProduct1);
 
@@ -57,40 +127,13 @@ class OfferTest {
     }
 
     @Test
-    void shouldNotGetHasSingleProductForNoProductSet() {
+    public void shouldGetHasManyProductsForManyProduct(){
 
         //given
-        Offer offer = new Offer();
+        OrderProduct orderProduct = new OrderProduct(UUID.randomUUID(), 2);
+        OrderProduct orderProduct1 = new OrderProduct(UUID.randomUUID(), 4);
 
-        //when
-        boolean result = offer.hasSingleProduct();
-
-        //then
-        assertFalse(result);
-    }
-
-    @Test
-    void shouldNotGetHasSingleProductForProductSetNullProducts() {
-
-        //given
-        OrderProductSet orderProductSet = new OrderProductSet();
-
-        Offer offer = Offer.builder()
-            .productSet(orderProductSet)
-            .build();
-
-        //when
-        boolean result = offer.hasSingleProduct();
-
-        //then
-        assertFalse(result);
-    }
-
-    @Test
-    void shouldNotGetHasSingleProductForProductSetEmptyProducts() {
-
-        //given
-        List<OrderProduct> orderProducts = new ArrayList<>();
+        List<OrderProduct> orderProducts = List.of(orderProduct, orderProduct1);
 
         OrderProductSet orderProductSet = new OrderProductSet(orderProducts);
 
@@ -99,7 +142,28 @@ class OfferTest {
             .build();
 
         //when
-        boolean result = offer.hasSingleProduct();
+        boolean result = offer.hasManyProducts();
+
+        //then
+        assertTrue(result);
+    }
+
+    @Test
+    public void shouldGetHasManyProductsForSingleProduct(){
+
+        //given
+        OrderProduct orderProduct = new OrderProduct(UUID.randomUUID(), 2);
+
+        List<OrderProduct> orderProducts = List.of(orderProduct);
+
+        OrderProductSet orderProductSet = new OrderProductSet(orderProducts);
+
+        Offer offer = Offer.builder()
+            .productSet(orderProductSet)
+            .build();
+
+        //when
+        boolean result = offer.hasManyProducts();
 
         //then
         assertFalse(result);

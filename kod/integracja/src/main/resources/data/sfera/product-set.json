@@ -1,11 +1,7 @@
 {
-  "productSet": {
-    "code": "7778723574",
-    "ean": null,
-    "qty": 1,
-    "price": 40.00,
-    "name": "Folia ochronna 3MK do Samsung Galaxy M02s 1 szt."
-  },
+  "code": "Zestaw-7778723574",
+  "name": "Folia ochronna 3MK do Samsung Galaxy M02s 1 szt.",
+  "price": 40.00,
   "products": [
     {
       "code": "025871c4-cd89-4c3a-a3e7-1ea2435a1e53",

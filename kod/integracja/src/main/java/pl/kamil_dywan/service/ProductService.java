@@ -129,6 +129,11 @@ public class ProductService {
             code = producerCode;
         }
 
+        if(gotProduct.hasManyProducts()){
+
+            code = "Zestaw-" + gotProduct.getId();
+        }
+
         String foundSubiektId = sferaProductService.getSubiektIdByCodeOrEan(code, ean);
 
         gotProduct.setSubiektId(foundSubiektId);

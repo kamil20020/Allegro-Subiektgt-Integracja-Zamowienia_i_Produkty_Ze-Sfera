@@ -77,7 +77,7 @@
               <maximumSize width="180" height="30"/>
               <minimumSize width="180" height="30"/>
               <preferredSize width="180" height="30"/>
-              <text value="Zapisz zestawy do pliku"/>
+              <text value="Zapisz zestawy"/>
             </properties>
           </component>
           <component id="fef91" class="javax.swing.JToolBar$Separator">

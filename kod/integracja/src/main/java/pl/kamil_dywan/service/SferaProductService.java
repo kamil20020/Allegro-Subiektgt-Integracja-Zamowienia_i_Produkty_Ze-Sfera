@@ -5,6 +5,7 @@ import pl.kamil_dywan.api.sfera.request.CreateProductsSetRequest;
 import pl.kamil_dywan.api.sfera.request.GetProductByCodeAndEanRequest;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
 import pl.kamil_dywan.api.sfera.SferaProductApi;
+import pl.kamil_dywan.api.sfera.response.CreatedProductResponse;
 import pl.kamil_dywan.api.sfera.response.ErrorResponse;
 import pl.kamil_dywan.api.sfera.response.GeneralResponse;
 import pl.kamil_dywan.external.sfera.generated.ResponseStatus;
@@ -55,15 +56,32 @@ public class SferaProductService {
         return gotSubiektId;
     }
 
-    public void saveProductsSets(List<ProductOfferResponse> allegroProductsSets) throws IllegalStateException{
+    public Integer saveProductsSets(List<ProductOfferResponse> allegroProductsSets) {
 
-        List<ProductSet> productsSets = allegroProductsSets.stream()
-            .map(product -> SferaProductSetMapper.map(product))
-            .collect(Collectors.toList());
+        Integer savedProductsSets = 0;
 
-        CreateProductsSetRequest request = new CreateProductsSetRequest(productsSets);
+        for(ProductOfferResponse allegroProductSet : allegroProductsSets){
 
-        HttpResponse<String> gotResponse = sferaProductApi.saveProductsSets(request);
+            try{
+
+                saveProductsSet(allegroProductSet);
+
+                savedProductsSets++;
+            }
+            catch(IllegalStateException e){
+
+                e.printStackTrace();
+            }
+        }
+
+        return savedProductsSets;
+    }
+
+    public void saveProductsSet(ProductOfferResponse allegroProductsSet) throws IllegalStateException{
+
+        CreateProductsSetRequest request = SferaProductSetMapper.map(allegroProductsSet);
+
+        HttpResponse<String> gotResponse = sferaProductApi.saveProductsSet(request);
 
         handleResponseErrors(gotResponse);
     }

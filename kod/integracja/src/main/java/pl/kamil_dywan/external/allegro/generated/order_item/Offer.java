@@ -46,17 +46,26 @@ public class Offer {
     @JsonIgnore
     public boolean hasSingleProduct(){
 
-        if(productSet == null){
+        return hasProducts() && productSet.getProducts().size() == 1;
+    }
+
+    @JsonIgnore
+    public boolean hasManyProducts(){
+
+        return hasProducts() && productSet.getProducts().size() > 1;
+    }
+
+    @JsonIgnore
+    public boolean hasProducts(){
+
+        if(productSet == null || productSet == null){
+
             return false;
         }
 
         List<OrderProduct> orderProducts = productSet.getProducts();
 
-        if(orderProducts == null){
-            return false;
-        }
-
-        return orderProducts.size() == 1;
+        return orderProducts != null && !orderProducts.isEmpty();
     }
 
 }

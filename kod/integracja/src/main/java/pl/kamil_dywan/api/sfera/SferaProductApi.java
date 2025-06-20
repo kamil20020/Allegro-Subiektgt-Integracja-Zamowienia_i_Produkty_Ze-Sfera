@@ -30,7 +30,7 @@ public class SferaProductApi extends SferaApi{
         return send(httpRequestBuilder);
     }
 
-    public HttpResponse<String> saveProductsSets(CreateProductsSetRequest request){
+    public HttpResponse<String> saveProductsSet(CreateProductsSetRequest request){
 
         GeneralRequest generalRequest = createGeneralRequest(request);
 
@@ -38,7 +38,7 @@ public class SferaProductApi extends SferaApi{
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.ofString(requestStr))
-            .uri(URI.create(API_PREFIX + "/createProductsSets"))
+            .uri(URI.create(API_PREFIX + "/createProductSet"))
             .header("Content-Type", "application/json")
             .header("Accept", "application/json");
 

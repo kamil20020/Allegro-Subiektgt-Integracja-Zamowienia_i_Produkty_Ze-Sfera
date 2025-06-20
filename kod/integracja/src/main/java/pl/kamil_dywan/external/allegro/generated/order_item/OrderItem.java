@@ -78,7 +78,7 @@ public class OrderItem {
 
         Integer orderItemQuantity = quantity;
 
-        if(!offer.hasSingleProduct()){
+        if(!offer.hasProducts() || offer.hasManyProducts()){
 
             return orderItemQuantity;
         }
