@@ -1,7 +1,6 @@
 package pl.kamil_dywan.api.sfera;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import pl.kamil_dywan.api.sfera.request.CreateProductsSetsRequest;
+import pl.kamil_dywan.api.sfera.request.CreateProductsSetRequest;
 import pl.kamil_dywan.api.sfera.request.GetProductByCodeAndEanRequest;
 import pl.kamil_dywan.api.sfera.request.GeneralRequest;
 
@@ -31,7 +30,7 @@ public class SferaProductApi extends SferaApi{
         return send(httpRequestBuilder);
     }
 
-    public HttpResponse<String> saveProductsSets(CreateProductsSetsRequest request){
+    public HttpResponse<String> saveProductsSets(CreateProductsSetRequest request){
 
         GeneralRequest generalRequest = createGeneralRequest(request);
 

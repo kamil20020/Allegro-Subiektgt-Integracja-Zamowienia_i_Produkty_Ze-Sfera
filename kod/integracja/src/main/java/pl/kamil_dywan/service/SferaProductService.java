@@ -1,17 +1,13 @@
 package pl.kamil_dywan.service;
 
 import pl.kamil_dywan.api.Api;
-import pl.kamil_dywan.api.sfera.request.CreateProductsSetsRequest;
+import pl.kamil_dywan.api.sfera.request.CreateProductsSetRequest;
 import pl.kamil_dywan.api.sfera.request.GetProductByCodeAndEanRequest;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
 import pl.kamil_dywan.api.sfera.SferaProductApi;
 import pl.kamil_dywan.api.sfera.response.ErrorResponse;
 import pl.kamil_dywan.api.sfera.response.GeneralResponse;
-import pl.kamil_dywan.external.sfera.generated.Product;
-import pl.kamil_dywan.external.sfera.generated.ProductSet;
 import pl.kamil_dywan.external.sfera.generated.ResponseStatus;
-import pl.kamil_dywan.mapper.ProductOfferMapper;
-import pl.kamil_dywan.mapper.sfera.SferaProductMapper;
 import pl.kamil_dywan.mapper.sfera.SferaProductSetMapper;
 
 import java.net.http.HttpResponse;
@@ -65,7 +61,7 @@ public class SferaProductService {
             .map(product -> SferaProductSetMapper.map(product))
             .collect(Collectors.toList());
 
-        CreateProductsSetsRequest request = new CreateProductsSetsRequest(productsSets);
+        CreateProductsSetRequest request = new CreateProductsSetRequest(productsSets);
 
         HttpResponse<String> gotResponse = sferaProductApi.saveProductsSets(request);
 

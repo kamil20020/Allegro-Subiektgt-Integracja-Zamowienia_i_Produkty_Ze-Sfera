@@ -9,11 +9,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pl.kamil_dywan.TestHttpResponse;
 import pl.kamil_dywan.api.Api;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
-import pl.kamil_dywan.api.sfera.request.CreateProductsSetsRequest;
+import pl.kamil_dywan.api.sfera.request.CreateProductsSetRequest;
 import pl.kamil_dywan.api.sfera.request.GetProductByCodeAndEanRequest;
 import pl.kamil_dywan.api.sfera.SferaProductApi;
 import pl.kamil_dywan.api.sfera.response.GeneralResponse;
-import pl.kamil_dywan.external.sfera.generated.ProductSet;
 import pl.kamil_dywan.mapper.sfera.SferaProductSetMapper;
 import pl.kamil_dywan.service.SferaProductService;
 
@@ -126,11 +125,11 @@ class SferaProductServiceTest {
             sferaProductService.saveProductsSets(expectedRawProductsSets);
 
             //then
-            ArgumentCaptor<CreateProductsSetsRequest> requestCaptor = ArgumentCaptor.forClass(CreateProductsSetsRequest.class);
+            ArgumentCaptor<CreateProductsSetRequest> requestCaptor = ArgumentCaptor.forClass(CreateProductsSetRequest.class);
 
             Mockito.verify(sferaProductApi).saveProductsSets(requestCaptor.capture());
 
-            CreateProductsSetsRequest gotRequest = requestCaptor.getValue();
+            CreateProductsSetRequest gotRequest = requestCaptor.getValue();
 
             assertNotNull(gotRequest);
             assertEquals(expectedProductsSets, gotRequest.getProductsSets());

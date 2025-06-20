@@ -1,6 +1,7 @@
 <?php
 namespace APISubiektGT\SubiektGT;
 use COM;
+use Exception;
 use APISubiektGT\MSSql;
 use APISubiektGT\Helper;
 use APISubiektGT\Logger;
@@ -77,9 +78,8 @@ class Product extends SubiektObj{
 		//Opis
 		if(!empty($this->description)){
 			$this->productGt->Opis = $this->description;
-		}else{
-			$this->productGt->Opis = $this->name;
 		}
+
 		//nazwa dla urzadzen
 		if(!empty($this->name_for_devices)){
 			$this->productGt->NazwaDlaUF = substr("{$this->name_for_devices}",0,50);
@@ -99,7 +99,6 @@ class Product extends SubiektObj{
 		if($this->productGt->Ceny->Liczba>1 && $this->wholesale_price>0){
 			$this->productGt->Ceny->Element(2)->Netto = floatval($this->wholesale_price);			
 		}
-
 		//stawka vat
 		if(!empty($this->vat)){
 			$this->productGt->SprzedazVatId = $this->vat;
@@ -244,6 +243,50 @@ class Product extends SubiektObj{
 		return $data;
 	}
 
+	public function createProductSet(){
+
+		$gotProductSetCode = Helper::toWin($this->productDetail['code']);
+
+		if($this->subiektGt->Towary->Istnieje($gotProductSetCode)){
+			
+			throw new Exception('Istnieje już towar o kodzie: '.$gotProductSetCode,1);
+		}
+
+		$createdProductSetId = $this->add()["code"];
+
+		$createdProductSet = $this->subiektGt->Towary->Wczytaj($createdProductSetId);
+
+		foreach($this->productDetail['products'] as $p){
+
+			$didAdded = $this->addProductSetProduct($createdProductSet, $p);
+
+			if(!$didAdded){
+
+				throw new Exception('Nie odnaleziono towaru o podanym kodzie: '.$p['code'],1);
+			}
+		}
+
+		$createdProductSet->Zapisz();
+
+		return array('code' => $createdProductSetId);
+	}
+
+	protected function addProductSetProduct($createdProductSet, $productSetProduct){
+
+		$p = new Product($this->subiektGt, $productSetProduct);
+
+		if(!$p->doesExist()){
+
+			return false;
+		}
+
+		$createProductSetProduct = $createdProductSet->Skladniki->Dodaj($p->code);
+
+		$createProductSetProduct->Ilosc = intval($productSetProduct['qty']);
+
+		return $createdProductSet;
+	}
+
 	public function getSymbolByCodeOrEan(){
 
 		$code = Helper::toWin($this->productDetail['code']);
@@ -287,11 +330,21 @@ class Product extends SubiektObj{
 	}
 
 	public function add(){
-		$this->productGt = $this->subiektGt->TowaryManager->DodajTowar();
+
+		if($this->vat == "8"){
+			
+			$this->productGt = $this->subiektGt->TowaryManager->DodajTowar();
+		}
+		else{
+
+			$this->productGt = $this->subiektGt->TowaryManager->DodajKomplet();
+		}
+
 		$this->setGtObject();		
 		$this->productGt->Zapisz();
 		Logger::getInstance()->log('api','Utworzono produkt: '.$this->productGt->Symbol,__CLASS__.'->'.__FUNCTION__,__LINE__);
-		return array('gt_id'=>$this->productGt->Identyfikator);
+
+		return array('code'=>$this->productGt->Symbol);
 	}
 
 	public function setProductSupplierCode($supplier_code){

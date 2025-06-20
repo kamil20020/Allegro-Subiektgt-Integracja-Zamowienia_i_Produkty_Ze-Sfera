@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import pl.kamil_dywan.TestUtils;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
-import pl.kamil_dywan.external.sfera.generated.ProductSet;
 import pl.kamil_dywan.file.read.FileReader;
 import pl.kamil_dywan.file.read.JSONFileReader;
 import pl.kamil_dywan.mapper.sfera.SferaProductSetMapper;

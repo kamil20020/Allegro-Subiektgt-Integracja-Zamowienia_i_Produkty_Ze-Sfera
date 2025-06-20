@@ -6,19 +6,14 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
-import pl.kamil_dywan.external.allegro.generated.Cost;
 import pl.kamil_dywan.external.allegro.generated.offer_product.*;
-import pl.kamil_dywan.external.allegro.own.Currency;
 import pl.kamil_dywan.external.sfera.generated.Product;
-import pl.kamil_dywan.external.sfera.generated.ProductSet;
 import pl.kamil_dywan.external.sfera.generated.ProductSetProduct;
 import pl.kamil_dywan.mapper.sfera.SferaProductMapper;
 import pl.kamil_dywan.mapper.sfera.SferaProductSetMapper;
 import pl.kamil_dywan.mapper.sfera.SferaProductSetProductMapper;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
