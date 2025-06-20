@@ -57,6 +57,13 @@ class Product extends SubiektObj{
 		return $this->productGt != null;
 	}
 
+	protected function doesExistByStr($product){
+
+		$p = new Product($this->subiektGt, $product);
+
+		return $p->doesExist();
+	}
+
 	protected function setGtObject(){				
 		if(!$this->is_exists){
 			$new_prefix = SubiektGT::getInstance()->getConfig()->getNewProductPrefix();
@@ -258,11 +265,19 @@ class Product extends SubiektObj{
 
 		foreach($this->productDetail['products'] as $p){
 
+			if(!$this->doesExistByStr($p)){
+
+				throw new Exception('Nie odnaleziono składnika o podanym kodzie: '.$p['code'],1);
+			}
+		}
+
+		foreach($this->productDetail['products'] as $p){
+
 			$didAdded = $this->addProductSetProduct($createdProductSet, $p);
 
 			if(!$didAdded){
 
-				throw new Exception('Nie odnaleziono towaru o podanym kodzie: '.$p['code'],1);
+				throw new Exception('Nie udało się zapisać składnika o kodzie: '.$p['code'],1);
 			}
 		}
 
@@ -274,11 +289,6 @@ class Product extends SubiektObj{
 	protected function addProductSetProduct($createdProductSet, $productSetProduct){
 
 		$p = new Product($this->subiektGt, $productSetProduct);
-
-		if(!$p->doesExist()){
-
-			return false;
-		}
 
 		$createProductSetProduct = $createdProductSet->Skladniki->Dodaj($p->code);
 

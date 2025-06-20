@@ -216,14 +216,25 @@ public class ProductsGui extends ChangeableGui {
             return;
         }
 
-        Integer numberOfSavedProductsSets = sferaProductService.saveProductsSets(productsSets);
+        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-        JOptionPane.showMessageDialog(
-                mainPanel,
-                "Utworzono " + numberOfSavedProductsSets + " zestawów produktów",
-                "Powiadomienie",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        new Thread(() -> {
+
+            Integer numberOfSavedProductsSets = sferaProductService.saveProductsSets(productsSets);
+
+            SwingUtilities.invokeLater(() -> {
+
+                mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+                JOptionPane.showMessageDialog(
+                        mainPanel,
+                        "Utworzono " + numberOfSavedProductsSets + " zestawów produktów",
+                        "Powiadomienie",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            });
+
+        }).start();
     }
 
     private void setExternal() {
