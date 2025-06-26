@@ -9,14 +9,13 @@ import pl.kamil_dywan.api.sfera.response.CreatedDocumentResponse;
 import pl.kamil_dywan.api.sfera.response.DocumentResponse;
 import pl.kamil_dywan.api.sfera.response.ErrorResponse;
 import pl.kamil_dywan.api.sfera.response.GeneralResponse;
+import pl.kamil_dywan.exception.ConflictException;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
 import pl.kamil_dywan.external.sfera.generated.ResponseStatus;
 import pl.kamil_dywan.mapper.sfera.SferaOrderMapper;
 
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
+import java.util.*;
 
 public class SferaOrderService {
 
@@ -41,15 +40,11 @@ public class SferaOrderService {
         return generalResponse;
     }
 
-    public int create(List<Order> orders) {
+    public int create(List<Order> orders, Map<String, String> errors) {
 
         int numberOfSavedOrders = 0;
 
         for (Order selectedOrder : orders) {
-
-            if ((selectedOrder.getExternalId() != null && !selectedOrder.getExternalId().isEmpty()) || selectedOrder.isHasDocument()) {
-                continue;
-            }
 
             try {
 
@@ -58,7 +53,11 @@ public class SferaOrderService {
                 numberOfSavedOrders++;
 
             }
-            catch (IllegalStateException e) {
+            catch (IllegalStateException | ConflictException e) {
+
+                String orderIdStr = selectedOrder.getId().toString();
+
+                errors.put(orderIdStr, e.getMessage());
 
                 e.printStackTrace();
             }
@@ -67,7 +66,17 @@ public class SferaOrderService {
         return numberOfSavedOrders;
     }
 
-    public void create(Order order) throws IllegalStateException {
+    public void create(Order order) throws IllegalStateException, ConflictException {
+
+        if (order.getExternalId() != null && !order.getExternalId().isEmpty()){
+
+            throw new IllegalStateException("Brak zewnętrznego id oferty z Allegro");
+        }
+
+        if (order.isHasDocument()) {
+
+            throw new ConflictException("W Allegro przypisano już dokument potwierdzający sprzedaż");
+        }
 
         CreateOrderRequest createOrderRequest = SferaOrderMapper.map(order);
 

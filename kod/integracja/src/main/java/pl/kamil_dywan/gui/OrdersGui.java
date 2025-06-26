@@ -16,10 +16,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -142,7 +140,7 @@ public class OrdersGui extends ChangeableGui {
         }
 
         paginationTableGui
-            .addFilter(filterIndex, values -> values[ALLEGRO_IS_INVOICE_COL_INDEX].equals(value));
+                .addFilter(filterIndex, values -> values[ALLEGRO_IS_INVOICE_COL_INDEX].equals(value));
     }
 
     private void handleDoesExistInSubiektChange(Object option) throws IllegalArgumentException {
@@ -168,8 +166,7 @@ public class OrdersGui extends ChangeableGui {
 
                 return !Objects.equals(gotValue, NOT_GIVEN_VALUE);
             };
-        }
-        else {
+        } else {
 
             filter = values -> {
 
@@ -196,7 +193,7 @@ public class OrdersGui extends ChangeableGui {
         }
 
         paginationTableGui
-            .addFilter(filterIndex, values -> values[ALLEGRO_DOCUMENT_SENT_COL_INDEX].equals(value));
+                .addFilter(filterIndex, values -> values[ALLEGRO_DOCUMENT_SENT_COL_INDEX].equals(value));
     }
 
     private void clearFilters() {
@@ -228,12 +225,12 @@ public class OrdersGui extends ChangeableGui {
         }
 
         List<String> selectedOrdersIds = selectedOrdersData.stream()
-            .map(selectedOrderData -> selectedOrderData[0].toString())
-            .collect(Collectors.toList());
+                .map(selectedOrderData -> selectedOrderData[0].toString())
+                .collect(Collectors.toList());
 
         return ordersPage.stream()
-            .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
-            .collect(Collectors.toList());
+                .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
+                .collect(Collectors.toList());
 
     }
 
@@ -264,7 +261,9 @@ public class OrdersGui extends ChangeableGui {
 
         new Thread(() -> {
 
-            int numberOfSavedOrders = sferaOrderService.create(selectedOrders);
+            Map<String, String> errors = new LinkedHashMap<>();
+
+            int numberOfSavedOrders = sferaOrderService.create(selectedOrders, errors);
 
             SwingUtilities.invokeLater(() -> {
 
@@ -286,11 +285,13 @@ public class OrdersGui extends ChangeableGui {
                 mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
                 JOptionPane.showMessageDialog(
-                        mainPanel,
-                        "Zapisano " + numberOfSavedOrders + " zamówień w Subiekcie",
-                        "Powiadomienie",
-                        JOptionPane.INFORMATION_MESSAGE
+                    mainPanel,
+                    "Zapisano " + numberOfSavedOrders + " zamówień w Subiekcie",
+                    "Powiadomienie",
+                    JOptionPane.INFORMATION_MESSAGE
                 );
+
+                displayOrdersErrors(errors, "Powiadomienia o błędach przy tworzeniu obiektów w Subiekcie");
             });
 
         }).start();
@@ -318,11 +319,13 @@ public class OrdersGui extends ChangeableGui {
 
         new Thread(() -> {
 
+            Map<String, String> errors = Collections.synchronizedMap(new LinkedHashMap<>());
+
             List<Integer> savedOrdersDocumentsIndices;
 
             try {
 
-                savedOrdersDocumentsIndices = orderService.uploadDocuments(selectedOrders);
+                savedOrdersDocumentsIndices = orderService.uploadDocuments(selectedOrders, errors);
             }
             catch (UnloggedException e) {
 
@@ -352,9 +355,73 @@ public class OrdersGui extends ChangeableGui {
                         "Powiadomienie",
                         JOptionPane.INFORMATION_MESSAGE
                 );
+
+                displayOrdersErrors(errors, "Powiadomienia o błędach przy wysyłaniu dokumentów potwierdzenia sprzedaży do Allegro");
             });
 
         }).start();
+    }
+
+    private void displayOrdersErrors(Map<String, String> errors, String dialogTitle) {
+
+        if (errors.isEmpty()) {
+            return;
+        }
+
+        GridBagLayout layout = new GridBagLayout();
+
+        JPanel panel = new JPanel(layout);
+
+        panel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.fill = GridBagConstraints.NONE;
+
+        int row = 0;
+
+        for (Map.Entry<String, String> error : errors.entrySet()) {
+
+            String orderIdStr = error.getKey();
+            String errorMessage = error.getValue();
+
+            JLabel orderIdLabel = new JLabel(orderIdStr);
+            JLabel orderErrorMessageLabel = new JLabel(errorMessage);
+
+            int weightY = 0;
+
+            if (row == errors.size() - 1) {
+
+                weightY = 1;
+            }
+
+            gbc.gridx = 0;
+            gbc.gridy = row;
+            gbc.weightx = 0;
+            gbc.weighty = weightY;
+            panel.add(orderIdLabel, gbc);
+
+            gbc.gridx = 1;
+            gbc.gridy = row;
+            gbc.weightx = 1;
+            gbc.weighty = weightY;
+            orderErrorMessageLabel.setHorizontalAlignment(SwingConstants.LEFT);
+            panel.add(orderErrorMessageLabel, gbc);
+
+            row++;
+        }
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+
+        JDialog dialog = new JDialog((Frame) null, dialogTitle, false);
+
+        dialog.setSize(680, 400);
+        dialog.setLocationRelativeTo(panel);
+
+        dialog.add(scrollPane);
+
+        dialog.setVisible(true);
     }
 
     @Override

@@ -26,6 +26,7 @@ import java.math.BigDecimal;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -110,7 +111,7 @@ class SferaOrderServiceTest {
             apiMock.when(() -> Api.extractBody(any(TestHttpResponse.class), eq(GeneralResponse.class))).thenReturn(expectedResponse);
             apiMock.when(() -> Api.extractBody(expectedResponseStr, CreatedDocumentResponse.class)).thenReturn(expectedDocumentResponse);
 
-            int gotNumberOfCreatedOrders = sferaOrderService.create(orders);
+            int gotNumberOfCreatedOrders = sferaOrderService.create(orders, new HashMap<>());
 
             assertEquals(expectedNumberOfCreatedOrders, gotNumberOfCreatedOrders);
 

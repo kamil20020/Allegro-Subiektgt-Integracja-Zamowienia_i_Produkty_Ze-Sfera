@@ -24,10 +24,7 @@ import pl.kamil_dywan.service.SferaOrderService;
 import java.net.URI;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -382,7 +379,7 @@ class OrderServiceTest {
 
             apiMock.when(() -> Api.extractBody(any(TestHttpResponse.class), any())).thenReturn(documentIdResponse);
 
-            createdIndexesOfOrdersDocuments = orderService.uploadDocuments(orders);
+            createdIndexesOfOrdersDocuments = orderService.uploadDocuments(orders, new HashMap<>());
 
             apiMock.verify(() -> Api.extractBody(any(TestHttpResponse.class), eq(DocumentIdResponse.class)));
         }
@@ -404,7 +401,12 @@ class OrderServiceTest {
     void shouldUploadDocument() {
 
         //given
-        String orderId = UUID.randomUUID().toString();
+        UUID orderId = UUID.randomUUID();
+        String orderIdStr = orderId.toString();
+
+        Order order = Order.builder()
+            .id(orderId)
+            .build();
 
         byte[] documentContent = "content".getBytes(StandardCharsets.UTF_8);
 
@@ -430,7 +432,7 @@ class OrderServiceTest {
 
             apiMock.when(() -> Api.extractBody(any(TestHttpResponse.class),any())).thenReturn(documentIdResponse);
 
-            orderService.uploadDocument(orderId, documentContent);
+            orderService.uploadDocument(order, documentContent);
 
             apiMock.verify(() -> Api.extractBody(any(TestHttpResponse.class), eq(DocumentIdResponse.class)));
         }
@@ -438,7 +440,7 @@ class OrderServiceTest {
         //then
         ArgumentCaptor<CreateOrderInvoiceRequest> createRequestCaptor = ArgumentCaptor.forClass(CreateOrderInvoiceRequest.class);
 
-        Mockito.verify(orderApi).createDocument(eq(orderId), createRequestCaptor.capture());
+        Mockito.verify(orderApi).createDocument(eq(orderIdStr), createRequestCaptor.capture());
 
         CreateOrderInvoiceRequest gotRequest = createRequestCaptor.getValue();
 
@@ -450,6 +452,6 @@ class OrderServiceTest {
         assertNotNull(createOrderInvoiceFile);
         assertEquals("Dokument_sprzedazy.pdf", createOrderInvoiceFile.getName());
 
-        Mockito.verify(orderApi).saveDocument(orderId, documentIdResponse.getId(), documentContent);
+        Mockito.verify(orderApi).saveDocument(orderIdStr, documentIdResponse.getId(), documentContent);
     }
 }

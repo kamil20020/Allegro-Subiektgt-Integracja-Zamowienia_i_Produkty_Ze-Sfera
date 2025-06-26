@@ -289,7 +289,7 @@ class Order extends SubiektObj {
 
 			$oneTimeCustomer = $this->subiektGt->KontrahenciManager->DodajKontrahentaJednorazowego();
 
-			$oneTimeCustomer->Nazwa = Helper::toWin($this->customer['name']);
+			$oneTimeCustomer->Nazwa = Helper::toWin(substr($this->customer['name'], 0, 50));
 			//$oneTimeCustomer->NrDomu = Helper::toWin($this->customer['house_nr']);
 			//$oneTimeCustomer->NrLokalu = Helper::toWin($this->customer['flat_nr']);
 

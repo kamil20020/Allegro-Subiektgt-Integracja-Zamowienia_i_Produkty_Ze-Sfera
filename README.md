@@ -17,13 +17,13 @@ potrzeby, w aplikacji można zapisac oferty pobrane z Allegro do pliku i następ
 
 ### Sfera
 
-Aplikacja Integracja korzysta z dodatku Sfera do Subiekt GT i dzięki temu można szybko dodać pożądane dokumenty do Subiekta. Wtyczna Sfera umożliwia uruchomienie 
+Aplikacja Integracja korzysta z dodatku Sfera do Subiekt GT i dzięki temu można szybko dodać pożądane dokumenty do Subiekta. Wtyczka Sfera umożliwia uruchomienie 
 w Subiekcie kanału komunikacyjnego, poprzez który aplikacje mogą się w sposób bezpośredni komunikować z Subiektem. Technicznie otwierane jest API typu COM, które 
 jest technologią najczęściej używaną w C#. Dodatek mocno usprawnia integrację, ale niestety mechanizm ten jest dodatkowo płatny, lecz chociaż zakup jest 
 jednorazowy.
 
 Jak wspomniałem Sfera jest raczej związana z językiem C#. Ja niestety nie znam za bardzo tego języka i ograniczyłem się do Javy. Dlatego wykorzystałem nakładkę 
-na Sfere napisaną przez kogoś innego w php. Wtyczna jest zamieszczona na https://github.com/Lukegpl/api-subiekt-gt/wiki/API-Dokumentacja-v.-1.0
+na Sfere napisaną przez kogoś innego w php. Wtyczka jest zamieszczona na https://github.com/Lukegpl/api-subiekt-gt/wiki/API-Dokumentacja-v.-1.0
 [repozytorium GitHub Lukegpl](https://github.com/Lukegpl/api-subiekt-gt?tab=readme-ov-file).
 Nakładka ta okazała się całkiem dobra. Przede wszystkim używa REST i JSON oraz jest dosyć dobrze 
 [udokomentowana](https://github.com/Lukegpl/api-subiekt-gt?tab=readme-ov-file). Są szczegółowe informacje o realizowanych funkcjach np. jakie dane są wymagane 

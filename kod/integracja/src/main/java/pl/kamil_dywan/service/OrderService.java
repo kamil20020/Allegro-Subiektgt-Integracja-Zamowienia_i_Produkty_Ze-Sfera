@@ -6,6 +6,7 @@ import pl.kamil_dywan.api.allegro.request.CreateOrderInvoiceRequest;
 import pl.kamil_dywan.api.allegro.request.CreateOrderInvoiceFile;
 import pl.kamil_dywan.api.allegro.response.DocumentIdResponse;
 import pl.kamil_dywan.api.allegro.response.OrderDocumentsResponse;
+import pl.kamil_dywan.exception.ConflictException;
 import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.api.allegro.response.OrderResponse;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
@@ -159,7 +160,7 @@ public class OrderService {
         order.setExternalId(gotSubiektNr);
     }
 
-    public List<Integer> uploadDocuments(List<Order> orders) throws UnloggedException, IllegalArgumentException {
+    public List<Integer> uploadDocuments(List<Order> orders, Map<String, String> errors) throws UnloggedException, IllegalArgumentException {
 
         List<byte[]> contents = sferaOrderService.getContents(orders);
 
@@ -173,21 +174,21 @@ public class OrderService {
 
             byte[] content = contents.get(i);
 
-            if(content.length == 0 || selectedOrder.isHasDocument()){
-                continue;
-            }
-
             int finalI = i;
 
             Callable<Void> toExecute = () -> {
 
                 try {
 
-                    uploadDocument(selectedOrder.getId().toString(), content);
+                    uploadDocument(selectedOrder, content);
 
                     uploadedOrdersIndices.add(finalI);
                 }
-                catch (IllegalStateException e) {
+                catch (IllegalStateException | ConflictException e) {
+
+                    String selectedOrderIdStr = selectedOrder.getId().toString();
+
+                    errors.put(selectedOrderIdStr, e.getMessage());
 
                     e.printStackTrace();
                 }
@@ -222,7 +223,19 @@ public class OrderService {
         return uploadedOrdersIndices;
     }
 
-    public void uploadDocument(String orderId, byte[] documentContent) throws UnloggedException, IllegalStateException {
+    public void uploadDocument(Order order, byte[] documentContent) throws IllegalStateException, ConflictException, UnloggedException {
+
+        if(documentContent.length == 0){
+
+            throw new IllegalStateException("Nie odnaleziono dokumentu w Subiekt GT");
+        }
+
+        if(order.isHasDocument()){
+
+            throw new ConflictException("Przypisano już dokument do zamówienia w Allegro");
+        }
+
+        String orderId = order.getId().toString();
 
         String createdDocumentId = createDocument(orderId);
 
