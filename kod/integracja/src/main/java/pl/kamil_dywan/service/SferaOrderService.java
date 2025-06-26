@@ -66,11 +66,11 @@ public class SferaOrderService {
         return numberOfSavedOrders;
     }
 
-    public void create(Order order) throws IllegalStateException, ConflictException {
+    public void create(Order order) throws ConflictException, IllegalStateException {
 
         if (order.getExternalId() != null && !order.getExternalId().isEmpty()){
 
-            throw new IllegalStateException("Brak zewnętrznego id oferty z Allegro");
+            throw new ConflictException("Istnieje już obiekt w Subiekcie");
         }
 
         if (order.isHasDocument()) {

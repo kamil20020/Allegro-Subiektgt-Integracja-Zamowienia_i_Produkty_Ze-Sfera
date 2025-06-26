@@ -46,8 +46,8 @@ public class OrdersGui extends ChangeableGui {
     private final Runnable handleLogout;
 
     private static final int SUBIEKT_ID_SENT_COL_INDEX = 1;
-    private static final int ALLEGRO_IS_INVOICE_COL_INDEX = 6;
-    private static final int ALLEGRO_DOCUMENT_SENT_COL_INDEX = 7;
+    private static final int ALLEGRO_IS_INVOICE_COL_INDEX = 7;
+    private static final int ALLEGRO_DOCUMENT_SENT_COL_INDEX = 8;
 
     private static final String NOT_GIVEN_VALUE = "Brak";
 
@@ -117,6 +117,7 @@ public class OrdersGui extends ChangeableGui {
         return new Object[]{
                 order.getId().toString(),
                 order.getExternalId() != null ? order.getExternalId() : NOT_GIVEN_VALUE,
+                orderBuyer.getLogin(),
                 clientName,
                 String.valueOf(orderOrderItems.size()),
                 orderSummary.getTotalToPay().getAmount().toString() + " zł",
@@ -448,7 +449,7 @@ public class OrdersGui extends ChangeableGui {
         doesExistInSubiektSelect = new JComboBox<>(BooleanSelectOptions.values());
         wasSendDocumentToAllegroSelect = new JComboBox<>(BooleanSelectOptions.values());
 
-        String[] tableHeaders = {"Allegro Id", "Subiekt Id", "Kupujący", "Liczba pozycji", "Kwota brutto", "Data", "Wybrano fakturę", "Wysłano dokument"};
+        String[] tableHeaders = {"Allegro Id", "Subiekt Id", "Login kupującego", "Kupujący", "Liczba pozycji", "Kwota brutto", "Data", "Wybrano fakturę", "Wysłano dokument"};
 
         paginationTableGui = new PaginationTableGui(tableHeaders, this::loadData, this::convertToRow);
 
