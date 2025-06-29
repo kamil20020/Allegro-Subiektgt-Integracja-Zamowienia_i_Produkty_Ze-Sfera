@@ -45,7 +45,7 @@ class SferaProductMapperTest {
 
         Cost cost = new Cost(
             new BigDecimal("32.48"),
-            Currency.PLN
+            Currency.PLN.toString()
         );
 
         OrderItem orderItem = OrderItem.builder()
@@ -80,7 +80,7 @@ class SferaProductMapperTest {
 
         Cost cost = new Cost(
             new BigDecimal("32.48"),
-            Currency.PLN
+            Currency.PLN.toString()
         );
 
         OrderItem orderItem = OrderItem.builder()
@@ -114,7 +114,7 @@ class SferaProductMapperTest {
 
         Cost cost = new Cost(
             new BigDecimal("32.48"),
-            Currency.PLN
+            Currency.PLN.toString()
         );
 
         OrderItem orderItem = OrderItem.builder()
@@ -156,7 +156,7 @@ class SferaProductMapperTest {
 
         Cost cost = new Cost(
             new BigDecimal("32.48"),
-            Currency.PLN
+            Currency.PLN.toString()
         );
 
         OrderItem orderItem = OrderItem.builder()
@@ -190,7 +190,7 @@ class SferaProductMapperTest {
 
         Cost cost = new Cost(
             new BigDecimal("32.48"),
-            Currency.PLN
+            Currency.PLN.toString()
         );
 
         SellingMode sellingMode = new SellingMode(cost);
@@ -227,7 +227,7 @@ class SferaProductMapperTest {
 
         Cost cost = new Cost(
             new BigDecimal("32.48"),
-            Currency.PLN
+            Currency.PLN.toString()
         );
 
         SellingMode sellingMode = new SellingMode(cost);

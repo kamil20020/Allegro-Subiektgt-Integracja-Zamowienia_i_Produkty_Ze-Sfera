@@ -18,7 +18,7 @@ public interface AllegroProductOfferFactory {
         SellingMode sellingMode = new SellingMode(
             new Cost(
                 BigDecimal.ZERO,
-                Currency.PLN
+                Currency.PLN.toString()
             )
         );
 
@@ -37,4 +37,5 @@ public interface AllegroProductOfferFactory {
             .taxSettings(taxSettings)
             .build();
     }
+
 }

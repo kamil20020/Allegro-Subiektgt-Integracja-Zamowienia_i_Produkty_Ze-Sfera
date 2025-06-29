@@ -40,7 +40,7 @@ class SferaOrderMapperTest {
         //given
         Cost orderTotalCost = new Cost(
             new BigDecimal("32.48"),
-            Currency.PLN
+            Currency.PLN.toString()
         );
 
         Summary allegroOrderSummary = new Summary(orderTotalCost);
@@ -67,7 +67,7 @@ class SferaOrderMapperTest {
         OrderItem orderItem = OrderItem.builder()
             .offer(offer)
             .quantity(1)
-            .price(new Cost(new BigDecimal("24.48"), Currency.PLN))
+            .price(new Cost(new BigDecimal("24.48"), Currency.PLN.toString()))
             .build();
 
         Offer offer1 = Offer.builder()
@@ -78,7 +78,7 @@ class SferaOrderMapperTest {
         OrderItem orderItem1 = OrderItem.builder()
             .offer(offer1)
             .quantity(1)
-            .price(new Cost(new BigDecimal("24.42"), Currency.PLN))
+            .price(new Cost(new BigDecimal("24.42"), Currency.PLN.toString()))
             .build();
 
         Order allegroOrder = Order.builder()
@@ -117,7 +117,7 @@ class SferaOrderMapperTest {
         //given
         Cost orderTotalCost = new Cost(
             new BigDecimal("32.48"),
-            Currency.PLN
+            Currency.PLN.toString()
         );
 
         Summary allegroOrderSummary = new Summary(orderTotalCost);
@@ -141,12 +141,12 @@ class SferaOrderMapperTest {
             .build();
 
         OrderItem orderItem = OrderItem.builder()
-            .price(new Cost(new BigDecimal("24.48"), Currency.PLN))
+            .price(new Cost(new BigDecimal("24.48"), Currency.PLN.toString()))
             .quantity(1)
             .offer(offer)
             .build();
 
-        Cost deliveryCost = new Cost(new BigDecimal("22.48"), Currency.PLN);
+        Cost deliveryCost = new Cost(new BigDecimal("22.48"), Currency.PLN.toString());
 
         Delivery delivery = Delivery.builder()
             .cost(deliveryCost)

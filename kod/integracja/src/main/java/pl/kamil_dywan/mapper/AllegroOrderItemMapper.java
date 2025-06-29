@@ -9,10 +9,11 @@ import pl.kamil_dywan.external.allegro.own.Currency;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Objects;
 
 public interface AllegroOrderItemMapper {
 
-    static OrderItem mapDeliveryToLineItem(Delivery allegroDelivery){
+    static OrderItem mapDeliveryToLineItem(Delivery allegroDelivery) throws IllegalStateException{
 
         BigDecimal taxRatePercentage = new BigDecimal("23");
 
@@ -22,15 +23,24 @@ public interface AllegroOrderItemMapper {
             .build();
 
         BigDecimal price = allegroDelivery.getCost().getAmount();
+
+        String currency = allegroDelivery.getCost().getCurrency();
+
+        if(!Objects.equals(currency, Currency.PLN.toString())){
+
+            throw new IllegalStateException("Aplikacja na chwilę obecną nie obsługuje innych walut niż PLN");
+        }
+
         OffsetDateTime buyAt = allegroDelivery.getTime().getFrom();
 
         return OrderItem.builder()
             .quantity(1)
-            .originalPrice(new Cost(price, Currency.PLN))
-            .price(new Cost(price, Currency.PLN))
+            .originalPrice(new Cost(price, Currency.PLN.toString()))
+            .price(new Cost(price, Currency.PLN.toString()))
             .offer(deliveryOffer)
             .boughtAt(buyAt)
             .tax(new Tax(taxRatePercentage, "", ""))
             .build();
     }
+
 }

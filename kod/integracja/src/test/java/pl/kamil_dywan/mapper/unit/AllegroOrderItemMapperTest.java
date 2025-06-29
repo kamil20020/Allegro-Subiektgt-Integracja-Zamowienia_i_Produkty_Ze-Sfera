@@ -20,7 +20,7 @@ class AllegroOrderItemMapperTest {
 
         //given
         Delivery allegroDelivery = Delivery.builder()
-            .cost(new Cost(new BigDecimal("34.56"), Currency.PLN))
+            .cost(new Cost(new BigDecimal("34.56"), Currency.PLN.toString()))
             .time(new DeliveryTime(OffsetDateTime.now(), null, null, null))
             .build();
 

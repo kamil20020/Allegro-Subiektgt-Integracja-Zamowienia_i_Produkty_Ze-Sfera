@@ -25,6 +25,6 @@ public class Cost {
     private BigDecimal amount;
 
     @JsonProperty("currency")
-    private Currency currency;
+    private String currency;
 
 }

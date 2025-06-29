@@ -33,7 +33,7 @@ class AllegroProductOfferResponseFactoryTest {
 
         assertNotNull(sellingMode);
         assertEquals(BigDecimal.ZERO, sellingMode.getPrice().getAmount());
-        assertEquals(Currency.PLN, sellingMode.getPrice().getCurrency());
+        assertEquals(Currency.PLN.toString(), sellingMode.getPrice().getCurrency());
 
         assertNotNull(taxSettings);
         assertNotNull(taxSettings.getTaxesFoCountries());

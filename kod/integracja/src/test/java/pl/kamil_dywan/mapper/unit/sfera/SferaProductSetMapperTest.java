@@ -35,7 +35,7 @@ class SferaProductSetMapperTest {
 
         List<ProductOfferProductRelatedData> productSetRelatedData = List.of(productRelatedData, productRelatedData1);
 
-        Cost cost = new Cost(new BigDecimal("22.38"), Currency.PLN);
+        Cost cost = new Cost(new BigDecimal("22.38"), Currency.PLN.toString());
 
         SellingMode sellingMode = new SellingMode(cost);
 

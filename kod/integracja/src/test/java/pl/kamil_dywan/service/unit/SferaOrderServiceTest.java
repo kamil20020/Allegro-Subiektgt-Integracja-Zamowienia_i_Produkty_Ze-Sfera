@@ -54,7 +54,7 @@ class SferaOrderServiceTest {
 
         int expectedNumberOfCreatedOrders = 2;
 
-        Cost summaryCost = new Cost(new BigDecimal("22.48"), Currency.PLN);
+        Cost summaryCost = new Cost(new BigDecimal("22.48"), Currency.PLN.toString());
         
         Summary summary = new Summary(summaryCost);
 
@@ -138,7 +138,7 @@ class SferaOrderServiceTest {
     void shouldCreate() {
 
         //given
-        Cost summaryCost = new Cost(new BigDecimal("22.48"), Currency.PLN);
+        Cost summaryCost = new Cost(new BigDecimal("22.48"), Currency.PLN.toString());
 
         Summary summary = new Summary(summaryCost);
 

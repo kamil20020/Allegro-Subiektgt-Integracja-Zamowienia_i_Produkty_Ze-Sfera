@@ -119,7 +119,7 @@ class OrderItemTest {
     public void shouldGetTotalPriceWithTax(BigDecimal unitPriceWithTax, Integer quantity, BigDecimal expectedTotalPriceWithTax){
 
         //given
-        Cost cost = new Cost(unitPriceWithTax, Currency.PLN);
+        Cost cost = new Cost(unitPriceWithTax, Currency.PLN.toString());
 
         OrderItem orderItem = OrderItem.builder()
             .price(cost)

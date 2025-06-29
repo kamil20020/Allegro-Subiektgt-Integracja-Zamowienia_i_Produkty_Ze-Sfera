@@ -25,7 +25,7 @@ class ProductOfferResponseMapperTest {
         SellingMode sellingMode = new SellingMode(
             new Cost(
                 new BigDecimal("34.48"),
-                Currency.PLN
+                Currency.PLN.toString()
             )
         );
 
@@ -69,7 +69,7 @@ class ProductOfferResponseMapperTest {
         SellingMode sellingMode = new SellingMode(
             new Cost(
                 new BigDecimal("34.48"),
-                Currency.PLN
+                Currency.PLN.toString()
             )
         );
 
@@ -112,7 +112,7 @@ class ProductOfferResponseMapperTest {
         SellingMode sellingMode = new SellingMode(
             new Cost(
                 new BigDecimal("34.48"),
-                Currency.PLN
+                Currency.PLN.toString()
             )
         );
 

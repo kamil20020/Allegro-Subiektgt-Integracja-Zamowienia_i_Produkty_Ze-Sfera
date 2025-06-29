@@ -3,6 +3,7 @@ package pl.kamil_dywan.mapper.sfera;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
 import pl.kamil_dywan.external.allegro.generated.order_item.OrderProduct;
+import pl.kamil_dywan.external.allegro.own.Currency;
 import pl.kamil_dywan.external.sfera.generated.Product;
 import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.allegro.generated.order_item.Offer;

@@ -278,7 +278,7 @@ class OrderTest {
     void shouldGetHasDeliveryWhenHas() {
 
         //given
-        Cost cost = new Cost(new BigDecimal("12.28"), Currency.PLN);
+        Cost cost = new Cost(new BigDecimal("12.28"), Currency.PLN.toString());
 
         DeliveryTime deliveryTime = new DeliveryTime(OffsetDateTime.now(), null, null, null);
 
@@ -303,7 +303,7 @@ class OrderTest {
     void shouldGetHasDeliveryWhenDeliveryCostIs0() {
 
         //given
-        Cost cost = new Cost(new BigDecimal("0.00"), Currency.PLN);
+        Cost cost = new Cost(new BigDecimal("0.00"), Currency.PLN.toString());
 
         Delivery delivery = Delivery.builder()
             .cost(cost)
@@ -402,7 +402,7 @@ class OrderTest {
             .build();
 
         Delivery delivery = Delivery.builder()
-            .cost(new Cost(new BigDecimal("1"), Currency.PLN))
+            .cost(new Cost(new BigDecimal("1"), Currency.PLN.toString()))
             .time(new DeliveryTime(OffsetDateTime.now(), null, null, null))
             .build();
 

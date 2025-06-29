@@ -190,7 +190,7 @@ class ProductOfferResponseTest {
         BigDecimal expectedPrice = new BigDecimal("24.38");
 
         Cost cost = new Cost(
-            expectedPrice, Currency.PLN
+            expectedPrice, Currency.PLN.toString()
         );
 
         SellingMode sellingMode = new SellingMode(cost);
@@ -219,7 +219,7 @@ class ProductOfferResponseTest {
 
         TaxSettings taxSettings = new TaxSettings(List.of(taxForCountry), "", "");
 
-        Cost price = new Cost(new BigDecimal("20.00"), Currency.PLN);
+        Cost price = new Cost(new BigDecimal("20.00"), Currency.PLN.toString());
 
         SellingMode sellingMode = new SellingMode(price);
 
