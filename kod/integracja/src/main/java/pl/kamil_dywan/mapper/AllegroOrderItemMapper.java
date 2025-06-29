@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public interface AllegroOrderItemMapper {
 
-    static OrderItem mapDeliveryToLineItem(Delivery allegroDelivery) throws IllegalStateException{
+    static OrderItem mapDeliveryToLineItem(Delivery allegroDelivery) {
 
         BigDecimal taxRatePercentage = new BigDecimal("23");
 
@@ -23,13 +23,6 @@ public interface AllegroOrderItemMapper {
             .build();
 
         BigDecimal price = allegroDelivery.getCost().getAmount();
-
-        String currency = allegroDelivery.getCost().getCurrency();
-
-        if(!Objects.equals(currency, Currency.PLN.toString())){
-
-            throw new IllegalStateException("Aplikacja na chwilę obecną nie obsługuje innych walut niż PLN");
-        }
 
         OffsetDateTime buyAt = allegroDelivery.getTime().getFrom();
 
