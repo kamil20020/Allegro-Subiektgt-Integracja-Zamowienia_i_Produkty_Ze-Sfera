@@ -45,9 +45,10 @@ public class OrdersGui extends ChangeableGui {
 
     private final Runnable handleLogout;
 
-    private static final int SUBIEKT_ID_SENT_COL_INDEX = 0;
-    private static final int ALLEGRO_IS_INVOICE_COL_INDEX = 5;
-    private static final int ALLEGRO_DOCUMENT_SENT_COL_INDEX = 6;
+    private static final int ALLEGRO_ORDER_ID_COL_INDEX = 0;
+    private static final int SUBIEKT_ID_SENT_COL_INDEX = 1;
+    private static final int ALLEGRO_IS_INVOICE_COL_INDEX = 6;
+    private static final int ALLEGRO_DOCUMENT_SENT_COL_INDEX = 7;
 
     private static final String NOT_GIVEN_VALUE = "Brak";
 
@@ -106,13 +107,14 @@ public class OrdersGui extends ChangeableGui {
         Payment orderPayment = order.getPayment();
 
         return new Object[]{
-                order.getExternalId() != null ? order.getExternalId() : NOT_GIVEN_VALUE,
-                orderBuyer.getLogin(),
-                String.valueOf(orderOrderItems.size()),
-                orderSummary.getTotalToPay().getAmount().toString() + " zł",
-                orderPayment.getFinishedAt().toLocalDate().toString(),
-                order.hasInvoice() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO,
-                order.isHasDocument() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO
+            order.getId().toString(),
+            order.getExternalId() != null ? order.getExternalId() : NOT_GIVEN_VALUE,
+            orderBuyer.getLogin(),
+            String.valueOf(orderOrderItems.size()),
+            orderSummary.getTotalToPay().getAmount().toString() + " zł",
+            orderPayment.getFinishedAt().toLocalDate().toString(),
+            order.hasInvoice() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO,
+            order.isHasDocument() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO
         };
     }
 
@@ -215,12 +217,12 @@ public class OrdersGui extends ChangeableGui {
         }
 
         List<String> selectedOrdersIds = selectedOrdersData.stream()
-                .map(selectedOrderData -> selectedOrderData[0].toString())
-                .collect(Collectors.toList());
+            .map(selectedOrderData -> selectedOrderData[ALLEGRO_ORDER_ID_COL_INDEX].toString())
+            .collect(Collectors.toList());
 
         return ordersPage.stream()
-                .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
-                .collect(Collectors.toList());
+            .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
+            .collect(Collectors.toList());
 
     }
 
@@ -438,9 +440,11 @@ public class OrdersGui extends ChangeableGui {
         doesExistInSubiektSelect = new JComboBox<>(BooleanSelectOptions.values());
         wasSendDocumentToAllegroSelect = new JComboBox<>(BooleanSelectOptions.values());
 
-        String[] tableHeaders = {"Subiekt Id", "Login kupującego", "Liczba pozycji", "Kwota brutto", "Data", "Wybrano fakturę", "Wysłano dokument"};
+        String[] tableHeaders = {"Allegro Id", "Subiekt Id", "Login kupującego", "Liczba pozycji", "Kwota brutto", "Data", "Wybrano fakturę", "Wysłano dokument"};
 
         paginationTableGui = new PaginationTableGui(tableHeaders, this::loadData, this::convertToRow);
+
+        paginationTableGui.setSkipColumns(new Integer[]{ALLEGRO_ORDER_ID_COL_INDEX});
 
         ordersPanelPlaceholder = paginationTableGui.getMainPanel();
     }

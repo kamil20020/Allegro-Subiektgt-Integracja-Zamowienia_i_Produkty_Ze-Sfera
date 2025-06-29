@@ -32,6 +32,7 @@ public class PaginationTableGui extends JPanel {
     private JLabel rowsInfo;
 
     private final String[] tableHeaders;
+    private Integer[] skipColumns;
 
     private List<Object[]> data;
 
@@ -349,6 +350,18 @@ public class PaginationTableGui extends JPanel {
         foundRow[colIndex] = newValue;
 
         tableModel.setValueAt(newValue, rowIndex, colIndex);
+    }
+
+    public void setSkipColumns(Integer[] skipColumns) {
+
+        for (Integer skipColumn : skipColumns) {
+
+            TableColumn tableColumn = table.getColumnModel().getColumn(skipColumn);
+
+            tableColumn.setWidth(0);
+            tableColumn.setMinWidth(0);
+            tableColumn.setMaxWidth(0);
+        }
     }
 
     private void createUIComponents() {
