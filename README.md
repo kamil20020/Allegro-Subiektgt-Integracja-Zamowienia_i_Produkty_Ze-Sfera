@@ -148,11 +148,16 @@ Po tym kroku można już przejść do aplikacji integracja.
 
 #### Logowanie
 
-Pierwszym krokiem jest zalogowanie się. Do tego celu należy podać hasło do aplikacji. Dla testowej wersji aplikacji hasłem jest `integracja-12234`.
+Pierwszym krokiem jest zalogowanie się:
+<p align="center">
+    <img src="screenshoty/logowanie-1_1.png">
+<p>
+
+Do tego celu należy podać hasło do aplikacji. Dla testowej wersji aplikacji hasłem jest `integracja-12234`.
 
 Po pomyślnym logowaniu powinno się pojawić takie okno:
 <p align="center">
-    <img src="screenshoty/logowanie-1.png">
+    <img src="screenshoty/logowanie-1_2.png">
 <p>
 
 Następnym krokiem jest połączenie aplikacji z Allegro.
