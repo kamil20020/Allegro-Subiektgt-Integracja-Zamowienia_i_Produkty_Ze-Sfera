@@ -282,6 +282,8 @@ Najważniejszymi parametrami z perspektywy integracji Allegro z SubiektGT są na
 * Następnym ważnym parametrem jest pole, czy wybrano fakturę. Dzięki temu zostanie utworzona albo faktura sprzedaży albo zwykły paragon,
 * Ostatnim polem jest wartość określająca, czy przypisano do danego zamówienia z Allegro dokument potwierdzający sprzedaż.
 
+Zamówienia można filtrować, np. wyświetlić tylko zamówienia, dla których wymagane są faktury. Dodatkowo można zmienić liczbę zamówień dostępnych na jednej stronie oraz zmienić stronę.
+
 #### Tworzenie zamówień
 
 ##### Wybór zamówień
