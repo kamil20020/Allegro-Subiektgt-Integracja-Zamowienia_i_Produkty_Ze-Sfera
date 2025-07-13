@@ -272,7 +272,7 @@ Ostatnią opcją w stronie z produktami jest zapisywanie zestawów. Tym razem ni
 
 Przykładowa strona z zamówieniami:
 <p align="center">
-    <img src="screenshoty/zamówienia.png">
+    <img src="screenshoty/zamowienia.png">
 <p>
 
 Pobierane są zamówienia z Allegro, które zostały opłacone przez klientów i jednocześnie nie zostały jeszcze anulowane. Aplikacja wykrywa, czy wybrane zamówienie ma mieć przypisaną fakturę, czy też nie. W pierwszym przypadku w SubiektGT zostanie utworzona faktura sprzedaży, a w drugim stworzony zostanie zwykły paragon.
@@ -294,12 +294,12 @@ W aplikacji aby utworzyć dokumenty w SubiektGT na podstawie zamówień z Allegr
 
 Następnym krokiem jest naciśnięcie przycisku Zapisz zamówienia w Subiekcie. Następnie po wykonaniu operacji zostanie wyświetlony komunikat informujący o tym, ile udało się utworzyć dokumentów w SubiektGT:
 <p align="center">
-    <img src="screenshoty/zamówienia-1.png">
+    <img src="screenshoty/zamowienia-1.png">
 <p>
 
 Następnie w przypadku nieudanego utworzenia danego zamówienia, wyświetlony zostanie komunikat, dlaczego to zamówienie nie zostało utworzone. Najczęstszym powodem jest brak dopasowania ofert z Allegro i towarów w SubiektGT np. niezgodne kody producenta.
 <p align="center">
-    <img src="screenshoty/zamówienia-2.png">
+    <img src="screenshoty/zamowienia-2.png">
 <p>
 
 Wyświetlana jest lista identyfikatorów zamówień wraz z powodami nieutworzenia ich w Subiekcie.
