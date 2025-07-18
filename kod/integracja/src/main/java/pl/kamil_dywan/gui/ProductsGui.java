@@ -165,6 +165,10 @@ public class ProductsGui extends ChangeableGui {
 
     private void saveProductsToFile() {
 
+        if (paginationTableGui.isLoading()) {
+            return;
+        }
+
         if (products == null) {
 
             JOptionPane.showMessageDialog(mainPanel, "Brak produktów do zapisania", "Błąd", JOptionPane.ERROR_MESSAGE);
@@ -207,6 +211,10 @@ public class ProductsGui extends ChangeableGui {
 
     private void saveProductsSets() {
 
+        if (paginationTableGui.isLoading()) {
+            return;
+        }
+
         List<ProductOfferResponse> productsSets = productService.extractProductsSets(products);
 
         if (productsSets == null) {
@@ -238,6 +246,10 @@ public class ProductsGui extends ChangeableGui {
     }
 
     private void setExternal() {
+
+        if (paginationTableGui.isLoading()) {
+            return;
+        }
 
         if (products == null) {
 

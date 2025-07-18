@@ -107,14 +107,14 @@ public class OrdersGui extends ChangeableGui {
         Payment orderPayment = order.getPayment();
 
         return new Object[]{
-            order.getId().toString(),
-            order.getExternalId() != null ? order.getExternalId() : NOT_GIVEN_VALUE,
-            orderBuyer.getLogin(),
-            String.valueOf(orderOrderItems.size()),
-            orderSummary.getTotalToPay().getAmount().toString() + " zł",
-            orderPayment.getFinishedAt().toLocalDate().toString(),
-            order.hasInvoice() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO,
-            order.isHasDocument() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO
+                order.getId().toString(),
+                order.getExternalId() != null ? order.getExternalId() : NOT_GIVEN_VALUE,
+                orderBuyer.getLogin(),
+                String.valueOf(orderOrderItems.size()),
+                orderSummary.getTotalToPay().getAmount().toString() + " zł",
+                orderPayment.getFinishedAt().toLocalDate().toString(),
+                order.hasInvoice() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO,
+                order.isHasDocument() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO
         };
     }
 
@@ -217,12 +217,12 @@ public class OrdersGui extends ChangeableGui {
         }
 
         List<String> selectedOrdersIds = selectedOrdersData.stream()
-            .map(selectedOrderData -> selectedOrderData[ALLEGRO_ORDER_ID_COL_INDEX].toString())
-            .collect(Collectors.toList());
+                .map(selectedOrderData -> selectedOrderData[ALLEGRO_ORDER_ID_COL_INDEX].toString())
+                .collect(Collectors.toList());
 
         return ordersPage.stream()
-            .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
-            .collect(Collectors.toList());
+                .filter(order -> selectedOrdersIds.contains(order.getId().toString()))
+                .collect(Collectors.toList());
 
     }
 
@@ -232,6 +232,10 @@ public class OrdersGui extends ChangeableGui {
     }
 
     private void saveOrders() {
+
+        if (paginationTableGui.isLoading()) {
+            return;
+        }
 
         List<Order> selectedOrders = getSelectedOrders();
 
@@ -277,10 +281,10 @@ public class OrdersGui extends ChangeableGui {
                 mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
                 JOptionPane.showMessageDialog(
-                    mainPanel,
-                    "Zapisano " + numberOfSavedOrders + " zamówień w Subiekcie",
-                    "Powiadomienie",
-                    JOptionPane.INFORMATION_MESSAGE
+                        mainPanel,
+                        "Zapisano " + numberOfSavedOrders + " zamówień w Subiekcie",
+                        "Powiadomienie",
+                        JOptionPane.INFORMATION_MESSAGE
                 );
 
                 displayOrdersErrors(errors, "Powiadomienia o błędach przy tworzeniu obiektów w Subiekcie");
@@ -290,6 +294,10 @@ public class OrdersGui extends ChangeableGui {
     }
 
     private void saveDocuments() {
+
+        if (paginationTableGui.isLoading()) {
+            return;
+        }
 
         List<Order> selectedOrders = getSelectedOrders();
 
@@ -318,8 +326,7 @@ public class OrdersGui extends ChangeableGui {
             try {
 
                 savedOrdersDocumentsIndices = orderService.uploadDocuments(selectedOrders, errors);
-            }
-            catch (UnloggedException e) {
+            } catch (UnloggedException e) {
 
                 handleLogout.run();
 
