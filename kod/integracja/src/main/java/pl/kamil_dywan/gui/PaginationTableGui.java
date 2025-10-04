@@ -59,6 +59,8 @@ public class PaginationTableGui extends JPanel {
 
         $$$setupUI$$$();
 
+        tableScroll.getVerticalScrollBar().setUnitIncrement(20);
+
         previousButton.addActionListener(e -> handlePreviousButton());
 
         nextButton.addActionListener(e -> handleNextButton());
