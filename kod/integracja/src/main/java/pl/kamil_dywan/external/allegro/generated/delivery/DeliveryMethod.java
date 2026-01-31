@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Data
 @JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
     "id",
     "name"

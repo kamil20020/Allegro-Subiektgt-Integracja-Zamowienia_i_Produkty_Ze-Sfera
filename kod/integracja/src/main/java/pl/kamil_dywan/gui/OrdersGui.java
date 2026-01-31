@@ -440,6 +440,11 @@ public class OrdersGui extends ChangeableGui {
         return mainPanel;
     }
 
+    private void handleRedirectToOrder(String allegroOrderId) {
+
+        orderService.redirectToOffer(allegroOrderId);
+    }
+
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
@@ -452,6 +457,7 @@ public class OrdersGui extends ChangeableGui {
         paginationTableGui = new PaginationTableGui(tableHeaders, this::loadData, this::convertToRow);
 
         paginationTableGui.setSkipColumns(new Integer[]{ALLEGRO_ORDER_ID_COL_INDEX});
+        paginationTableGui.setOnRightClickRow(ALLEGRO_ORDER_ID_COL_INDEX, this::handleRedirectToOrder);
 
         ordersPanelPlaceholder = paginationTableGui.getMainPanel();
     }

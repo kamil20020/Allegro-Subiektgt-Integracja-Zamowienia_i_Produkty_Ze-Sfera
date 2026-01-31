@@ -1,6 +1,7 @@
 package pl.kamil_dywan.api.allegro;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import pl.kamil_dywan.api.Api;
 import pl.kamil_dywan.api.allegro.request.CreateOrderInvoiceRequest;
 import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.external.allegro.own.order.OrderStatus;
@@ -77,5 +78,12 @@ public class OrderApi extends BearerAuthApi {
             .header("Accept", "application/vnd.allegro.public.v1+json");
 
         return send(httpRequestBuilder);
+    }
+
+    public void redirectToOrder(String orderId){
+
+        Api.redirect(
+            getSalesCenterUrl() + "/orders/" + orderId
+        );
     }
 }

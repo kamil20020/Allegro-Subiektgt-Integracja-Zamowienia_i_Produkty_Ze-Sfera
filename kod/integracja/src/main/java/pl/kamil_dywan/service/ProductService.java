@@ -277,6 +277,11 @@ public class ProductService {
         ((List<ProductDetailedPrice>) productRelatedData.get(1)).add(productDetailedRetailPrice);
     }
 
+    public void redirectToOffer(String offerId){
+
+        productApi.redirectToOffer(offerId);
+    }
+
     private static void writeProductsToFile(List<Object> productRelatedData, String filePath){
 
         try {

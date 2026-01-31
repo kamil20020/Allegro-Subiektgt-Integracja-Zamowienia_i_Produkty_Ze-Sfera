@@ -6,6 +6,8 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 import java.util.function.BiFunction;
@@ -358,6 +360,36 @@ public class PaginationTableGui extends JPanel {
         foundRow[colIndex] = newValue;
 
         tableModel.setValueAt(newValue, rowIndex, colIndex);
+    }
+
+    public void setOnRightClickRow(int columnIndex, Consumer<String> handleClick) {
+
+        table.addMouseListener(new MouseAdapter() {
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+            if (e.getButton() != 3) { //other than right mouse button
+
+                return;
+            }
+
+            Point point = e.getPoint();
+
+            int clickedRow = table.rowAtPoint(point);
+
+            int selectedRowIndex = table.getSelectedRow();
+
+            if (clickedRow == -1 || selectedRowIndex == -1 || clickedRow != selectedRowIndex) {
+
+                return;
+            }
+
+            String gotValue = String.valueOf(tableModel.getValueAt(selectedRowIndex, columnIndex));
+
+            handleClick.accept(gotValue);
+            }
+        });
     }
 
     public void setSkipColumns(Integer[] skipColumns) {

@@ -8,7 +8,9 @@ import pl.kamil_dywan.api.sfera.request.GeneralRequest;
 import pl.kamil_dywan.file.read.JSONFileReader;
 import pl.kamil_dywan.service.AppProperties;
 
+import java.awt.*;
 import java.io.IOException;
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -65,7 +67,7 @@ public abstract class Api {
         return stringBuilder.toString();
     }
 
-    private String getEnvApiHost(){
+    protected String getEnvApiHost(){
 
         return AppProperties.getProperty(hostKey, String.class);
     }
@@ -92,6 +94,20 @@ public abstract class Api {
             e.printStackTrace();
 
             throw new IllegalStateException(e.getMessage());
+        }
+    }
+
+    public static void redirect(String url, String... params){
+
+        URI uri = URI.create(
+            url + getQueryParamsPostFix(params)
+        );
+
+        try {
+            Desktop.getDesktop().browse(uri);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -267,4 +267,10 @@ public class OrderService {
 
         return documentIdResponse.getId();
     }
+
+    public void redirectToOffer(String orderId){
+
+        orderApi.redirectToOrder(orderId);
+    }
+
 }

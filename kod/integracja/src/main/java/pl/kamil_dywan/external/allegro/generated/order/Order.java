@@ -21,6 +21,7 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
     "id",
     "messageToSeller",

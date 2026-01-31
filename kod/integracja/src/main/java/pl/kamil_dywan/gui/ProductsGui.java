@@ -38,6 +38,8 @@ public class ProductsGui extends ChangeableGui {
     private final SferaProductService sferaProductService;
     private final Runnable handleLogout;
 
+    private static final int ALLEGRO_PRODUCT_OFFER_ID_COLUMN_INDEX = 0;
+
     public ProductsGui(ProductService productService, SferaProductService sferaProductService, Runnable handleLogout) {
 
         this.productService = productService;
@@ -302,12 +304,19 @@ public class ProductsGui extends ChangeableGui {
         return mainPanel;
     }
 
+    private void handleRedirectToOffer(String allegroProductOfferId) {
+
+        productService.redirectToOffer(allegroProductOfferId);
+    }
+
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
         String[] columnsHeaders = {"Allegro Id", "Kod producenta", "EAN (GTIN)", "Zestaw", "Subiekt Id", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
 
         paginationTableGui = new PaginationTableGui(columnsHeaders, this::loadProductsPage, this::convertProductToRow);
+
+        paginationTableGui.setOnRightClickRow(ALLEGRO_PRODUCT_OFFER_ID_COLUMN_INDEX, this::handleRedirectToOffer);
 
         productsPanelPlaceholder = paginationTableGui.getMainPanel();
     }

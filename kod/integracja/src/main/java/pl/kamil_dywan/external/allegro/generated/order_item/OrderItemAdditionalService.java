@@ -1,5 +1,6 @@
 package pl.kamil_dywan.external.allegro.generated.order_item;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -9,6 +10,7 @@ import pl.kamil_dywan.external.allegro.generated.Cost;
 import javax.annotation.processing.Generated;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
     "definitionId",

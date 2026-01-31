@@ -11,6 +11,7 @@ import java.util.Map;
 
 @Data
 @JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
     "date"
 })

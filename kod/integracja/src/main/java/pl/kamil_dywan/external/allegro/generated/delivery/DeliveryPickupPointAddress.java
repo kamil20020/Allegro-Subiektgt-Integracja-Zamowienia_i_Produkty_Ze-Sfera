@@ -8,6 +8,7 @@ import javax.annotation.processing.Generated;
 
 @Data
 @JsonInclude(JsonInclude.Include.ALWAYS)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
     "street",
     "zipCode",

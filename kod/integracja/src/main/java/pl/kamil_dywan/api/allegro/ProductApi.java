@@ -1,10 +1,12 @@
 package pl.kamil_dywan.api.allegro;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import pl.kamil_dywan.api.Api;
 import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.api.allegro.request.PatchProductOfferRequest;
 import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.allegro.own.OfferProductStatus;
+import pl.kamil_dywan.service.AppProperties;
 
 import java.net.URI;
 import java.net.URLEncoder;
@@ -78,5 +80,12 @@ public class ProductApi extends BearerAuthApi {
             .header("Accept", "application/vnd.allegro.public.v1+json");
 
         return send(httpRequestBuilder);
+    }
+
+    public void redirectToOffer(String offerId){
+
+        Api.redirect(
+            getSalesCenterUrl() + "/offer/" + offerId
+        );
     }
 }

@@ -12,6 +12,7 @@ import pl.kamil_dywan.external.allegro.own.serialization.BigDecimalStringSeriali
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.ALWAYS)
 @JsonPropertyOrder({
     "rate",
