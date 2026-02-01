@@ -4,6 +4,7 @@ import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.external.allegro.generated.offer_product.OfferProduct;
 import pl.kamil_dywan.api.allegro.response.OfferProductResponse;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
+import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.subiektgt.own.product.ProductType;
 import pl.kamil_dywan.service.ProductService;
 import pl.kamil_dywan.service.SferaProductService;
@@ -40,6 +41,8 @@ public class ProductsGui extends ChangeableGui {
     private final Runnable handleLogout;
 
     private static final int ALLEGRO_PRODUCT_OFFER_ID_COLUMN_INDEX = 0;
+    private static final int ALLEGRO_SIGNATURE_COLUMN_INDEX = 1;
+    private static final int DOES_EXIST_SYMBOL_IN_SUBIEKT_INDEX = 2;
 
     public ProductsGui(ProductService productService, SferaProductService sferaProductService, Runnable handleLogout) {
 
@@ -250,12 +253,20 @@ public class ProductsGui extends ChangeableGui {
 
         ManageOfferSignatureGui dialog = new ManageOfferSignatureGui(selectedOffer, productService, sferaProductService);
         dialog.showDialog();
+
+        if (selectedOffer.getExternalId() == null) {
+
+            return;
+        }
+
+        paginationTableGui.updateRowCol(ALLEGRO_SIGNATURE_COLUMN_INDEX, offerId, selectedOffer.getExternalIdValue());
+        paginationTableGui.updateRowCol(DOES_EXIST_SYMBOL_IN_SUBIEKT_INDEX, offerId, selectedOffer.isDoesExistInSubiekt() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO);
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
-        String[] columnsHeaders = {"Allegro Id", "Sygnatura (Allegro)", "Istnieje w subiekcie", "Zestaw", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
+        String[] columnsHeaders = {"Allegro Id", "Sygnatura (Allegro)", "Istnieje w Subiekcie", "Zestaw", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
 
         paginationTableGui = new PaginationTableGui(columnsHeaders, this::loadProductsPage, this::convertProductToRow);
 

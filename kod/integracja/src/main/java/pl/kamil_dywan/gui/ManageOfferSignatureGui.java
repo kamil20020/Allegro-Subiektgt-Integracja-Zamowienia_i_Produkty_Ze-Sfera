@@ -36,21 +36,9 @@ public class ManageOfferSignatureGui extends JDialog {
     private final SferaProductService sferaProductService;
 
     private final ProductOfferResponse offer;
-    private List<SignatureItemRow> signatureItemsRows = new ArrayList<>();
 
-    private static final int NUMBER_OF_ROWS_FOR_SIGNATURE_ITEM = 3;
-
-    private static class SignatureItemRow {
-
-        public String subiektSymbol;
-        public Integer quantity;
-
-        public SignatureItemRow(String subiektSymbol, Integer quantity) {
-
-            this.subiektSymbol = subiektSymbol;
-            this.quantity = quantity;
-        }
-    }
+    private String subiektSymbol;
+    private Integer quantity;
 
     public ManageOfferSignatureGui(ProductOfferResponse offer, ProductService productService, SferaProductService sferaProductService) {
 
@@ -111,66 +99,19 @@ public class ManageOfferSignatureGui extends JDialog {
 
         String actualSignature = offer.getExternalIdValue();
 
-        if (actualSignature == null || actualSignature.isBlank()) {
-            initNewSignatureItems();
-        } else {
-            updateSignatureItems(actualSignature);
-        }
+        Signature signature = Signature.extract(actualSignature);
+
+        subiektSymbol = signature.subiektSymbol();
+        quantity = signature.quantity();
+
+        addSignatureItemGui();
     }
 
-    private void initNewSignatureItems() {
-
-        List<ProductOfferProductRelatedData> offerProducts = offer.getProductSet();
-
-        for (int index = 0, rowIndex = 0; index < offerProducts.size(); index++, rowIndex += NUMBER_OF_ROWS_FOR_SIGNATURE_ITEM) {
-
-            ProductOfferProductRelatedData offerProductRelatedData = offerProducts.get(index);
-            addSignatureItem(index, rowIndex, offerProductRelatedData.getProduct());
-        }
-    }
-
-    private void updateSignatureItems(String actualSignature) {
-
-        Signature signature = new Signature(actualSignature);
-        List<SignatureItem> actualSignatureItems = signature.signatureItems();
-
-        List<ProductOfferProductRelatedData> offerProducts = offer.getProductSet();
-
-        for (int index = 0, rowIndex = 0; index < offerProducts.size(); index++, rowIndex += NUMBER_OF_ROWS_FOR_SIGNATURE_ITEM) {
-
-            SignatureItem signatureItem = actualSignatureItems.get(index);
-            String subiektSymbol = signatureItem.subiektSymbol();
-            Integer quantity = signatureItem.quantity();
-
-            ProductOfferProductRelatedData offerProductRelatedData = offerProducts.get(index);
-            addSignatureItem(index, rowIndex, offerProductRelatedData.getProduct(), subiektSymbol, quantity);
-        }
-    }
-
-    private void addSignatureItem(int index, int rowIndex, ProductOfferProduct product) {
-
-        addSignatureItem(index, rowIndex, product, "", null);
-    }
-
-    private void addSignatureItem(int index, int rowIndex, ProductOfferProduct product, String subiektSymbol, Integer quantity) {
-
-        SignatureItemRow signatureItemRow = new SignatureItemRow(subiektSymbol, quantity);
-        signatureItemsRows.add(signatureItemRow);
+    private void addSignatureItemGui() {
 
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.gridx = 0;
-        constraints.gridy = rowIndex;
-        constraints.anchor = GridBagConstraints.CENTER;
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.gridwidth = 2;
-        constraints.insets = new Insets(0, 0, 12, 0);
-        JLabel offerProductLabel = new JLabel(product.getId().toString());
-        offerProductLabel.setPreferredSize(new Dimension(280, 26));
-        contentPanel.add(offerProductLabel, constraints);
-
-        constraints = new GridBagConstraints();
-        constraints.gridx = 0;
-        constraints.gridy = rowIndex + 1;
+        constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.LINE_START;
         constraints.insets = new Insets(0, 0, 12, 0);
         JLabel offerSubiektIdLabel = new JLabel("Symbol w subiekcie: ");
@@ -179,17 +120,17 @@ public class ManageOfferSignatureGui extends JDialog {
 
         constraints = new GridBagConstraints();
         constraints.gridx = 1;
-        constraints.gridy = rowIndex + 1;
+        constraints.gridy = 0;
         constraints.anchor = GridBagConstraints.LINE_START;
         constraints.insets = new Insets(0, 22, 12, 0);
         JTextField offerSubiektIdInput = new JTextField(subiektSymbol);
-        offerSubiektIdInput.getDocument().addDocumentListener(getOnChangeSubiektSymbolDocumentListener(index, offerSubiektIdInput));
+        offerSubiektIdInput.getDocument().addDocumentListener(getOnChangeSubiektSymbolDocumentListener(offerSubiektIdInput));
         offerSubiektIdInput.setPreferredSize(new Dimension(120, 26));
         contentPanel.add(offerSubiektIdInput, constraints);
 
         constraints = new GridBagConstraints();
         constraints.gridx = 0;
-        constraints.gridy = rowIndex + 2;
+        constraints.gridy = 1;
         constraints.anchor = GridBagConstraints.LINE_START;
         constraints.insets = new Insets(0, 0, 26, 0);
         JCheckBox quantityCheckbox = new JCheckBox("Czy jest wiele sztuk?");
@@ -198,7 +139,7 @@ public class ManageOfferSignatureGui extends JDialog {
 
         constraints = new GridBagConstraints();
         constraints.gridx = 1;
-        constraints.gridy = rowIndex + 2;
+        constraints.gridy = 1;
         constraints.anchor = GridBagConstraints.LINE_START;
         constraints.insets = new Insets(0, 22, 26, 0);
         JTextField quantityInput = new JTextField(quantity != null ? quantity.toString() : null);
@@ -212,79 +153,75 @@ public class ManageOfferSignatureGui extends JDialog {
 
         quantityInput.setPreferredSize(new Dimension(120, 26));
         ((AbstractDocument) quantityInput.getDocument()).setDocumentFilter(new IntegerDocumentFilter());
-        quantityInput.getDocument().addDocumentListener(getOnChangeQuantityDocumentListener(index, quantityInput));
+        quantityInput.getDocument().addDocumentListener(getOnChangeQuantityDocumentListener(quantityInput));
 
-        quantityCheckbox.addItemListener(e -> handleSwitchQuantityCheckbox(index, quantityInput, e));
+        quantityCheckbox.addItemListener(e -> handleSwitchQuantityCheckbox(quantityInput, e));
 
         contentPanel.add(quantityInput, constraints);
     }
 
-    private DocumentListener getOnChangeSubiektSymbolDocumentListener(int index, JTextField subiektSymbolField) {
-
-        SignatureItemRow signatureItemRow = signatureItemsRows.get(index);
+    private DocumentListener getOnChangeSubiektSymbolDocumentListener(JTextField subiektSymbolField) {
 
         return new DocumentListener() {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
 
-                signatureItemRow.subiektSymbol = subiektSymbolField.getText();
+                subiektSymbol = subiektSymbolField.getText();
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
 
-                signatureItemRow.subiektSymbol = subiektSymbolField.getText();
+                subiektSymbol = subiektSymbolField.getText();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
 
-                signatureItemRow.subiektSymbol = subiektSymbolField.getText();
+                subiektSymbol = subiektSymbolField.getText();
             }
         };
     }
 
-    private DocumentListener getOnChangeQuantityDocumentListener(int index, JTextField quantityField) {
-
-        SignatureItemRow signatureItemRow = signatureItemsRows.get(index);
+    private DocumentListener getOnChangeQuantityDocumentListener(JTextField quantityField) {
 
         return new DocumentListener() {
 
             @Override
             public void insertUpdate(DocumentEvent e) {
 
-                onChangeQuantityField(quantityField, signatureItemRow);
+                onChangeQuantityField(quantityField);
             }
 
             @Override
             public void removeUpdate(DocumentEvent e) {
 
-                onChangeQuantityField(quantityField, signatureItemRow);
+                onChangeQuantityField(quantityField);
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
 
-                onChangeQuantityField(quantityField, signatureItemRow);
+                onChangeQuantityField(quantityField);
             }
         };
     }
 
-    private void onChangeQuantityField(JTextField quantityField, SignatureItemRow signatureItemRow) {
+    private void onChangeQuantityField(JTextField quantityField) {
 
         String newValue = quantityField.getText();
 
         if (newValue == null || newValue.isBlank()) {
 
-            signatureItemRow.quantity = null;
+            quantity = null;
             return;
         }
 
-        signatureItemRow.quantity = Integer.valueOf(newValue);
+        quantity = Integer.valueOf(newValue);
     }
 
-    private void handleSwitchQuantityCheckbox(int index, JTextField quantityInput, ItemEvent e) {
+    private void handleSwitchQuantityCheckbox(JTextField quantityInput, ItemEvent e) {
 
         if (e.getStateChange() == ItemEvent.SELECTED) {
 
@@ -293,7 +230,7 @@ public class ManageOfferSignatureGui extends JDialog {
 
             quantityInput.setText(null);
             quantityInput.setVisible(false);
-            signatureItemsRows.get(index).quantity = null;
+            quantity = null;
         }
 
         revalidate();
@@ -302,16 +239,30 @@ public class ManageOfferSignatureGui extends JDialog {
 
     private void onOK() {
 
-        List<SignatureItem> signatureItems = signatureItemsRows.stream()
-                .map(signatureItemRow -> new SignatureItem(signatureItemRow.subiektSymbol, signatureItemRow.quantity))
-                .collect(Collectors.toList());
+        if (subiektSymbol == null || subiektSymbol.isBlank()) {
+            return;
+        }
 
-        Signature signature = new Signature(signatureItems);
+        subiektSymbol = subiektSymbol.replaceAll("\\s", "");
+
+        if (!sferaProductService.existsByCode(subiektSymbol)) {
+
+            JOptionPane.showMessageDialog(
+                    mainPanel,
+                    "Nie znaleziono symbolu " + subiektSymbol + " w Subiekcie",
+                    "Powiadomienie o błedzie",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            return;
+        }
+
+        Signature signature = new Signature(subiektSymbol, quantity);
         String signatureValue = signature.toString();
 
         ExternalId externalId = new ExternalId(signatureValue);
         offer.setExternalId(externalId);
-
+        offer.setDoesExistInSubiekt(true);
 
         if (!saveExternalId(signatureValue)) {
             return;

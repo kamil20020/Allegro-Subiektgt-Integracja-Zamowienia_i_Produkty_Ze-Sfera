@@ -28,8 +28,6 @@ public interface SferaProductMapper {
 
             Signature signature = Signature.extract(code);
             allegroOffer.setSignature(signature);
-
-            allegroOffer.validateSignature();
         }
 
         return Product.builder()

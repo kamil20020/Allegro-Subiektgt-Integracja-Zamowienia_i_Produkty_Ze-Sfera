@@ -5,6 +5,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import javax.swing.text.html.Option;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -359,6 +360,35 @@ public class PaginationTableGui extends JPanel {
         tableModel.setValueAt(newValue, rowIndex, colIndex);
     }
 
+    public void updateRowCol(int colIndex, String firstFieldId, Object newValue) throws IllegalStateException {
+
+        Optional<Object[]> foundRowOpt = Optional.empty();
+
+        int rowIndex = 0;
+
+        for (Object[] row : data) {
+
+            if (Objects.equals(row[0].toString(), firstFieldId)) {
+
+                foundRowOpt = Optional.of(row);
+                break;
+            }
+
+            rowIndex++;
+        }
+
+        if (foundRowOpt.isEmpty()) {
+
+            throw new IllegalStateException("Nie znaleziono wiersza o id " + firstFieldId);
+        }
+
+        Object[] foundRow = foundRowOpt.get();
+
+        foundRow[colIndex] = newValue;
+
+        tableModel.setValueAt(newValue, rowIndex, colIndex);
+    }
+
     public void setOnRightClickRow(int columnIndex, BiConsumer<String, MouseEvent> handleClick) {
 
         table.addMouseListener(new MouseAdapter() {
@@ -366,25 +396,25 @@ public class PaginationTableGui extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-            if (e.getButton() != 3) { //other than right mouse button
+                if (e.getButton() != 3) { //other than right mouse button
 
-                return;
-            }
+                    return;
+                }
 
-            Point point = e.getPoint();
+                Point point = e.getPoint();
 
-            int clickedRow = table.rowAtPoint(point);
+                int clickedRow = table.rowAtPoint(point);
 
-            int selectedRowIndex = table.getSelectedRow();
+                int selectedRowIndex = table.getSelectedRow();
 
-            if (clickedRow == -1 || selectedRowIndex == -1 || clickedRow != selectedRowIndex) {
+                if (clickedRow == -1 || selectedRowIndex == -1 || clickedRow != selectedRowIndex) {
 
-                return;
-            }
+                    return;
+                }
 
-            String gotValue = String.valueOf(tableModel.getValueAt(selectedRowIndex, columnIndex));
+                String gotValue = String.valueOf(tableModel.getValueAt(selectedRowIndex, columnIndex));
 
-            handleClick.accept(gotValue, e);
+                handleClick.accept(gotValue, e);
             }
         });
     }

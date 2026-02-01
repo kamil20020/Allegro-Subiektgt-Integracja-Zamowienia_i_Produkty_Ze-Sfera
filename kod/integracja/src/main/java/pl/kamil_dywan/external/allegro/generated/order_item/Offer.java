@@ -71,26 +71,4 @@ public class Offer {
         return orderProducts != null && !orderProducts.isEmpty();
     }
 
-    @JsonIgnore
-    public void validateSignature() throws IllegalStateException{
-
-        if(productSet == null){
-            return;
-        }
-
-        List<OrderProduct> offerProducts = productSet.getProducts();
-
-        if(offerProducts == null || offerProducts.isEmpty()){
-            return;
-        }
-
-        int numberOfSignatureItems = signature.signatureItems().size();
-        int numberOfProducts = offerProducts.size();
-
-        if(numberOfSignatureItems != numberOfProducts) {
-
-            throw new IllegalStateException("Liczba produktów z sygnatury oferty różni się z liczbą produktów w ofercie");
-        }
-    }
-
 }

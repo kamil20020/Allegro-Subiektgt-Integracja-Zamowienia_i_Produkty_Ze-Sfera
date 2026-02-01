@@ -5,6 +5,7 @@ import pl.kamil_dywan.api.sfera.request.ExistsSymbolRequest;
 import pl.kamil_dywan.api.sfera.SferaProductApi;
 import pl.kamil_dywan.api.sfera.response.ErrorResponse;
 import pl.kamil_dywan.api.sfera.response.GeneralResponse;
+import pl.kamil_dywan.external.allegro.own.offer.Signature;
 import pl.kamil_dywan.external.sfera.generated.ResponseStatus;
 
 import java.net.http.HttpResponse;
@@ -38,7 +39,8 @@ public class SferaProductService {
             return false;
         }
 
-        ExistsSymbolRequest request = new ExistsSymbolRequest(code);
+        String extractedSubiektSymbol = Signature.extract(code).subiektSymbol();
+        ExistsSymbolRequest request = new ExistsSymbolRequest(extractedSubiektSymbol);
 
         HttpResponse<String> gotResponse = sferaProductApi.existsSubiektId(request);
 
