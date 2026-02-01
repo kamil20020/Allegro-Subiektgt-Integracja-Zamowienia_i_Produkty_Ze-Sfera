@@ -19,12 +19,9 @@ import javax.annotation.processing.Generated;
     "ean"
 })
 @Generated("jsonschema2pojo")
-public class GetProductByCodeAndEanRequest {
+public class ExistsSymbolRequest {
 
     @JsonProperty("code")
     private String code;
-
-    @JsonProperty("ean")
-    private String ean;
 
 }

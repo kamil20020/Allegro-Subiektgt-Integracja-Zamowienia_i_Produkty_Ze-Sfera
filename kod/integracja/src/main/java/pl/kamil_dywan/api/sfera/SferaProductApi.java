@@ -1,7 +1,6 @@
 package pl.kamil_dywan.api.sfera;
 
-import pl.kamil_dywan.api.sfera.request.CreateProductsSetRequest;
-import pl.kamil_dywan.api.sfera.request.GetProductByCodeAndEanRequest;
+import pl.kamil_dywan.api.sfera.request.ExistsSymbolRequest;
 import pl.kamil_dywan.api.sfera.request.GeneralRequest;
 
 import java.net.URI;
@@ -15,7 +14,7 @@ public class SferaProductApi extends SferaApi{
         super("product");
     }
 
-    public HttpResponse<String> getSubiektIdByCodeAndEan(GetProductByCodeAndEanRequest request){
+    public HttpResponse<String> existsSubiektId(ExistsSymbolRequest request){
 
         GeneralRequest generalRequest = createGeneralRequest(request);
 
@@ -23,24 +22,9 @@ public class SferaProductApi extends SferaApi{
 
         HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
             .POST(HttpRequest.BodyPublishers.ofString(requestStr))
-            .uri(URI.create(API_PREFIX + "/getSymbolByCodeOrEan"))
+            .uri(URI.create(API_PREFIX + "/existsSymbol"))
             .header("Content-Type", "application/json")
             .header("Accept", "application/pdf");
-
-        return send(httpRequestBuilder);
-    }
-
-    public HttpResponse<String> saveProductsSet(CreateProductsSetRequest request){
-
-        GeneralRequest generalRequest = createGeneralRequest(request);
-
-        String requestStr = handleMapRequestToString(generalRequest);
-
-        HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
-            .POST(HttpRequest.BodyPublishers.ofString(requestStr))
-            .uri(URI.create(API_PREFIX + "/createProductSet"))
-            .header("Content-Type", "application/json")
-            .header("Accept", "application/json");
 
         return send(httpRequestBuilder);
     }

@@ -104,108 +104,21 @@ public class ProductService {
 
         ProductOfferResponse gotProduct = Api.extractBody(gotResponse, ProductOfferResponse.class);
 
-        setSubiektId(gotProduct);
+        boolean existsByCode = sferaProductService.existsByCode(gotProduct.getExternalIdValue());
+        gotProduct.setDoesExistInSubiekt(existsByCode);
 
         return gotProduct;
     }
 
-    private void setSubiektId(ProductOfferResponse gotProduct){
+    public void setExternalIdForOffer(ProductOfferResponse productOffer, String externalIdValue) throws IllegalStateException{
 
-        ExternalId externalId = gotProduct.getExternalId();
-
-        String code = gotProduct.getId().toString();
-
-        String producerCode = null;
-        String ean = null;
-
-        if(gotProduct.getExternalIdValue() != null){
-
-            producerCode = externalId.getProducerCode();
-            ean = externalId.getEanCode();
-        }
-
-        if(producerCode != null){
-
-            code = producerCode;
-        }
-
-        if(gotProduct.hasManyProducts()){
-
-            code = "Zestaw-" + gotProduct.getId();
-        }
-
-        String foundSubiektId = sferaProductService.getSubiektIdByCodeOrEan(code, ean);
-
-        gotProduct.setSubiektId(foundSubiektId);
-    }
-
-    public void setExternalIdForAllOffers(List<ProductOfferResponse> productOfferResponses) throws IllegalStateException {
-
-        if(productOfferResponses == null || productOfferResponses.isEmpty()){
-
-            return;
-        }
-
-        List<Callable<Void>> productsOffersTasks = new ArrayList<>(productOfferResponses.size());
-
-        for(ProductOfferResponse productOffer : productOfferResponses){
-
-            Callable<Void> task = () -> {
-
-                try {
-                    setExternalIdForOffer(productOffer);
-                }
-                catch (IllegalStateException e){
-
-                    e.printStackTrace();
-                }
-
-                return null;
-            };
-
-            productsOffersTasks.add(task);
-        }
-
-        try{
-            List<Future<Void>> gotProductsOffersFutures = productsExecutorService.invokeAll(productsOffersTasks);
-
-            for(Future<Void> gotProductOfferFuture : gotProductsOffersFutures){
-
-                if(gotProductOfferFuture.isCancelled()){
-
-                    throw new IllegalStateException("Product external id fetch was canceled");
-                }
-
-                gotProductOfferFuture.get();
-            }
-        }
-        catch (InterruptedException | ExecutionException e) {
-
-            e.printStackTrace();
-
-            throw new IllegalStateException("Could not patch products externals ids");
-        }
-    }
-
-    public void setExternalIdForOffer(ProductOfferResponse productOffer) throws IllegalStateException{
-
-        String gotProducerCode = productOffer.getProducerCode();
-        String gotEanCode = productOffer.getEANCode();
-
-        String combinedKey = ExternalId.getCombinedCode(gotProducerCode, gotEanCode);
-
-        if(combinedKey == null || combinedKey.isEmpty()){
-
-            return;
-        }
-
-        HttpResponse<String> gotResponse = productApi.patchOfferExternalById(productOffer.getId(), combinedKey);
+        HttpResponse<String> gotResponse = productApi.patchOfferExternalById(productOffer.getId(), externalIdValue);
 
         if(gotResponse.statusCode() != 200){
             throw new IllegalStateException("Nie udało się zaktualizować zewnętrznego id dla produktu: " + productOffer.getId());
         }
 
-        ExternalId externalId = new ExternalId(combinedKey);
+        ExternalId externalId = new ExternalId(externalIdValue);
 
         productOffer.setExternalId(externalId);
     }
@@ -220,6 +133,11 @@ public class ProductService {
         return products.stream()
             .filter(product -> product.hasManyProducts())
             .collect(Collectors.toList());
+    }
+
+    public boolean existsByExternalId(String externalId){
+
+        return sferaProductService.existsByCode(externalId);
     }
 
     public void writeDeliveryToFile(String filePath) throws IllegalStateException{

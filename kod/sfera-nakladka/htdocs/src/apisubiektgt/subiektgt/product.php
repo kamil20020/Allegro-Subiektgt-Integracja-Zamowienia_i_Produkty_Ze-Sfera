@@ -296,6 +296,25 @@ class Product extends SubiektObj{
 
 		return $createdProductSet;
 	}
+	
+	public function existsSymbol(){
+		
+		$code = Helper::toWin($this->productDetail['code']);
+
+		$sql = "SELECT tw_Symbol
+				FROM tw__Towar
+				WHERE tw_Symbol = '{$code}'
+		";
+
+		$data = MSSql::getInstance()->query($sql);
+
+		if(empty($data)){
+	
+			return false;
+		}
+
+		return true;
+	}
 
 	public function getSymbolByCodeOrEan(){
 

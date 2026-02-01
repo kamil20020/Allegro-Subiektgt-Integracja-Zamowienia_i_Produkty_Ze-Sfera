@@ -1,4 +1,4 @@
-package pl.kamil_dywan.external.allegro.own;
+package pl.kamil_dywan.external.allegro.own.offer;
 
 public enum OfferProductStatus {
 

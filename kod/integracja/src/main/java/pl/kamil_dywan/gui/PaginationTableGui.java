@@ -10,10 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
-import java.util.function.BiFunction;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Predicate;
+import java.util.function.*;
 import java.util.stream.Collectors;
 
 public class PaginationTableGui extends JPanel {
@@ -362,7 +359,7 @@ public class PaginationTableGui extends JPanel {
         tableModel.setValueAt(newValue, rowIndex, colIndex);
     }
 
-    public void setOnRightClickRow(int columnIndex, Consumer<String> handleClick) {
+    public void setOnRightClickRow(int columnIndex, BiConsumer<String, MouseEvent> handleClick) {
 
         table.addMouseListener(new MouseAdapter() {
 
@@ -387,7 +384,7 @@ public class PaginationTableGui extends JPanel {
 
             String gotValue = String.valueOf(tableModel.getValueAt(selectedRowIndex, columnIndex));
 
-            handleClick.accept(gotValue);
+            handleClick.accept(gotValue, e);
             }
         });
     }

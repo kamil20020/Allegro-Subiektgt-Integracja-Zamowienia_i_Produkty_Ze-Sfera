@@ -29,9 +29,6 @@ public class Product {
     @JsonProperty("code")
     private String code;
 
-    @JsonProperty("ean")
-    private String ean;
-
     @JsonProperty("name")
     private String name;
 

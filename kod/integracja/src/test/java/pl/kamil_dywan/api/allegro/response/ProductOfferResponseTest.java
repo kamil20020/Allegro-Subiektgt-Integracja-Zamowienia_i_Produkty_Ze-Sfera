@@ -29,13 +29,13 @@ class ProductOfferResponseTest {
         ProductOfferResponse productOfferResponse = new ProductOfferResponse();
 
         //when
-        productOfferResponse.setSubiektId(expectedSubiektId);
+//        productOfferResponse.setSubiektId(expectedSubiektId);
 
-        String gotSubiektId = productOfferResponse.getSubiektId();
+//        String gotSubiektId = productOfferResponse.getSubiektId();
 
         //then
-        assertNotNull(gotSubiektId);
-        assertEquals(expectedSubiektId, gotSubiektId);
+//        assertNotNull(gotSubiektId);
+//        assertEquals(expectedSubiektId, gotSubiektId);
     }
 
     @Test
@@ -48,13 +48,13 @@ class ProductOfferResponseTest {
         ProductOfferResponse productOfferResponse = new ProductOfferResponse();
 
         //when
-        productOfferResponse.setSubiektId(inputSubiektId);
-
-        String gotSubiektId = productOfferResponse.getSubiektId();
+//        productOfferResponse.setSubiektId(inputSubiektId);
+//
+//        String gotSubiektId = productOfferResponse.getSubiektId();
 
         //then
-        assertNotNull(gotSubiektId);
-        assertEquals(expectedSubiektId, gotSubiektId);
+//        assertNotNull(gotSubiektId);
+//        assertEquals(expectedSubiektId, gotSubiektId);
     }
 
     @Test
@@ -234,198 +234,6 @@ class ProductOfferResponseTest {
         //then
         assertNotNull(gotPriceWithoutTax);
         assertEquals(expectedPriceWithoutTax, gotPriceWithoutTax);
-    }
-
-    @Test
-    public void shouldGetExistingProducerCode(){
-
-        //given
-        String inputProducerCode = "12345";
-        String expectedProducerCode = "12345";
-
-        OfferProductParameter producerCodeParameter = OfferProductParameter.builder()
-            .id(123L)
-            .name("Kod producenta")
-            .values(List.of(inputProducerCode))
-            .build();
-
-        OfferProductParameter otherParameter = OfferProductParameter.builder()
-            .id(456L)
-            .name("Inny parametr")
-            .values(List.of("6789"))
-            .build();
-
-        ProductOfferProduct product = new ProductOfferProduct(UUID.randomUUID(), List.of(otherParameter, producerCodeParameter));
-
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
-
-        List<ProductOfferProductRelatedData> productsRelatedData = List.of(productRelatedData);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(productsRelatedData)
-            .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNotNull(gotProducerCode);
-        assertEquals(expectedProducerCode, gotProducerCode);
-    }
-
-    @Test
-    public void shouldGetProducerCodeWhenThereNoProducts(){
-
-        //given
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-                .productSet(new ArrayList<>())
-                .build();
-
-        //when
-        String gotProducerCode = productOfferResponse.getProducerCode();
-
-        //then
-        assertNull(gotProducerCode);
-    }
-
-    @Test
-    public void shouldGetExistingEanCode(){
-
-        //given
-        String expectedEanCode = "ean";
-
-        OfferProductParameter producerCodeParameter = OfferProductParameter.builder()
-            .id(123L)
-            .name("EAN (GTIN)")
-            .values(List.of(expectedEanCode))
-            .build();
-
-        OfferProductParameter otherParameter = OfferProductParameter.builder()
-            .id(456L)
-            .name("Kod producenta")
-            .values(List.of("6789"))
-            .build();
-
-        ProductOfferProduct product = new ProductOfferProduct(UUID.randomUUID(), List.of(otherParameter, producerCodeParameter));
-
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
-
-        List<ProductOfferProductRelatedData> productsRelatedData = List.of(productRelatedData);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(productsRelatedData)
-            .build();
-
-        //when
-        String gotEanCode = productOfferResponse.getEANCode();
-
-        //then
-        assertNotNull(gotEanCode);
-        assertEquals(expectedEanCode, gotEanCode);
-    }
-
-
-    @Test
-    public void shouldGetEanCodeWhenThereNoProducts(){
-
-        //given
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(new ArrayList<>())
-            .build();
-
-        //when
-        String gotEanCode = productOfferResponse.getEANCode();
-
-        //then
-        assertNull(gotEanCode);
-    }
-
-    @Test
-    public void shouldGetFirstProductOfferProductWhenHasSingleProduct(){
-
-        //given
-        ProductOfferProduct product = new ProductOfferProduct();
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData(product);
-
-        List<ProductOfferProductRelatedData> productsRelatedData = List.of(productRelatedData);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(productsRelatedData)
-            .build();
-
-        //when
-        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
-
-        //then
-        assertTrue(gotProductOpt.isPresent());
-        assertEquals(product, gotProductOpt.get());
-    }
-
-    @Test
-    public void shouldGetFirstProductOfferProductWhenHasManyProducts(){
-
-        //given
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData();
-        ProductOfferProductRelatedData productRelatedData1 = new ProductOfferProductRelatedData();
-
-        List<ProductOfferProductRelatedData> productsRelatedData = List.of(productRelatedData, productRelatedData1);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(productsRelatedData)
-            .build();
-
-        //when
-        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
-
-        //then
-        assertTrue(gotProductOpt.isEmpty());
-    }
-
-    @Test
-    public void shouldGetFirstProductOfferProductWhenHasEmptyProduct(){
-
-        //given
-        ProductOfferProductRelatedData productRelatedData = new ProductOfferProductRelatedData();
-
-        List<ProductOfferProductRelatedData> productsRelatedData = List.of(productRelatedData);
-
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(productsRelatedData)
-            .build();
-
-        //when
-        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
-
-        //then
-        assertTrue(gotProductOpt.isEmpty());
-    }
-
-    @Test
-    public void shouldGetFirstProductOfferProductWhenHasNoProducts(){
-
-        //given
-        ProductOfferResponse productOfferResponse = ProductOfferResponse.builder()
-            .productSet(new ArrayList<>())
-            .build();
-
-        //when
-        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
-
-        //then
-        assertTrue(gotProductOpt.isEmpty());
-    }
-
-    @Test
-    public void shouldGetFirstProductOfferProductWhenProductsIsNull(){
-
-        //given
-        ProductOfferResponse productOfferResponse = new ProductOfferResponse();
-
-        //when
-        Optional<ProductOfferProduct> gotProductOpt = productOfferResponse.getFirstProductOfferProduct();
-
-        //then
-        assertTrue(gotProductOpt.isEmpty());
     }
 
     @Test

@@ -25,7 +25,7 @@
           <font size="26"/>
           <horizontalAlignment value="0"/>
           <horizontalTextPosition value="0"/>
-          <text value="Produkty"/>
+          <text value="Oferty z Allegro"/>
         </properties>
       </component>
       <grid id="a1b26" binding="productsPanelPlaceholder" custom-create="true" layout-manager="CardLayout" hgap="0" vgap="0">
@@ -56,28 +56,10 @@
         </properties>
         <border type="none"/>
         <children>
-          <component id="a16b2" class="javax.swing.JButton" binding="exportProductsButton">
+          <component id="b82fb" class="javax.swing.JButton" binding="exportProductsButton">
             <constraints/>
             <properties>
-              <maximumSize width="180" height="30"/>
-              <minimumSize width="180" height="30"/>
-              <opaque value="true"/>
-              <preferredSize width="180" height="30"/>
               <text value="Zapisz produkty do pliku"/>
-              <visible value="true"/>
-            </properties>
-          </component>
-          <component id="bc8a4" class="javax.swing.JToolBar$Separator">
-            <constraints/>
-            <properties/>
-          </component>
-          <component id="61455" class="javax.swing.JButton" binding="exportProductsSetsButton">
-            <constraints/>
-            <properties>
-              <maximumSize width="180" height="30"/>
-              <minimumSize width="180" height="30"/>
-              <preferredSize width="180" height="30"/>
-              <text value="Zapisz zestawy"/>
             </properties>
           </component>
           <component id="fef91" class="javax.swing.JToolBar$Separator">
@@ -91,19 +73,6 @@
               <minimumSize width="180" height="30"/>
               <preferredSize width="180" height="30"/>
               <text value="Zapisz dostawę do pliku"/>
-            </properties>
-          </component>
-          <component id="f8f76" class="javax.swing.JToolBar$Separator">
-            <constraints/>
-            <properties/>
-          </component>
-          <component id="e8aa2" class="javax.swing.JButton" binding="setExternalButton">
-            <constraints/>
-            <properties>
-              <maximumSize width="180" height="30"/>
-              <minimumSize width="180" height="30"/>
-              <preferredSize width="180" height="30"/>
-              <text value="Zaktualizuj zewnętrzne id"/>
             </properties>
           </component>
         </children>

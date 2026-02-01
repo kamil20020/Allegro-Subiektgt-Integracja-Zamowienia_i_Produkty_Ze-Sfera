@@ -10,6 +10,9 @@ import pl.kamil_dywan.exception.ConflictException;
 import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.api.allegro.response.OrderResponse;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
+import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
+import pl.kamil_dywan.external.allegro.generated.order_item.Offer;
+import pl.kamil_dywan.external.allegro.generated.order_item.OrderItem;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,13 +28,15 @@ public class OrderService {
     private final OrderApi orderApi;
 
     private final SferaOrderService sferaOrderService;
+    private final ProductService productService;
 
     private static final ExecutorService ordersExecutorService = Executors.newFixedThreadPool(8);
 
-    public OrderService(OrderApi orderApi, SferaOrderService sferaOrderService){
+    public OrderService(OrderApi orderApi, SferaOrderService sferaOrderService, ProductService productService){
 
         this.orderApi = orderApi;
         this.sferaOrderService = sferaOrderService;
+        this.productService = productService;
     }
 
     public OrderResponse getPage(int offset, int limit) throws UnloggedException, IllegalStateException {
@@ -52,6 +57,8 @@ public class OrderService {
             .forEach(order -> order.addDeliveryToOrderItems());
 
         setOrdersExternalIds(gotOrders);
+
+
 
         return gotOrderResponse;
     }

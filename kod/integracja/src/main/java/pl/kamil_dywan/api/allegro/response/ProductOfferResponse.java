@@ -56,20 +56,7 @@ public class ProductOfferResponse {
     private ExternalId externalId;
 
     @JsonIgnore
-    private String subiektId;
-
-    @JsonIgnore
-    public void setSubiektId(String subiektId) {
-
-        this.subiektId = subiektId;
-
-        if(subiektId == null){
-
-            return;
-        }
-
-        this.subiektId = subiektId.replaceAll("\"", "");
-    }
+    private boolean doesExistInSubiekt;
 
     @JsonIgnore
     public String getExternalIdValue(){
@@ -117,50 +104,6 @@ public class ProductOfferResponse {
             BigDecimal.ONE.add(taxRateValue),
             RoundingMode.HALF_UP
         );
-    }
-
-    @JsonIgnore
-    public String getEANCode(){
-
-        Optional<ProductOfferProduct> firstProductOfferProduct = getFirstProductOfferProduct();
-
-        if(firstProductOfferProduct.isEmpty()){
-            return null;
-        }
-
-        return firstProductOfferProduct.get().getEANCode();
-    }
-
-    @JsonIgnore
-    public String getProducerCode(){
-
-        Optional<ProductOfferProduct> firstProductOfferProduct = getFirstProductOfferProduct();
-
-        if(firstProductOfferProduct.isEmpty()){
-            return null;
-        }
-
-        return firstProductOfferProduct.get().getProducerCode();
-    }
-
-    @JsonIgnore
-    public Optional<ProductOfferProduct> getFirstProductOfferProduct(){
-
-        Optional<ProductOfferProduct> emptyResult = Optional.empty();
-
-        if(!hasSingleProduct()) {
-            return emptyResult;
-        }
-
-        ProductOfferProductRelatedData productOfferProductRelatedData = productSet.get(0);
-
-        ProductOfferProduct product = productOfferProductRelatedData.getProduct();
-
-        if(product == null){
-            return emptyResult;
-        }
-
-        return Optional.ofNullable(product);
     }
 
     @JsonIgnore

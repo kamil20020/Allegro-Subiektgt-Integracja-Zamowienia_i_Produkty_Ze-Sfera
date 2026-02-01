@@ -27,48 +27,4 @@ public class ProductOfferProduct {
     @JsonProperty("parameters")
     private List<OfferProductParameter> parameters;
 
-    @JsonIgnore
-    public static final String PRODUCER_CODE_KEY = "Kod producenta";
-
-    @JsonIgnore
-    public static final String EAN_CODE_KEY = "EAN (GTIN)";
-
-    @JsonIgnore
-    public String getEANCode(){
-
-        return getParameterCode(EAN_CODE_KEY);
-    }
-
-    @JsonIgnore
-    public String getProducerCode(){
-
-        return getParameterCode(PRODUCER_CODE_KEY);
-    }
-
-    @JsonIgnore
-    private String getParameterCode(String parameterName){
-
-        if(parameters == null || parameters.isEmpty()) {
-            return null;
-        }
-
-        Optional<OfferProductParameter> foundCodeParameter = parameters.stream()
-            .filter(parameter -> Objects.equals(parameter.getName(), parameterName))
-            .findFirst();
-
-        if(foundCodeParameter.isEmpty()) {
-            return null;
-        }
-
-        List<String> parameterValues = foundCodeParameter.get().getValues();
-
-        if(parameterValues == null || parameterValues.isEmpty()) {
-            return null;
-        }
-
-        String gotFirstValue = parameterValues.get(0);
-
-        return gotFirstValue;
-    }
-
 }

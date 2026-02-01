@@ -16,6 +16,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
 import java.util.function.Predicate;
@@ -440,7 +441,7 @@ public class OrdersGui extends ChangeableGui {
         return mainPanel;
     }
 
-    private void handleRedirectToOrder(String allegroOrderId) {
+    private void handleRedirectToOrder(String allegroOrderId, MouseEvent mouseEvent) {
 
         orderService.redirectToOffer(allegroOrderId);
     }
@@ -481,23 +482,8 @@ public class OrdersGui extends ChangeableGui {
         mainPanel.setPreferredSize(new Dimension(1920, 980));
         mainPanel.setRequestFocusEnabled(true);
         mainPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(18, 50, 40, 50), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final JLabel label1 = new JLabel();
-        label1.setAlignmentX(0.0f);
-        Font label1Font = this.$$$getFont$$$(null, -1, 26, label1.getFont());
-        if (label1Font != null) label1.setFont(label1Font);
-        label1.setHorizontalAlignment(0);
-        label1.setHorizontalTextPosition(0);
-        label1.setText("Zamówienia");
-        GridBagConstraints gbc;
-        gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 7;
-        gbc.weightx = 1.0;
-        gbc.weighty = 1.0;
-        gbc.fill = GridBagConstraints.BOTH;
-        mainPanel.add(label1, gbc);
         ordersPanelPlaceholder.setOpaque(true);
+        GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -551,9 +537,9 @@ public class OrdersGui extends ChangeableGui {
         gbc.weighty = 1.0;
         mainPanel.add(toolBar2, gbc);
         toolBar2.setBorder(BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(40, 0, 20, 0), null, TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final JLabel label2 = new JLabel();
-        label2.setText("Wymagana faktura");
-        toolBar2.add(label2);
+        final JLabel label1 = new JLabel();
+        label1.setText("Wymagana faktura");
+        toolBar2.add(label1);
         final JToolBar.Separator toolBar$Separator4 = new JToolBar.Separator();
         toolBar2.add(toolBar$Separator4);
         isInvoiceRequiredSelect.setMinimumSize(new Dimension(100, 30));
@@ -566,9 +552,9 @@ public class OrdersGui extends ChangeableGui {
         toolBar2.add(toolBar$Separator6);
         final JToolBar.Separator toolBar$Separator7 = new JToolBar.Separator();
         toolBar2.add(toolBar$Separator7);
-        final JLabel label3 = new JLabel();
-        label3.setText("Istnieje w Subiekcie");
-        toolBar2.add(label3);
+        final JLabel label2 = new JLabel();
+        label2.setText("Istnieje w Subiekcie");
+        toolBar2.add(label2);
         final JToolBar.Separator toolBar$Separator8 = new JToolBar.Separator();
         toolBar2.add(toolBar$Separator8);
         doesExistInSubiektSelect.setMinimumSize(new Dimension(100, 30));
@@ -581,9 +567,9 @@ public class OrdersGui extends ChangeableGui {
         toolBar2.add(toolBar$Separator10);
         final JToolBar.Separator toolBar$Separator11 = new JToolBar.Separator();
         toolBar2.add(toolBar$Separator11);
-        final JLabel label4 = new JLabel();
-        label4.setText("Wysłano dokument do Allegro");
-        toolBar2.add(label4);
+        final JLabel label3 = new JLabel();
+        label3.setText("Wysłano dokument do Allegro");
+        toolBar2.add(label3);
         final JToolBar.Separator toolBar$Separator12 = new JToolBar.Separator();
         toolBar2.add(toolBar$Separator12);
         wasSendDocumentToAllegroSelect.setMinimumSize(new Dimension(100, 30));
@@ -599,6 +585,20 @@ public class OrdersGui extends ChangeableGui {
         clearFiltersButton = new JButton();
         clearFiltersButton.setText("Wyczyść filtrowanie");
         toolBar2.add(clearFiltersButton);
+        final JLabel label4 = new JLabel();
+        label4.setAlignmentX(0.0f);
+        Font label4Font = this.$$$getFont$$$(null, -1, 26, label4.getFont());
+        if (label4Font != null) label4.setFont(label4Font);
+        label4.setHorizontalAlignment(0);
+        label4.setHorizontalTextPosition(0);
+        label4.setText("Zamówienia z Allegro");
+        gbc = new GridBagConstraints();
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 1.0;
+        gbc.fill = GridBagConstraints.BOTH;
+        mainPanel.add(label4, gbc);
     }
 
     /**

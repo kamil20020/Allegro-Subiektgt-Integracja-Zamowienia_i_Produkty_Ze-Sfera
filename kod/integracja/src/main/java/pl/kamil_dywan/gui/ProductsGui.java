@@ -4,7 +4,6 @@ import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.external.allegro.generated.offer_product.OfferProduct;
 import pl.kamil_dywan.api.allegro.response.OfferProductResponse;
 import pl.kamil_dywan.api.allegro.response.ProductOfferResponse;
-import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
 import pl.kamil_dywan.external.subiektgt.own.product.ProductType;
 import pl.kamil_dywan.service.ProductService;
 import pl.kamil_dywan.service.SferaProductService;
@@ -14,8 +13,12 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ProductsGui extends ChangeableGui {
@@ -26,9 +29,7 @@ public class ProductsGui extends ChangeableGui {
     private PaginationTableGui paginationTableGui;
 
     private JButton exportProductsButton;
-    private JButton exportProductsSetsButton;
     private JButton deliveryButton;
-    private JButton setExternalButton;
 
     private JTextField searchFieldInput;
     private JButton searchButton;
@@ -52,11 +53,7 @@ public class ProductsGui extends ChangeableGui {
 
         exportProductsButton.addActionListener(e -> saveProductsToFile());
 
-        exportProductsSetsButton.addActionListener(e -> saveProductsSets());
-
         deliveryButton.addActionListener(e -> saveDeliveryToFile());
-
-        setExternalButton.addActionListener(e -> setExternal());
     }
 
     private PaginationTableGui.PaginationTableData loadProductsPage(int offset, int limit) {
@@ -98,23 +95,11 @@ public class ProductsGui extends ChangeableGui {
 
         String externalIdValue = productOfferResponse.getExternalIdValue();
 
-        String producerCode = null;
-        String ean = null;
-
-        if (externalIdValue != null) {
-
-            ExternalId externalId = productOfferResponse.getExternalId();
-
-            producerCode = externalId.getProducerCode();
-            ean = externalId.getEanCode();
-        }
-
         return new Object[]{
                 productOfferResponse.getId(),
-                producerCode != null ? producerCode : "Brak",
-                ean != null ? ean : "Brak",
+                externalIdValue != null ? externalIdValue : "Brak",
+                productOfferResponse.isDoesExistInSubiekt() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO,
                 productOfferResponse.hasManyProducts() ? BooleanSelectOptions.YES : BooleanSelectOptions.NO,
-                productOfferResponse.getSubiektId() != null ? productOfferResponse.getSubiektId() : "Brak",
                 productOfferResponse.getName(),
                 productOfferResponse.getPriceWithoutTax().toString() + " zł",
                 productOfferResponse.getPriceWithTax() + " zł",
@@ -211,82 +196,6 @@ public class ProductsGui extends ChangeableGui {
         );
     }
 
-    private void saveProductsSets() {
-
-        if (paginationTableGui.isLoading()) {
-            return;
-        }
-
-        List<ProductOfferResponse> productsSets = productService.extractProductsSets(products);
-
-        if (productsSets == null) {
-
-            JOptionPane.showMessageDialog(mainPanel, "Brak zestawów produktów do zapisania", "Błąd", JOptionPane.ERROR_MESSAGE);
-
-            return;
-        }
-
-        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        new Thread(() -> {
-
-            Integer numberOfSavedProductsSets = sferaProductService.saveProductsSets(productsSets);
-
-            SwingUtilities.invokeLater(() -> {
-
-                mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-
-                JOptionPane.showMessageDialog(
-                        mainPanel,
-                        "Utworzono " + numberOfSavedProductsSets + " zestawów produktów",
-                        "Powiadomienie",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-            });
-
-        }).start();
-    }
-
-    private void setExternal() {
-
-        if (paginationTableGui.isLoading()) {
-            return;
-        }
-
-        if (products == null) {
-
-            JOptionPane.showMessageDialog(mainPanel, "Brak produktów do zaktualizowania w Allegro", "Błąd", JOptionPane.ERROR_MESSAGE);
-
-            return;
-        }
-
-        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        try {
-
-            productService.setExternalIdForAllOffers(products);
-
-            JOptionPane.showMessageDialog(
-                    mainPanel,
-                    "Zaktualizowano produkty w Allegro",
-                    "Powiadomienie",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        } catch (Exception e) {
-
-            e.printStackTrace();
-
-            JOptionPane.showMessageDialog(
-                    mainPanel,
-                    "Nie udało się zaktualizować produktów w Allegro",
-                    "Powiadomienie o błędzie",
-                    JOptionPane.ERROR_MESSAGE
-            );
-        }
-
-        mainPanel.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-    }
-
     @Override
     public void load() {
 
@@ -304,19 +213,53 @@ public class ProductsGui extends ChangeableGui {
         return mainPanel;
     }
 
-    private void handleRedirectToOffer(String allegroProductOfferId) {
+    private void handleClickOnOffer(String allegroProductOfferId, MouseEvent mouseEvent) {
 
-        productService.redirectToOffer(allegroProductOfferId);
+        JPopupMenu popupMenu = new JPopupMenu();
+
+        JMenuItem openAllegroOfferPopupMenuItem = new JMenuItem(new AbstractAction("Otworzenie oferty w Allegro") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                productService.redirectToOffer(allegroProductOfferId);
+            }
+        });
+        popupMenu.add(openAllegroOfferPopupMenuItem);
+
+        JMenuItem addSignaturePopupMenuItem = new JMenuItem(new AbstractAction("Ustawienie sygnatury oferty w Allegro") {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                handleManageOfferSignature(allegroProductOfferId);
+            }
+        });
+        popupMenu.add(addSignaturePopupMenuItem);
+
+        popupMenu.show(paginationTableGui.getMainPanel(), mouseEvent.getX(), mouseEvent.getY() + 40);
+    }
+
+    private void handleManageOfferSignature(String offerId) {
+
+        Optional<ProductOfferResponse> selectedOfferOpt = products.stream()
+                .filter(offer -> Objects.equals(offer.getId().toString(), offerId))
+                .findFirst();
+
+        if (selectedOfferOpt.isEmpty()) {
+            return;
+        }
+
+        ProductOfferResponse selectedOffer = selectedOfferOpt.get();
+
+        ManageOfferSignatureGui dialog = new ManageOfferSignatureGui(selectedOffer, productService, sferaProductService);
+        dialog.showDialog();
     }
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
 
-        String[] columnsHeaders = {"Allegro Id", "Kod producenta", "EAN (GTIN)", "Zestaw", "Subiekt Id", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
+        String[] columnsHeaders = {"Allegro Id", "Sygnatura (Allegro)", "Istnieje w subiekcie", "Zestaw", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
 
         paginationTableGui = new PaginationTableGui(columnsHeaders, this::loadProductsPage, this::convertProductToRow);
 
-        paginationTableGui.setOnRightClickRow(ALLEGRO_PRODUCT_OFFER_ID_COLUMN_INDEX, this::handleRedirectToOffer);
+        paginationTableGui.setOnRightClickRow(ALLEGRO_PRODUCT_OFFER_ID_COLUMN_INDEX, this::handleClickOnOffer);
 
         productsPanelPlaceholder = paginationTableGui.getMainPanel();
     }
@@ -344,7 +287,7 @@ public class ProductsGui extends ChangeableGui {
         if (label1Font != null) label1.setFont(label1Font);
         label1.setHorizontalAlignment(0);
         label1.setHorizontalTextPosition(0);
-        label1.setText("Produkty");
+        label1.setText("Oferty z Allegro");
         GridBagConstraints gbc;
         gbc = new GridBagConstraints();
         gbc.gridx = 0;
@@ -375,37 +318,16 @@ public class ProductsGui extends ChangeableGui {
         gbc.gridy = 3;
         mainPanel.add(toolBar1, gbc);
         exportProductsButton = new JButton();
-        exportProductsButton.setMaximumSize(new Dimension(180, 30));
-        exportProductsButton.setMinimumSize(new Dimension(180, 30));
-        exportProductsButton.setOpaque(true);
-        exportProductsButton.setPreferredSize(new Dimension(180, 30));
         exportProductsButton.setText("Zapisz produkty do pliku");
-        exportProductsButton.setVisible(true);
         toolBar1.add(exportProductsButton);
         final JToolBar.Separator toolBar$Separator1 = new JToolBar.Separator();
         toolBar1.add(toolBar$Separator1);
-        exportProductsSetsButton = new JButton();
-        exportProductsSetsButton.setMaximumSize(new Dimension(180, 30));
-        exportProductsSetsButton.setMinimumSize(new Dimension(180, 30));
-        exportProductsSetsButton.setPreferredSize(new Dimension(180, 30));
-        exportProductsSetsButton.setText("Zapisz zestawy");
-        toolBar1.add(exportProductsSetsButton);
-        final JToolBar.Separator toolBar$Separator2 = new JToolBar.Separator();
-        toolBar1.add(toolBar$Separator2);
         deliveryButton = new JButton();
         deliveryButton.setMaximumSize(new Dimension(180, 30));
         deliveryButton.setMinimumSize(new Dimension(180, 30));
         deliveryButton.setPreferredSize(new Dimension(180, 30));
         deliveryButton.setText("Zapisz dostawę do pliku");
         toolBar1.add(deliveryButton);
-        final JToolBar.Separator toolBar$Separator3 = new JToolBar.Separator();
-        toolBar1.add(toolBar$Separator3);
-        setExternalButton = new JButton();
-        setExternalButton.setMaximumSize(new Dimension(180, 30));
-        setExternalButton.setMinimumSize(new Dimension(180, 30));
-        setExternalButton.setPreferredSize(new Dimension(180, 30));
-        setExternalButton.setText("Zaktualizuj zewnętrzne id");
-        toolBar1.add(setExternalButton);
         final JToolBar toolBar2 = new JToolBar();
         toolBar2.setFloatable(false);
         toolBar2.setOpaque(false);

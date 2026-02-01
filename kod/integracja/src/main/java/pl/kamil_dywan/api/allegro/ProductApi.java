@@ -1,12 +1,10 @@
 package pl.kamil_dywan.api.allegro;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import pl.kamil_dywan.api.Api;
 import pl.kamil_dywan.exception.UnloggedException;
 import pl.kamil_dywan.api.allegro.request.PatchProductOfferRequest;
 import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
-import pl.kamil_dywan.external.allegro.own.OfferProductStatus;
-import pl.kamil_dywan.service.AppProperties;
+import pl.kamil_dywan.external.allegro.own.offer.OfferProductStatus;
 
 import java.net.URI;
 import java.net.URLEncoder;

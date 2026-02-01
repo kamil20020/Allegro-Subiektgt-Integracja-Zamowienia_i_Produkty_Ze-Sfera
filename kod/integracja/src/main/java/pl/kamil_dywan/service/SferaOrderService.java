@@ -11,6 +11,9 @@ import pl.kamil_dywan.api.sfera.response.ErrorResponse;
 import pl.kamil_dywan.api.sfera.response.GeneralResponse;
 import pl.kamil_dywan.exception.ConflictException;
 import pl.kamil_dywan.external.allegro.generated.order.Order;
+import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
+import pl.kamil_dywan.external.allegro.generated.order_item.Offer;
+import pl.kamil_dywan.external.allegro.generated.order_item.OrderItem;
 import pl.kamil_dywan.external.sfera.generated.ResponseStatus;
 import pl.kamil_dywan.mapper.sfera.SferaOrderMapper;
 
@@ -20,10 +23,12 @@ import java.util.*;
 public class SferaOrderService {
 
     private final SferaOrderApi sferaOrderApi;
+    private final SferaProductService sferaProductService;
 
-    public SferaOrderService(SferaOrderApi sferaOrderApi){
+    public SferaOrderService(SferaOrderApi sferaOrderApi, SferaProductService sferaProductService){
 
         this.sferaOrderApi = sferaOrderApi;
+        this.sferaProductService = sferaProductService;
     }
 
     private GeneralResponse handleResponseErrors(HttpResponse<String> gotResponse) throws IllegalStateException{
@@ -73,6 +78,8 @@ public class SferaOrderService {
             throw new ConflictException("Istnieje już obiekt w Subiekcie");
         }
 
+        validateExistsProductsInSubiekt(order);
+
         if (order.isHasDocument()) {
 
             throw new ConflictException("W Allegro przypisano już dokument potwierdzający sprzedaż");
@@ -107,6 +114,53 @@ public class SferaOrderService {
         }
 
         return gotSubiektId;
+    }
+
+    public void validateExistsProductsInSubiekt(Order order) throws IllegalStateException{
+
+        StringBuilder errorBuilder = new StringBuilder();
+
+        for(OrderItem orderItem : order.getOrderItems()){
+
+            Offer offer = orderItem.getOffer();
+            ExternalId externalId = offer.getExternal();
+
+            if(offer.getName().equals("Dostawa do klienta")){
+                continue;
+            }
+
+            if(externalId == null){
+
+                errorBuilder
+                    .append("Oferta ")
+                    .append(offer.getName())
+                    .append(" nie ma przypisanej sygnatury")
+                    .append(System.lineSeparator());
+
+                continue;
+            }
+
+            String externalIdValue = externalId.getId();
+
+            boolean doesExist = sferaProductService.existsByCode(externalIdValue);
+
+            if(doesExist){
+                continue;
+            }
+
+            errorBuilder
+                .append("Oferta ")
+                .append(offer.getName())
+                .append(" ma przypisaną niepoprawną sygnaturę ")
+                .append(externalIdValue)
+                .append(System.lineSeparator());
+
+        }
+
+        if(!errorBuilder.isEmpty()){
+
+            throw new IllegalStateException(errorBuilder.toString());
+        }
     }
 
     public List<byte[]> getContents(List<Order> orders) throws IllegalStateException{

@@ -5,6 +5,8 @@ import javax.annotation.processing.Generated;
 
 import com.fasterxml.jackson.annotation.*;
 import lombok.*;
+import pl.kamil_dywan.external.allegro.generated.offer_product.OfferProduct;
+import pl.kamil_dywan.external.allegro.own.offer.Signature;
 
 import java.util.List;
 
@@ -36,6 +38,9 @@ public class Offer {
     private OrderProductSet productSet;
 
     @JsonIgnore
+    private Signature signature;
+
+    @JsonIgnore
     public Offer(String name){
 
         this.name = name;
@@ -64,6 +69,28 @@ public class Offer {
         List<OrderProduct> orderProducts = productSet.getProducts();
 
         return orderProducts != null && !orderProducts.isEmpty();
+    }
+
+    @JsonIgnore
+    public void validateSignature() throws IllegalStateException{
+
+        if(productSet == null){
+            return;
+        }
+
+        List<OrderProduct> offerProducts = productSet.getProducts();
+
+        if(offerProducts == null || offerProducts.isEmpty()){
+            return;
+        }
+
+        int numberOfSignatureItems = signature.signatureItems().size();
+        int numberOfProducts = offerProducts.size();
+
+        if(numberOfSignatureItems != numberOfProducts) {
+
+            throw new IllegalStateException("Liczba produktów z sygnatury oferty różni się z liczbą produktów w ofercie");
+        }
     }
 
 }
