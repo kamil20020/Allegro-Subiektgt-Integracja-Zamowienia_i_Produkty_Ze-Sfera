@@ -21,43 +21,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ProductOfferResponseTest {
 
     @Test
-    void shouldSetSubiektIdWithoutSpaces(){
-
-        //given
-        String expectedSubiektId = "subiekt-id";
-
-        ProductOfferResponse productOfferResponse = new ProductOfferResponse();
-
-        //when
-//        productOfferResponse.setSubiektId(expectedSubiektId);
-
-//        String gotSubiektId = productOfferResponse.getSubiektId();
-
-        //then
-//        assertNotNull(gotSubiektId);
-//        assertEquals(expectedSubiektId, gotSubiektId);
-    }
-
-    @Test
-    void shouldSetSubiektIdWithComma(){
-
-        //given
-        String inputSubiektId = "\"subiektid\"";
-        String expectedSubiektId = "subiektid";
-
-        ProductOfferResponse productOfferResponse = new ProductOfferResponse();
-
-        //when
-//        productOfferResponse.setSubiektId(inputSubiektId);
-//
-//        String gotSubiektId = productOfferResponse.getSubiektId();
-
-        //then
-//        assertNotNull(gotSubiektId);
-//        assertEquals(expectedSubiektId, gotSubiektId);
-    }
-
-    @Test
     void shouldGetExternalIdValue(){
 
         //given

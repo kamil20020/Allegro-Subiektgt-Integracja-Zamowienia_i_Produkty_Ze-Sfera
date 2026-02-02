@@ -8,6 +8,7 @@ import pl.kamil_dywan.external.allegro.generated.offer_product.ProductOfferProdu
 import pl.kamil_dywan.external.allegro.generated.offer_product.ProductOfferProductRelatedData;
 import pl.kamil_dywan.external.allegro.generated.offer_product.SellingMode;
 import pl.kamil_dywan.external.allegro.generated.order_item.*;
+import pl.kamil_dywan.external.allegro.own.offer.Signature;
 import pl.kamil_dywan.external.sfera.generated.Product;
 import pl.kamil_dywan.external.allegro.generated.Cost;
 import pl.kamil_dywan.external.allegro.own.Currency;
@@ -21,24 +22,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class SferaProductMapperTest {
 
-    @ParameterizedTest
-    @CsvSource(value = {
-        "offer_id, producer#ean, producer, ean",
-        "offer_id, #ean, offer_id, ean",
-        "offer_id, producer#, producer, ",
-        "offer_id, producer, producer, ",
-        "offer_id, #, offer_id, ",
-        "offer_id, , offer_id, ",
-    })
-    void shouldMapWithExternalId(String expectedOfferId, String expectedCombinedCode, String expectedCode, String expectedEan) {
+    @Test
+    void shouldMapWithExternalId() {
 
         //given
         BigDecimal expectedTotalPriceWithTax = new BigDecimal("64.96");
 
-        ExternalId externalId = new ExternalId(expectedCombinedCode);
+        ExternalId externalId = new ExternalId("12");
 
         Offer offer = Offer.builder()
-            .id(expectedOfferId)
+            .id("offer_id")
             .external(externalId)
             .name("Oferta 123")
             .build();
@@ -59,8 +52,7 @@ class SferaProductMapperTest {
 
         //then
         assertNotNull(gotProduct);
-        assertEquals(expectedCode, gotProduct.getCode());
-//        assertEquals(expectedEan, gotProduct.getEan());
+        assertEquals(externalId.getId(), gotProduct.getCode());
         assertEquals(offer.getName(), gotProduct.getName());
         assertEquals(expectedTotalPriceWithTax, gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
@@ -95,7 +87,6 @@ class SferaProductMapperTest {
         //then
         assertNotNull(gotProduct);
         assertEquals(offer.getId(), gotProduct.getCode());
-//        assertNull(gotProduct.getEan());
         assertEquals(offer.getName(), gotProduct.getName());
         assertEquals(expectedTotalPriceWithTax, gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
@@ -129,7 +120,6 @@ class SferaProductMapperTest {
         //then
         assertNotNull(gotProduct);
         assertEquals(offer.getId(), gotProduct.getCode());
-//        assertNull(gotProduct.getEan());
         assertEquals(offer.getName(), gotProduct.getName());
         assertEquals(expectedTotalPriceWithTax, gotProduct.getPriceWithTax());
         assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
@@ -148,8 +138,12 @@ class SferaProductMapperTest {
 
         OrderProductSet orderProductSet = new OrderProductSet(orderProducts);
 
+        Signature signature = new Signature("12", 2);
+        ExternalId externalId = new ExternalId(signature);
+
         Offer offer = Offer.builder()
             .id(UUID.randomUUID().toString())
+            .external(externalId)
             .name("Oferta 123")
             .productSet(orderProductSet)
             .build();
@@ -170,11 +164,10 @@ class SferaProductMapperTest {
 
         //then
         assertNotNull(gotProduct);
-        assertEquals("Zestaw-" + offer.getId(), gotProduct.getCode());
-//        assertNull(gotProduct.getEan());
+        assertEquals(signature.subiektSymbol(), gotProduct.getCode());
         assertEquals(offer.getName(), gotProduct.getName());
         assertEquals(expectedTotalPriceWithTax, gotProduct.getPriceWithTax());
-        assertEquals(orderItem.getQuantity(), gotProduct.getQuantity());
+        assertEquals(signature.quantity() * orderItem.getQuantity(), gotProduct.getQuantity());
     }
 
     @Test
@@ -182,11 +175,9 @@ class SferaProductMapperTest {
 
         //given
         Long expectedOfferId = 123L;
-        String expectedCombinedCode = "producer#ean";
-        String expectedCode = "producer";
-        String expectedEan = "ean";
+        Signature signature = new Signature("12", 2);
 
-        ExternalId externalId = new ExternalId(expectedCombinedCode);
+        ExternalId externalId = new ExternalId(signature);
 
         Cost cost = new Cost(
             new BigDecimal("32.48"),
@@ -207,11 +198,10 @@ class SferaProductMapperTest {
 
         //then
         assertNotNull(gotProduct);
-        assertEquals(expectedCode, gotProduct.getCode());
-//        assertEquals(expectedEan, gotProduct.getEan());
+        assertEquals(signature.subiektSymbol(), gotProduct.getCode());
         assertEquals(product.getName(), gotProduct.getName());
         assertEquals(cost.getAmount(), gotProduct.getPriceWithTax());
-        assertEquals(1, gotProduct.getQuantity());
+        assertEquals(signature.quantity(), gotProduct.getQuantity());
     }
 
     @Test
@@ -219,6 +209,7 @@ class SferaProductMapperTest {
 
         //given
         Long expectedOfferId = 123L;
+        Signature signature = new Signature("12", 2);
 
         ProductOfferProductRelatedData product = new ProductOfferProductRelatedData();
         ProductOfferProductRelatedData product1 = new ProductOfferProductRelatedData();
@@ -232,8 +223,11 @@ class SferaProductMapperTest {
 
         SellingMode sellingMode = new SellingMode(cost);
 
+        ExternalId externalId = new ExternalId(signature);
+
         ProductOfferResponse offer = ProductOfferResponse.builder()
             .id(expectedOfferId)
+            .externalId(externalId)
             .name("Oferta 123")
             .sellingMode(sellingMode)
             .productSet(products)
@@ -244,11 +238,10 @@ class SferaProductMapperTest {
 
         //then
         assertNotNull(gotOffer);
-        assertEquals("Zestaw-" + expectedOfferId, gotOffer.getCode());
-//        assertNull(gotOffer.getEan());
+        assertEquals(signature.subiektSymbol(), gotOffer.getCode());
         assertEquals(offer.getName(), gotOffer.getName());
         assertEquals(cost.getAmount(), gotOffer.getPriceWithTax());
-        assertEquals(1, gotOffer.getQuantity());
+        assertEquals(signature.quantity(), gotOffer.getQuantity());
     }
 
 }

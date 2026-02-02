@@ -58,8 +58,6 @@ public class OrderService {
 
         setOrdersExternalIds(gotOrders);
 
-
-
         return gotOrderResponse;
     }
 

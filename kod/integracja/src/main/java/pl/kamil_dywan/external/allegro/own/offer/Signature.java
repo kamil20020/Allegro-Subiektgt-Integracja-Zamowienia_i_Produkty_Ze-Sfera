@@ -7,7 +7,7 @@ public record Signature(
     String subiektSymbol,
     Integer quantity
 ) {
-    private static final String SEPARATOR = "#";
+    public static final String SEPARATOR = "#";
 
     @Override
     public String toString() {
@@ -44,7 +44,7 @@ public record Signature(
         }
         catch (NumberFormatException e){
 
-            throw new IllegalArgumentException("Otrzmano niepoprawną ilość dla sygnatury " + signatureItemCode);
+            throw new IllegalArgumentException("Otrzmano niepoprawną liczbę produktów dla sygnatury " + signatureItemCode);
         }
 
         return new Signature(subiektSymbol, quantity);

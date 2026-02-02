@@ -20,33 +20,52 @@ public interface SferaProductMapper {
 
         ExternalId externalId = allegroOffer.getExternal();
 
-        String code = null;
+        String code = allegroOffer.getId();
+        Integer quantity = allegroOrderItem.getQuantity();
 
-        if(externalId != null){
+        if(externalId != null && externalId.getId() != null){
 
-            code = externalId.getId();
+            Signature signature = Signature.extract(externalId.getId());
 
-            Signature signature = Signature.extract(code);
-            allegroOffer.setSignature(signature);
+            code = signature.subiektSymbol();
+
+            if(signature.quantity() != null && allegroOrderItem.getQuantity() != null){
+
+                quantity *= signature.quantity();
+            }
         }
 
         return Product.builder()
             .code(code)
             .name(allegroOffer.getName())
             .priceWithTax(allegroOrderItem.getTotalPriceWithTax())
-            .quantity(allegroOrderItem.getQuantity())
+            .quantity(quantity)
             .build();
     }
 
     public static Product map(ProductOfferResponse allegroProduct){
 
         String externalIdValue = allegroProduct.getExternalIdValue();
+        String code = allegroProduct.getId().toString();
+
+        Integer quantity = 1;
+
+        if(externalIdValue != null){
+
+            Signature signature = Signature.extract(externalIdValue);
+            code = signature.subiektSymbol();
+
+            if(signature.quantity() != null){
+
+                quantity = signature.quantity();
+            }
+        }
 
         return Product.builder()
-            .code(externalIdValue)
+            .code(code)
             .name(allegroProduct.getName())
             .priceWithTax(allegroProduct.getPriceWithTax())
-            .quantity(1)
+            .quantity(quantity)
             .build();
     }
 

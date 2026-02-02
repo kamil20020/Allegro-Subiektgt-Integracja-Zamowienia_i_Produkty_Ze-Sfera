@@ -14,6 +14,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class OfferTest {
 
     @Test
+    public void shouldCreate(){
+
+        //given
+        String name = "offer";
+
+        //when
+        Offer offer = new Offer(name);
+
+        //then
+        assertEquals(name, offer.getName());
+    }
+
+    @Test
     void shouldGetHasProductsForSingleProduct() {
 
         //given

@@ -70,16 +70,6 @@ public class ProductApi extends BearerAuthApi {
         return send(httpRequestBuilder);
     }
 
-    public HttpResponse<String> updateExternalIdOfOffers(Long id, LinkedHashMap<Long, String> offersIdsAndExternalsMappings){
-
-        HttpRequest.Builder httpRequestBuilder = HttpRequest.newBuilder()
-            .GET()
-            .uri(URI.create(API_PREFIX + "/product-offers/" + id))
-            .header("Accept", "application/vnd.allegro.public.v1+json");
-
-        return send(httpRequestBuilder);
-    }
-
     public void redirectToOffer(String offerId){
 
         Api.redirect(

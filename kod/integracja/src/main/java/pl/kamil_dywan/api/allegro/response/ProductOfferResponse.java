@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.kamil_dywan.external.allegro.generated.offer_product.*;
 import pl.kamil_dywan.external.allegro.generated.order_item.ExternalId;
+import pl.kamil_dywan.external.allegro.own.offer.Signature;
 
 import javax.annotation.processing.Generated;
 import java.math.BigDecimal;

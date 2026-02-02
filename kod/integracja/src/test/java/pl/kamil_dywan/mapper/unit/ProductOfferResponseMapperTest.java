@@ -151,4 +151,16 @@ class ProductOfferResponseMapperTest {
         assertEquals(expectedTaxRate, subiektProduct.getTaxRatePercentage());
         assertEquals(expectedUnitPriceWithoutTax, subiektProduct.getUnitPriceWithoutTax());
     }
+
+    @Test
+    public void shouldMapWhenOfferIsNull(){
+
+        //given
+        //when
+        Product product = ProductOfferMapper.map(null, null);
+
+        //then
+        assertNull(product);
+
+    }
 }
