@@ -39,7 +39,13 @@ public class SferaProductService {
             return false;
         }
 
-        String extractedSubiektSymbol = Signature.extract(code).subiektSymbol();
+        Signature extractedSignature = Signature.extract(code);
+
+        if(extractedSignature == null){
+            return false;
+        }
+
+        String extractedSubiektSymbol = extractedSignature.subiektSymbol();
         ExistsSymbolRequest request = new ExistsSymbolRequest(extractedSubiektSymbol);
 
         HttpResponse<String> gotResponse = sferaProductApi.existsSubiektId(request);

@@ -255,5 +255,4 @@ public class LoginGui extends ChangeableGui {
     public JComponent $$$getRootComponent$$$() {
         return mainPanel;
     }
-
 }

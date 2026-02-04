@@ -1,5 +1,9 @@
 package pl.kamil_dywan.external.allegro.own.offer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import pl.kamil_dywan.api.Api;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +11,7 @@ public record Signature(
     String subiektSymbol,
     Integer quantity
 ) {
+    private static final Logger log = LoggerFactory.getLogger(Signature.class);
     public static final String SEPARATOR = "#";
 
     @Override
@@ -44,7 +49,8 @@ public record Signature(
         }
         catch (NumberFormatException e){
 
-            throw new IllegalArgumentException("Otrzmano niepoprawną liczbę produktów dla sygnatury " + signatureItemCode);
+            log.error("Otrzmano niepoprawną liczbę produktów dla sygnatury " + signatureItemCode);
+            return null;
         }
 
         return new Signature(subiektSymbol, quantity);
