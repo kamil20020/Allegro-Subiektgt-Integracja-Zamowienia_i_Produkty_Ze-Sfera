@@ -7,6 +7,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.text.html.Option;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
@@ -15,6 +18,14 @@ import java.util.function.*;
 import java.util.stream.Collectors;
 
 public class PaginationTableGui extends JPanel {
+
+    public record ClickedData(
+            int rowIndex,
+            int columnIndex,
+            String id,
+            String value
+    ) {
+    }
 
     private JPanel mainPanel;
 
@@ -35,11 +46,13 @@ public class PaginationTableGui extends JPanel {
     private Integer[] skipColumns;
 
     private List<Object[]> data;
+    private JPopupMenu tablePopupMenu = new JPopupMenu();
 
     private volatile boolean isLoading = false;
 
     private final BiFunction<Integer, Integer, PaginationTableData> loadData;
     private final Function<Object, Object[]> convertToRow;
+    private final List<Map.Entry<String, Consumer<ClickedData>>> popupMenuItems = new ArrayList<>();
 
     private final Map<Integer, Predicate<Object[]>> filters = new HashMap<>();
 
@@ -56,6 +69,8 @@ public class PaginationTableGui extends JPanel {
         this.tableHeaders = tableHeaders;
         this.loadData = loadData;
         this.convertToRow = convertToRow;
+
+        popupMenuItems.add(getAddCopyMenuItem());
 
         $$$setupUI$$$();
 
@@ -217,6 +232,12 @@ public class PaginationTableGui extends JPanel {
 
         pageSize = getCurrentPageSize();
 
+        handleLoadTableExceptions();
+    }
+
+    public void loadWithClear() {
+
+        offset = 0;
         handleLoadTableExceptions();
     }
 
@@ -506,7 +527,12 @@ public class PaginationTableGui extends JPanel {
         tableModel.setValueAt(newValue, rowIndex, colIndex);
     }
 
-    public void setOnRightClickRow(int columnIndex, BiConsumer<String, MouseEvent> handleClick) {
+    public void addExternalMenuItems(List<Map.Entry<String, Consumer<ClickedData>>> menuItems) {
+
+        popupMenuItems.addAll(menuItems);
+    }
+
+    public void setOnRightClickRow(int idColumnIndex) {
 
         table.addMouseListener(new MouseAdapter() {
 
@@ -520,20 +546,76 @@ public class PaginationTableGui extends JPanel {
 
                 Point point = e.getPoint();
 
-                int clickedRow = table.rowAtPoint(point);
-
+                int clickedRowIndex = table.rowAtPoint(point);
                 int selectedRowIndex = table.getSelectedRow();
+                int clickedColumnIndex = table.columnAtPoint(point);
 
-                if (clickedRow == -1 || selectedRowIndex == -1 || clickedRow != selectedRowIndex) {
+                if (clickedRowIndex == -1 || clickedColumnIndex == -1 || selectedRowIndex == -1 || clickedRowIndex != selectedRowIndex) {
 
                     return;
                 }
 
-                String gotValue = String.valueOf(tableModel.getValueAt(selectedRowIndex, columnIndex));
+                String gotId = String.valueOf(tableModel.getValueAt(selectedRowIndex, idColumnIndex));
+                String gotClickedValue = String.valueOf(tableModel.getValueAt(selectedRowIndex, clickedColumnIndex));
 
-                handleClick.accept(gotValue, e);
+                ClickedData data = new ClickedData(
+                        clickedRowIndex,
+                        clickedColumnIndex,
+                        gotId,
+                        gotClickedValue
+                );
+                
+                replaceMenuItems(data);
+                showTableMenu(e);
             }
         });
+    }
+
+    private Map.Entry<String, Consumer<ClickedData>> getAddCopyMenuItem() {
+
+        return new AbstractMap.SimpleEntry<>(
+                "Kopiuj wartość",
+                (ClickedData clickedData) -> {
+                    int clickedRow = clickedData.rowIndex();
+                    int clickedColumn = clickedData.columnIndex();
+                    String value = table.getValueAt(clickedRow, clickedColumn).toString();
+                    StringSelection valueSelection = new StringSelection(value);
+
+                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    clipboard.setContents(valueSelection, null);
+                }
+        );
+    }
+
+    private void showTableMenu(MouseEvent mouseEvent) {
+
+        int menuX = mouseEvent.getX();
+        int menuY = mouseEvent.getY() + 40;
+
+        tablePopupMenu.show(mainPanel, menuX, menuY);
+    }
+
+    private void replaceMenuItems(ClickedData clickedData) {
+
+        tablePopupMenu.removeAll();
+
+        for (var menuItem : popupMenuItems) {
+
+            addMenuItem(clickedData, menuItem);
+        }
+    }
+
+    private void addMenuItem(ClickedData clickedData, Map.Entry<String, Consumer<ClickedData>> handleClick) {
+
+        String menuItemName = handleClick.getKey();
+        Consumer<ClickedData> menuItemClickHandle = handleClick.getValue();
+        JMenuItem menuItemComponent = new JMenuItem(new AbstractAction(menuItemName) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                menuItemClickHandle.accept(clickedData);
+            }
+        });
+        tablePopupMenu.add(menuItemComponent);
     }
 
     public void setSkipColumns(Integer[] skipColumns) {

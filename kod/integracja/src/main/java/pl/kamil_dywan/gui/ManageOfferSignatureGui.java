@@ -101,8 +101,10 @@ public class ManageOfferSignatureGui extends JDialog {
 
         Signature signature = Signature.extract(actualSignature);
 
-        subiektSymbol = signature.subiektSymbol();
-        quantity = signature.quantity();
+        if (signature != null) {
+            subiektSymbol = signature.subiektSymbol();
+            quantity = signature.quantity();
+        }
 
         addSignatureItemGui();
     }
@@ -242,8 +244,6 @@ public class ManageOfferSignatureGui extends JDialog {
         if (subiektSymbol == null || subiektSymbol.isBlank()) {
             return;
         }
-
-        subiektSymbol = subiektSymbol.replaceAll("\\s", "");
 
         if (!sferaProductService.existsByCode(subiektSymbol)) {
 

@@ -16,10 +16,9 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ProductsGui extends ChangeableGui {
@@ -113,7 +112,7 @@ public class ProductsGui extends ChangeableGui {
 
     private void handleSearch() {
 
-        paginationTableGui.handleLoadTableExceptions();
+        paginationTableGui.loadWithClear();
     }
 
     private void saveDeliveryToFile() {
@@ -216,27 +215,29 @@ public class ProductsGui extends ChangeableGui {
         return mainPanel;
     }
 
-    private void handleClickOnOffer(String allegroProductOfferId, MouseEvent mouseEvent) {
+    private List<Map.Entry<String, Consumer<PaginationTableGui.ClickedData>>> getTableMenuItems() {
 
-        JPopupMenu popupMenu = new JPopupMenu();
+        List<Map.Entry<String, Consumer<PaginationTableGui.ClickedData>>> menuItems = new ArrayList<>();
 
-        JMenuItem openAllegroOfferPopupMenuItem = new JMenuItem(new AbstractAction("Otworzenie oferty w Allegro") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        var openAllegroOfferPopupMenuItem = new AbstractMap.SimpleEntry<String, Consumer<PaginationTableGui.ClickedData>>(
+            "Otworzenie oferty w Allegro",
+            clickedData -> {
+                String allegroProductOfferId = clickedData.id();
                 productService.redirectToOffer(allegroProductOfferId);
             }
-        });
-        popupMenu.add(openAllegroOfferPopupMenuItem);
+        );
+        menuItems.add(openAllegroOfferPopupMenuItem);
 
-        JMenuItem addSignaturePopupMenuItem = new JMenuItem(new AbstractAction("Ustawienie sygnatury oferty w Allegro") {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        var addSignaturePopupMenuItem = new AbstractMap.SimpleEntry<String, Consumer<PaginationTableGui.ClickedData>>(
+            "Ustawienie sygnatury oferty w Allegro",
+            clickedData -> {
+                String allegroProductOfferId = clickedData.id();
                 handleManageOfferSignature(allegroProductOfferId);
             }
-        });
-        popupMenu.add(addSignaturePopupMenuItem);
+        );
+        menuItems.add(addSignaturePopupMenuItem);
 
-        popupMenu.show(paginationTableGui.getMainPanel(), mouseEvent.getX(), mouseEvent.getY() + 40);
+        return menuItems;
     }
 
     private void handleManageOfferSignature(String offerId) {
@@ -269,8 +270,8 @@ public class ProductsGui extends ChangeableGui {
         String[] columnsHeaders = {"Allegro Id", "Sygnatura (Allegro)", "Istnieje w Subiekcie", "Zestaw", "Nazwa", "Cena netto", "Cena brutto", "Podatek", "Data dodania"};
 
         paginationTableGui = new PaginationTableGui(columnsHeaders, this::loadProductsPage, this::convertProductToRow);
-
-        paginationTableGui.setOnRightClickRow(ALLEGRO_PRODUCT_OFFER_ID_COLUMN_INDEX, this::handleClickOnOffer);
+        paginationTableGui.addExternalMenuItems(getTableMenuItems());
+        paginationTableGui.setOnRightClickRow(ALLEGRO_PRODUCT_OFFER_ID_COLUMN_INDEX);
 
         productsPanelPlaceholder = paginationTableGui.getMainPanel();
     }

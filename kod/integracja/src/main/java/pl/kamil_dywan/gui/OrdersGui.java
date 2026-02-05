@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.*;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -441,7 +442,23 @@ public class OrdersGui extends ChangeableGui {
         return mainPanel;
     }
 
-    private void handleRedirectToOrder(String allegroOrderId, MouseEvent mouseEvent) {
+    private List<Map.Entry<String, Consumer<PaginationTableGui.ClickedData>>> getTableMenuItems() {
+
+        List<Map.Entry<String, Consumer<PaginationTableGui.ClickedData>>> menuItems = new ArrayList<>();
+
+        var openAllegroOrderrPopupMenuItem = new AbstractMap.SimpleEntry<String, Consumer<PaginationTableGui.ClickedData>>(
+            "Otworzenie zamówienia w Allegro",
+            clickedData -> {
+                String allegroProductOfferId = clickedData.id();
+                handleRedirectToOrder(allegroProductOfferId);
+            }
+        );
+        menuItems.add(openAllegroOrderrPopupMenuItem);
+
+        return menuItems;
+    }
+
+    private void handleRedirectToOrder(String allegroOrderId) {
 
         orderService.redirectToOffer(allegroOrderId);
     }
@@ -458,7 +475,8 @@ public class OrdersGui extends ChangeableGui {
         paginationTableGui = new PaginationTableGui(tableHeaders, this::loadData, this::convertToRow);
 
         paginationTableGui.setSkipColumns(new Integer[]{ALLEGRO_ORDER_ID_COL_INDEX});
-        paginationTableGui.setOnRightClickRow(ALLEGRO_ORDER_ID_COL_INDEX, this::handleRedirectToOrder);
+        paginationTableGui.addExternalMenuItems(getTableMenuItems());
+        paginationTableGui.setOnRightClickRow(ALLEGRO_ORDER_ID_COL_INDEX);
 
         ordersPanelPlaceholder = paginationTableGui.getMainPanel();
     }
