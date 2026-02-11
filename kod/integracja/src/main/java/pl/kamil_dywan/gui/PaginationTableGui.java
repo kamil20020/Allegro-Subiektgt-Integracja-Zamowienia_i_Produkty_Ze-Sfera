@@ -564,7 +564,7 @@ public class PaginationTableGui extends JPanel {
                         gotId,
                         gotClickedValue
                 );
-                
+
                 replaceMenuItems(data);
                 showTableMenu(e);
             }

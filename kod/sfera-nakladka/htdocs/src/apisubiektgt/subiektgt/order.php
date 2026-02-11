@@ -59,6 +59,7 @@ class Order extends SubiektObj {
 		}
 		//var_dump($p_data);
 		$code = sprintf('%s',$p_data['code']);
+		$code = Helper::toWin($code);
 
 		$position = $this->orderGt->Pozycje->Dodaj($code);
 		$position->IloscJm = intval($product['qty']);				
