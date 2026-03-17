@@ -124,7 +124,7 @@ class Order extends SubiektObj {
 		}
 		
 		if($this->customer['is_company'] == true){
-			$selling_doc = $this->subiektGt->SuDokumentyManager->DodajFS();
+			$selling_doc = $this->subiektGt->SuDokumentyManager->DodajKFS();
 		}else{
 			$selling_doc = $this->subiektGt->SuDokumentyManager->DodajPA();
 		}
@@ -334,8 +334,14 @@ class Order extends SubiektObj {
 		$this->orderGt->Przelicz();
 		$this->amount = $this->orderGt->WartoscBrutto;
 		$this->orderGt->Wystawil = Helper::toWin($this->cfg->getIdPerson());
+
 		$this->setGtObject();		
 		$this->orderGt->Zapisz();
+
+		$this->orderGt = $this->subiektGt->SuDokumentyManager->WczytajDokument($this->orderGt->Identyfikator);
+		$this->orderGt->FormaDokumentu = 1; //Ksef
+		$this->orderGt->Zapisz();
+
 		Logger::getInstance()->log('api','Utworzono zamówienie od klienta: '.$this->orderGt->NumerPelny,__CLASS__.'->'.__FUNCTION__,__LINE__);	
 		return array(
 			'order_ref' => $this->orderGt->NumerPelny,
