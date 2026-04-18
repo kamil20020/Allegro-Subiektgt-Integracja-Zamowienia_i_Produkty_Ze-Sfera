@@ -283,10 +283,21 @@ class Order extends SubiektObj {
 		if(!$this->products){
 			throw new Exception('Brak danych "products" dla zamówienia!',1);
 		}
+		
+		$invoicePriceTotal = (int)$this->orderDetail['amount'];
+		$shouldCreateSaleInvoice = $invoicePriceTotal >= 450 && $this->customer['is_invoice_required'];
 
 		if($this->customer['is_invoice_required'] == true){
+			
+			//Faktura za mniej niz 450 zł może być wystawiona jako paragon imienny
+			if($shouldCreateSaleInvoice){
 
-			$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajFS();
+				$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajFS();
+			}
+			else{
+
+				$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajPAi();
+			}
 
 			$oneTimeCustomer = $this->subiektGt->KontrahenciManager->DodajKontrahentaJednorazowego();
 
@@ -310,6 +321,7 @@ class Order extends SubiektObj {
 			$this->orderGt->KontrahentId =  $oneTimeCustomer->Identyfikator;
 		}
 		else{
+
 			$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajPA();
 		}
 
@@ -337,10 +349,13 @@ class Order extends SubiektObj {
 
 		$this->setGtObject();		
 		$this->orderGt->Zapisz();
+		
+		if($shouldCreateSaleInvoice){
 
-		$this->orderGt = $this->subiektGt->SuDokumentyManager->WczytajDokument($this->orderGt->Identyfikator);
-		$this->orderGt->FormaDokumentu = 1; //Ksef
-		$this->orderGt->Zapisz();
+			$this->orderGt = $this->subiektGt->SuDokumentyManager->WczytajDokument($this->orderGt->Identyfikator);
+			$this->orderGt->FormaDokumentu = 1; //Ksef
+			$this->orderGt->Zapisz();
+		}
 
 		Logger::getInstance()->log('api','Utworzono zamówienie od klienta: '.$this->orderGt->NumerPelny,__CLASS__.'->'.__FUNCTION__,__LINE__);	
 		return array(
