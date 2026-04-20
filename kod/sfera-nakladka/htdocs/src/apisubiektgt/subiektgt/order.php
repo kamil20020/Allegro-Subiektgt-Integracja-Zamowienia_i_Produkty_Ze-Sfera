@@ -285,22 +285,16 @@ class Order extends SubiektObj {
 		}
 		
 		$invoicePriceTotal = (int)$this->orderDetail['amount'];
-		$shouldCreateSaleInvoice = $invoicePriceTotal >= 450 && $this->customer['is_invoice_required'];
+		
+		//Faktura za mniej niz 450 zł może być wystawiona jako paragon z nipem
+		$doesClientWantInvoice = $this->customer['is_invoice_required'];
+		$shouldCreateSaleInvoice = $invoicePriceTotal >= 450 && $doesClientWantInvoice;
 
-		if($this->customer['is_invoice_required'] == true){
+		if($shouldCreateSaleInvoice){
+
+			$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajFS();
 			
-			//Faktura za mniej niz 450 zł może być wystawiona jako paragon imienny
-			if($shouldCreateSaleInvoice){
-
-				$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajFS();
-			}
-			else{
-
-				$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajPAi();
-			}
-
 			$oneTimeCustomer = $this->subiektGt->KontrahenciManager->DodajKontrahentaJednorazowego();
-
 			$oneTimeCustomer->Nazwa = Helper::toWin(substr($this->customer['name'], 0, 50));
 			//$oneTimeCustomer->NrDomu = Helper::toWin($this->customer['house_nr']);
 			//$oneTimeCustomer->NrLokalu = Helper::toWin($this->customer['flat_nr']);
@@ -323,6 +317,12 @@ class Order extends SubiektObj {
 		else{
 
 			$this->orderGt = $this->subiektGt->SuDokumentyManager->DodajPA();
+			
+			if($doesClientWantInvoice){
+					
+				$this->orderGt->IdentyfikatorNabywcy = Helper::toWin($this->customer['nip']);
+				$this->orderGt->IdentyfikatorNabywcyTyp = 1; // Nip
+			}
 		}
 
 		$this->orderGt->Uwagi = $this->orderDetail['external_id'];
