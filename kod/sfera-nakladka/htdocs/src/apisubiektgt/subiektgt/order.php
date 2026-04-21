@@ -322,6 +322,7 @@ class Order extends SubiektObj {
 					
 				$this->orderGt->IdentyfikatorNabywcy = Helper::toWin($this->customer['nip']);
 				$this->orderGt->IdentyfikatorNabywcyTyp = 1; // Nip
+				$this->orderGt->Tytul = "Paragon";
 			}
 		}
 
@@ -350,11 +351,18 @@ class Order extends SubiektObj {
 		$this->setGtObject();		
 		$this->orderGt->Zapisz();
 		
-		if($shouldCreateSaleInvoice){
+		if($doesClientWantInvoice){
 
-			$this->orderGt = $this->subiektGt->SuDokumentyManager->WczytajDokument($this->orderGt->Identyfikator);
-			$this->orderGt->FormaDokumentu = 1; //Ksef
-			$this->orderGt->Zapisz();
+			if($shouldCreateSaleInvoice){
+				$this->orderGt = $this->subiektGt->SuDokumentyManager->WczytajDokument($this->orderGt->Identyfikator);
+				$this->orderGt->FormaDokumentu = 1; //Ksef
+				$this->orderGt->Zapisz();
+			}
+			else{
+				$this->orderGt->Tytul = "Paragon";
+				$this->orderGt->Zapisz();
+			}
+
 		}
 
 		Logger::getInstance()->log('api','Utworzono zamówienie od klienta: '.$this->orderGt->NumerPelny,__CLASS__.'->'.__FUNCTION__,__LINE__);	
